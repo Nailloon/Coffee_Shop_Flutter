@@ -3,32 +3,39 @@ import 'package:flutter/material.dart';
 
 class CategoryChip extends StatefulWidget {
   final String text;
+  final bool active;
 
-  const CategoryChip({Key? key, required this.text}) : super(key: key);
+  const CategoryChip({Key? key, required this.text, this.active = false}) : super(key: key);
 
   @override
   State<CategoryChip> createState() => _CategoryChipState();
 }
 
 class _CategoryChipState extends State<CategoryChip> {
-  bool active = true;
+  late bool _active;
+
+  @override
+  void initState() {
+    super.initState();
+    _active = widget.active;
+  }
 
   @override
   Widget build(BuildContext context) {
     return ActionChip(
-      backgroundColor: active ? AppColors.white : AppColors.blue,
+      backgroundColor: _active ? AppColors.white : AppColors.blue,
       side: BorderSide.none,
-      label: const Text('Черный кофе'),
+      label: Text(widget.text),
       padding: const EdgeInsets.all(8.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
       labelStyle: TextStyle(
-        color: active ? AppColors.realBlack : AppColors.white,
+        color: _active ? AppColors.realBlack : AppColors.white,
       ),
       onPressed: () {
         setState(() {
-          active = !active;
+          _active = !_active;
         });
       },
     );
