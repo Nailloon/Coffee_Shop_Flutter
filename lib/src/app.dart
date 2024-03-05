@@ -1,3 +1,4 @@
+import 'package:coffee_shop/src/features/menu/view/widgets/category_chip.dart';
 import 'package:coffee_shop/src/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +19,7 @@ class CoffeeShopApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       onGenerateTitle: (context) => AppLocalizations.of(context)!.title,
       theme: theme,
-      home: const Center(),
+      home: const Scaffold(body: CategoryChip(text: "Черный кофе",)),
     );
   }
 }
