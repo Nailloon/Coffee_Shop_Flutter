@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class PriceCartButton extends StatefulWidget {
   final double price;
+  final String currency;
 
-  PriceCartButton({required this.price});
+  PriceCartButton({required this.price, required this.currency});
 
   @override
   _PriceCartButtonState createState() => _PriceCartButtonState();
@@ -107,7 +108,7 @@ class _PriceCartButtonState extends State<PriceCartButton> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          quantity == 0 ? "${widget.price}" : quantity.toString(),
+                          quantity == 0 ? "${widget.price} ${widget.currency}" : quantity.toString(),
                           style: TextStyle(fontSize: 12.0),
                         ),
                       ],

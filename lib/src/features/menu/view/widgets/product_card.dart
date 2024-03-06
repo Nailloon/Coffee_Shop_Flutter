@@ -8,8 +8,9 @@ class ProductCard extends StatelessWidget {
   final String filename;
   final String name;
   final double price;
+  final String currency;
   
-  const ProductCard({Key? key, required this.name, required this.price, required this.filename}) : super(key: key);
+  const ProductCard({Key? key, required this.name, required this.price, required this.currency, required this.filename}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class ProductCard extends StatelessWidget {
                     },
                   ),
                   Text(name),
-                  PriceCartButton(price: 139.0),
+                  PriceCartButton(price: price, currency: currency),
                 ],
               ),
             ),
