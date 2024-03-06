@@ -1,3 +1,4 @@
+import 'package:coffee_shop/src/features/menu/view/widgets/price_cart_button.dart';
 import 'package:coffee_shop/src/theme/paddings.dart';
 import 'package:flutter/services.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
@@ -16,11 +17,13 @@ class ProductCard extends StatelessWidget {
     double imageWidth = MediaQuery.of(context).size.width;
 
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0),),
       child: SizedBox(
         width: 200,
-        child: ColoredBox(
-          color: AppColors.blue,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: AppColors.blue,
+            borderRadius: BorderRadius.circular(12.0),
+          ),
           child: Padding(
             padding: OurPaddings.screenPadding,
             child: Center(
@@ -37,7 +40,7 @@ class ProductCard extends StatelessWidget {
                     },
                   ),
                   Text(name),
-                  Text(price.toString()),
+                  PriceCartButton(price: 139.0),
                 ],
               ),
             ),
