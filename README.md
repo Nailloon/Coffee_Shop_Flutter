@@ -1,16 +1,29 @@
 # coffee_shop
 
-A new Flutter project.
+Проект созданный с помощью Flutter, представляющий собой приложение для магазина кофе. 
 
-## Getting Started
+## Что сделано на каждом из этапов
 
-This project is a starting point for a Flutter application.
+### Этап 1
 
-A few resources to get you started if this is your first Flutter project:
+- Была сделана верстка главного экрана, содержащая сетку карточек, строку категорий.
+- Была сделана кнопка, по нажатию на которую появляется возможность выбора количества товара
+- Был сделан скролл до нужной категории по нажатию на CategoryChips
+- Если картинка не найдена на устройстве в ассетах, то вставляется заглушка
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+<u>Я открыт к любым советам и критике и постараюсь подправить недочеты. Также хотелось бы услышать советы по структуре проекта и по DTO, поскольку не сильно разбираюсь в этой теме.</u>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Ниже будут перечислены пункты, которые были еще **не сделаны в работе**. По ним я хотел юы по возможности услышать советы по реализации.
+- [ ] Скролл Row с CategoryChips в зависимости от категории на экране. ~~Нашел видеоролик, где завязывались на высоту контейнера и изменяли счетчик активной категории, но в данной ситуации с неизвестной заранее высотой не думаю, что такая реализация подойдет~~ <https://www.youtube.com/watch?v=TdhMNaQsZjQ>
+- [ ] Изменение активной категории также в Row с CategoryChips
+
+Далее представлены скриншоты адаптивной верстки под разные экраны
+![iPhone14](./README_images/iPhone%2014%20Pro%20Max.png)
+![iPhoneXR_part1](./README_images/iPhone_XR.png)
+![iPhoneXR_part2](./README_images/iPhone_XR2.png)
+![Galaxy_Fold](./README_images/Galaxy%20Fold.png)
+
+Ниже представлены скриншоты с моего устройства Honor 20 Pro:
+![Honor_20_Pro1](./README_images/Honor%2020%20Pro%201.jpg)
+![Honor_20_Pro2](./README_images/Honor%2020%20Pro%202.jpg)
+![Honor_20_Pro3](./README_images/Honor%2020%20Pro%203.jpg)
