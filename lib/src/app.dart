@@ -1,7 +1,7 @@
 import 'package:coffee_shop/src/features/menu/data/categoryDTO.dart';
 import 'package:coffee_shop/src/features/menu/data/productDTO.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/category_header.dart';
-import 'package:coffee_shop/src/features/menu/view/widgets/category_sliver_grid.dart';
+import 'package:coffee_shop/src/features/menu/view/widgets/category_slivergrid.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/chips_row.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:coffee_shop/src/theme/paddings.dart';
