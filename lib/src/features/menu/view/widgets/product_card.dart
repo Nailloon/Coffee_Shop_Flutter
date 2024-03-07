@@ -1,5 +1,5 @@
 import 'package:coffee_shop/src/features/menu/view/widgets/price_cart_button.dart';
-import 'package:coffee_shop/src/theme/paddings.dart';
+import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
@@ -12,13 +12,14 @@ class ProductCard extends StatelessWidget {
   
   const ProductCard({Key? key, required this.name, required this.price, required this.currency, required this.filename, required this.maxCardWidth}) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     String imageUrl = 'assets/images/$filename';
     double imageWidth = maxCardWidth;
-
+    double horizontalPadding = 32;
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-      color: Colors.amber,
+      color: AppColors.white,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 8.0,),
         child: SizedBox(
@@ -36,7 +37,7 @@ class ProductCard extends StatelessWidget {
                 },
               ),
               Text(name, style: TextStyle(fontSize: 16.0)),
-              PriceCartButton(price: price, currency: currency, width: maxCardWidth-64),
+              PriceCartButton(price: price, currency: currency, width: maxCardWidth-horizontalPadding*2),
             ],
           ),
           ),

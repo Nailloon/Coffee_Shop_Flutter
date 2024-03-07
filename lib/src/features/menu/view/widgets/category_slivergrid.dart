@@ -15,7 +15,7 @@ class CategorySliverGrid extends StatelessWidget {
     double maxCardWidth = (screenWidth - 2.0 * cardPadding);
 
     return SliverGrid(
-      gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 175),
+      gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,mainAxisExtent: 175, crossAxisSpacing: 8, mainAxisSpacing: 8),
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           ProductDTO product = category.products[index];

@@ -3,8 +3,6 @@ import 'package:coffee_shop/src/features/menu/data/productDTO.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/category_header.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/category_slivergrid.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/chips_row.dart';
-import 'package:coffee_shop/src/theme/app_colors.dart';
-import 'package:coffee_shop/src/theme/paddings.dart';
 import 'package:coffee_shop/src/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,13 +13,28 @@ import 'package:flutter_localizations/flutter_localizations.dart';
   ProductDTO product1 = ProductDTO(name: 'Espresso', price: 2.50, currency: 'руб', imageUrl: 'https://example.com/espresso.jpg');
   ProductDTO product2 = ProductDTO(name: 'Latte', price: 3.00, currency: 'руб', imageUrl: 'https://example.com/latte.jpg');
   ProductDTO product3 = ProductDTO(name: 'Олеато', price: 139, currency: 'руб', imageUrl: 'oleato.png');
-  CategoryDTO category = CategoryDTO(name: 'Черный кофе', products: [product3, product2, product3]);
-  CategoryDTO category1 = CategoryDTO(name: 'Кофе с молоком', products: [product1, product2, product1, product]);
+  CategoryDTO category = CategoryDTO(name: 'Черный кофе', products: [product3, product2, product3,product3, product2, product3,]);
+  CategoryDTO category1 = CategoryDTO(name: 'Кофе с молоком', products: [product1, product2, product1, product, product3, product2, product3,]);
   CategoryDTO category2 = CategoryDTO(name: 'Coffeeeeeeeeeeeee2', products: [product1, product2]);
   var categories1 = [category, category1, category2];
 
-class CoffeeShopApp extends StatelessWidget {
-  const CoffeeShopApp({super.key});
+class CoffeeShopApp extends StatefulWidget {
+  const CoffeeShopApp({Key? key}) : super(key: key);
+
+  @override
+  _CoffeeShopAppState createState() => _CoffeeShopAppState();
+}
+
+class _CoffeeShopAppState extends State<CoffeeShopApp> {
+  final ScrollController _scrollController = ScrollController();
+
+  List<GlobalKey> _categoryKeys = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _categoryKeys = List.generate(categories1.length, (index) => GlobalKey());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,31 +48,31 @@ class CoffeeShopApp extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       onGenerateTitle: (context) => AppLocalizations.of(context)!.title,
       theme: theme,
-      home: Scaffold(
-        body: SafeArea(child: Padding(
-          padding: OurPaddings.screenPadding,
-          child: CustomScrollView(slivers: [
-            SliverAppBar(flexibleSpace: CategoryChipsRow(categories: categories1), pinned: true, backgroundColor: AppColors.white),
-              SliverToBoxAdapter(
-                  child: CategoryHeader(category: category1,),
-                ),
-            CategorySliverGrid(category: category1),
+      home: SafeArea(
+        child: Scaffold(
+          body: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: CustomScrollView(
+              controller: _scrollController,
+              slivers: [
+                SliverAppBar(flexibleSpace: CategoryChipsRow(categories: categories1, categoryKeys: _categoryKeys), pinned: true, backgroundColor: Colors.white),
                 SliverToBoxAdapter(
-                  child: CategoryHeader(category: category,),
+                  child: CategoryHeader(category: category, key: _categoryKeys[0]),
                 ),
-            CategorySliverGrid(category: category),
-            SliverToBoxAdapter(
-                  child: CategoryHeader(category: category1,),
-                ),
-            CategorySliverGrid(category: category1),
+                CategorySliverGrid(category: category),
                 SliverToBoxAdapter(
-                  child: CategoryHeader(category: category,),
+                  child: CategoryHeader(category: category1, key: _categoryKeys[1]),
                 ),
-            CategorySliverGrid(category: category),
+                CategorySliverGrid(category: category1),
+                SliverToBoxAdapter(
+                  child: CategoryHeader(category: category2, key: _categoryKeys[2]),
+                ),
+                CategorySliverGrid(category: category2),
               ],
             ),
-        ),)
+          ),
         ),
+      ),
     );
   }
 }
