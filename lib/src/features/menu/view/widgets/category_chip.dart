@@ -37,6 +37,14 @@ class _CategoryChipState extends State<CategoryChip> {
         setState(() {
           _active = !_active;
         });
+        
+        final categoryHeaderKey = GlobalKey();
+        Future.delayed(Duration.zero, () {
+          final context = categoryHeaderKey.currentContext;
+          if (context != null) {
+            Scrollable.ensureVisible(context);
+          }
+        });
       },
     );
   }

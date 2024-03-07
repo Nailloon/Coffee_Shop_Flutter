@@ -1,10 +1,12 @@
+import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class PriceCartButton extends StatefulWidget {
   final double price;
   final String currency;
+  final double width;
 
-  PriceCartButton({required this.price, required this.currency});
+  const PriceCartButton({super.key, required this.price, required this.currency, required this.width});
 
   @override
   _PriceCartButtonState createState() => _PriceCartButtonState();
@@ -13,11 +15,11 @@ class PriceCartButton extends StatefulWidget {
 class _PriceCartButtonState extends State<PriceCartButton> {
   int quantity = 0;
   bool showQuantityButtons = false;
-  final double buttonHeight = 24.0;
-  final double buttonWidth = 56.0;
 
   @override
   Widget build(BuildContext context) {
+    final double buttonHeight = 24.0;
+    final double buttonWidth = (widget.width - 8*2) / 6;
     return InkWell(
       onTap: () {
         setState(() {
@@ -32,10 +34,10 @@ class _PriceCartButtonState extends State<PriceCartButton> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: AppColors.blue,
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: InkWell(
@@ -49,15 +51,13 @@ class _PriceCartButtonState extends State<PriceCartButton> {
                           }
                         });
                       },
-                      child: Icon(Icons.remove, size: buttonHeight),
+                      child: Icon(Icons.remove, size: buttonHeight, color: AppColors.white),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: DecoratedBox(
+                DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: AppColors.blue,
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: SizedBox(
@@ -66,17 +66,16 @@ class _PriceCartButtonState extends State<PriceCartButton> {
                       child: Center(
                         child: Text(
                           quantity.toString(),
-                          style: TextStyle(fontSize: 12.0),
+                          style: TextStyle(fontSize: 12.0, color: AppColors.white),
                         ),
                       ),
                     ),
                   ),
-                ),
                 Padding(
-                  padding: const EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: AppColors.blue,
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: InkWell(
@@ -87,20 +86,20 @@ class _PriceCartButtonState extends State<PriceCartButton> {
                           }
                         });
                       },
-                      child: Icon(Icons.add, size: buttonHeight),
+                      child: Icon(Icons.add, size: buttonHeight, color: AppColors.white,),
                     ),
                   ),
                 ),
               ],
             )
           : Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: SizedBox(
-                width: 116.0,
+                width: (widget.width)/3,
                 height: 24.0,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: AppColors.blue,
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Center(
@@ -109,7 +108,7 @@ class _PriceCartButtonState extends State<PriceCartButton> {
                       children: [
                         Text(
                           quantity == 0 ? "${widget.price} ${widget.currency}" : quantity.toString(),
-                          style: TextStyle(fontSize: 12.0),
+                          style: TextStyle(fontSize: 12.0, color: AppColors.white),
                         ),
                       ],
                     ),
