@@ -18,7 +18,7 @@ class _CategoryChipsRowState extends State<CategoryChipsRow> {
   @override
   void initState() {
     super.initState();
-    _activeIndex = -1;
+    _activeIndex = 0;
   }
 
   @override
@@ -37,7 +37,6 @@ class _CategoryChipsRowState extends State<CategoryChipsRow> {
                   setState(() {
                     _activeIndex = index;
                   });
-                  
                   Future.delayed(Duration.zero, () {
                     final categoryKey = widget.categoryKeys[index];
                     Scrollable.ensureVisible(categoryKey.currentContext!, alignment: 0.0, duration: Duration(milliseconds: 400));

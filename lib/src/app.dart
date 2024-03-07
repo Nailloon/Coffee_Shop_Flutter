@@ -56,18 +56,13 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
               controller: _scrollController,
               slivers: [
                 SliverAppBar(flexibleSpace: CategoryChipsRow(categories: categories1, categoryKeys: _categoryKeys), pinned: true, backgroundColor: Colors.white),
-                SliverToBoxAdapter(
-                  child: CategoryHeader(category: category, key: _categoryKeys[0]),
-                ),
-                CategorySliverGrid(category: category),
-                SliverToBoxAdapter(
-                  child: CategoryHeader(category: category1, key: _categoryKeys[1]),
-                ),
-                CategorySliverGrid(category: category1),
-                SliverToBoxAdapter(
-                  child: CategoryHeader(category: category2, key: _categoryKeys[2]),
-                ),
-                CategorySliverGrid(category: category2),
+                for (int i = 0; i < categories1.length; i++)
+                ...[
+                  SliverToBoxAdapter(
+                    child: CategoryHeader(category: categories1[i], key: _categoryKeys[i]),
+                  ),
+                  CategorySliverGrid(category: categories1[i]),
+                ],
               ],
             ),
           ),
