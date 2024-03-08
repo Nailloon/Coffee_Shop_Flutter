@@ -1,30 +1,51 @@
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class CategoryChip extends StatelessWidget {
+class CategoryChip extends StatefulWidget {
   final String text;
-  final bool active;
+  final bool isSelected;
   final VoidCallback onSelected;
-  final Key key;
+  
 
-  CategoryChip({Key? key, required this.text, required this.active, required this.onSelected})
-      : this.key = key ?? UniqueKey(),
-        super(key: key);
+  CategoryChip({super.key, required this.text, required this.onSelected, required this.isSelected});
+
+  @override
+  State<CategoryChip> createState() => _CategoryChipState();
+}
+
+class _CategoryChipState extends State<CategoryChip> {
+  bool _isSelected = false;
+
+  @override
+  void initState() {
+    _isSelected = widget.isSelected;
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant CategoryChip oldWidget) {
+    if (widget.isSelected != _isSelected) {
+      setState(() {
+        _isSelected = widget.isSelected;
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
     return ActionChip(
-      backgroundColor: active ? AppColors.white : AppColors.blue,
+      backgroundColor: _isSelected ? AppColors.blue : AppColors.white,
       side: BorderSide.none,
-      label: Text(text),
+      label: Text(widget.text),
       padding: const EdgeInsets.all(8.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20.0),
       ),
       labelStyle: TextStyle(
-        color: active ? AppColors.realBlack : AppColors.white,
+        color: _isSelected ? AppColors.white : AppColors.realBlack,
       ),
-      onPressed: onSelected,
+      onPressed: widget.onSelected,
     );
   }
 }

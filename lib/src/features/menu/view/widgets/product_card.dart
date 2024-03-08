@@ -1,19 +1,18 @@
+import 'package:coffee_shop/src/features/menu/data/productDTO.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/price_cart_button.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
-  final String filename;
-  final String name;
-  final double price;
-  final String currency;
+  final ProductDTO product;
   final double maxCardWidth;
   
-  const ProductCard({Key? key, required this.name, required this.price, required this.currency, required this.filename, required this.maxCardWidth}) : super(key: key);
+  const ProductCard({Key? key, required this.product, required this.maxCardWidth}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final filename = product.imageUrl;
     String imageUrl = 'assets/images/$filename';
     double imageWidth = maxCardWidth;
     double horizontalPadding = 32;
@@ -36,8 +35,8 @@ class ProductCard extends StatelessWidget {
                   }
                 },
               ),
-              Text(name, style: TextStyle(fontSize: 16.0)),
-              PriceCartButton(price: price, currency: currency, width: maxCardWidth-horizontalPadding*2),
+              Text(product.name, style: TextStyle(fontSize: 16.0)),
+              PriceCartButton(price: product.price, currency: product.currency, width: maxCardWidth-horizontalPadding*2),
             ],
           ),
           ),

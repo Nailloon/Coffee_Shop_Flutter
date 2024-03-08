@@ -107,7 +107,9 @@ class _PriceCartButtonState extends State<PriceCartButton> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          quantity == 0 ? "${widget.price} ${widget.currency}" : quantity.toString(),
+                          quantity == 0
+                              ? "${formatPrice(widget.price)} ${widget.currency}"
+                              : quantity.toString(),
                           style: TextStyle(fontSize: 12.0, color: AppColors.white),
                         ),
                       ],
@@ -117,5 +119,13 @@ class _PriceCartButtonState extends State<PriceCartButton> {
               ),
             ),
     );
+  }
+}
+
+String formatPrice(double price) {
+  if (price % 1 == 0) {
+    return price.toInt().toString();
+  } else {
+    return price.toStringAsFixed(2);
   }
 }
