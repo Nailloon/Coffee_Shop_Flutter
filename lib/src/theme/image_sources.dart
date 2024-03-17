@@ -1,3 +1,3 @@
 sealed class ImageSources {
-  static const plusIcon = '';
+  static const placeholder = 'assets/images/emptyCard.png';
 }

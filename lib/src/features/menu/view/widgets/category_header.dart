@@ -1,8 +1,8 @@
-import 'package:coffee_shop/src/features/menu/data/categoryDTO.dart';
+import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:flutter/material.dart';
 
 class CategoryHeader extends StatelessWidget {
-  final CategoryDTO category;
+  final CategoryData category;
 
   const CategoryHeader({Key? key, required this.category}) : super(key: key);
 
@@ -12,7 +12,7 @@ class CategoryHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Text(
         category.name,
-        style: TextStyle(fontSize: 32.0, fontFamily: 'Roboto', fontWeight: FontWeight.w600),
+        style: Theme.of(context).textTheme.titleLarge,
       ),
     );
   }

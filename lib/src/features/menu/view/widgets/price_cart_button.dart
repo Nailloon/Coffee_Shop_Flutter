@@ -1,15 +1,16 @@
+import 'package:coffee_shop/src/features/menu/view/widgets/price_button.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class PriceCartButton extends StatefulWidget {
   final double price;
   final String currency;
-  final double width;
 
-  const PriceCartButton({super.key, required this.price, required this.currency, required this.width});
+  const PriceCartButton(
+      {super.key, required this.price, required this.currency});
 
   @override
-  _PriceCartButtonState createState() => _PriceCartButtonState();
+  State<PriceCartButton> createState() => _PriceCartButtonState();
 }
 
 class _PriceCartButtonState extends State<PriceCartButton> {
@@ -18,114 +19,87 @@ class _PriceCartButtonState extends State<PriceCartButton> {
 
   @override
   Widget build(BuildContext context) {
-    final double buttonHeight = 24.0;
-    final double buttonWidth = (widget.width - 8*2) / 6;
+    const double buttonHeight = 24.0;
+    const double buttonWidth = double.infinity;
     return InkWell(
-      onTap: () {
-        setState(() {
-          if (!showQuantityButtons) {
-            showQuantityButtons = true;
-            quantity++;
-          }
-        });
-      },
-      child: showQuantityButtons
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.blue,
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          if (quantity > 0) {
-                            quantity--;
-                          }
-                          if (quantity == 0) {
-                            showQuantityButtons = false;
-                          }
-                        });
-                      },
-                      child: Icon(Icons.remove, size: buttonHeight, color: AppColors.white),
+        onTap: () {
+          setState(() {
+            if (!showQuantityButtons) {
+              showQuantityButtons = true;
+              quantity++;
+            }
+          });
+        },
+        child: showQuantityButtons
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 4.0),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: AppColors.blue,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (quantity > 0) {
+                              quantity--;
+                            }
+                            if (quantity == 0) {
+                              showQuantityButtons = false;
+                            }
+                          });
+                        },
+                        child: const Icon(Icons.remove,
+                            size: buttonHeight, color: AppColors.white),
+                      ),
                     ),
                   ),
-                ),
-                DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.blue,
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: SizedBox(
-                      width: buttonWidth,
-                      height: buttonHeight,
-                      child: Center(
-                        child: Text(
-                          quantity.toString(),
-                          style: TextStyle(fontSize: 12.0, color: AppColors.white),
+                  Expanded(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: AppColors.blue,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: SizedBox(
+                        width: buttonWidth,
+                        height: buttonHeight,
+                        child: Center(
+                          child: Text(
+                            quantity.toString(),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.blue,
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          if (quantity < 10) {
-                            quantity++;
-                          }
-                        });
-                      },
-                      child: Icon(Icons.add, size: buttonHeight, color: AppColors.white,),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: SizedBox(
-                width: (widget.width)/3,
-                height: 24.0,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: AppColors.blue,
-                    borderRadius: BorderRadius.circular(12.0),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          quantity == 0
-                              ? "${formatPrice(widget.price)} ${widget.currency}"
-                              : quantity.toString(),
-                          style: TextStyle(fontSize: 12.0, color: AppColors.white),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: AppColors.blue,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (quantity < 10) {
+                              quantity++;
+                            }
+                          });
+                        },
+                        child: const Icon(
+                          Icons.add,
+                          size: buttonHeight,
+                          color: AppColors.white,
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-    );
-  }
-}
-
-String formatPrice(double price) {
-  if (price % 1 == 0) {
-    return price.toInt().toString();
-  } else {
-    return price.toStringAsFixed(2);
+                ],
+              )
+            : PriceButton(price: widget.price, currency: widget.currency));
   }
 }

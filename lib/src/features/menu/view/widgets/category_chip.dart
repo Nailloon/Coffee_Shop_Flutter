@@ -5,9 +5,12 @@ class CategoryChip extends StatefulWidget {
   final String text;
   final bool isSelected;
   final VoidCallback onSelected;
-  
 
-  CategoryChip({super.key, required this.text, required this.onSelected, required this.isSelected});
+  const CategoryChip(
+      {super.key,
+      required this.text,
+      required this.onSelected,
+      required this.isSelected});
 
   @override
   State<CategoryChip> createState() => _CategoryChipState();
