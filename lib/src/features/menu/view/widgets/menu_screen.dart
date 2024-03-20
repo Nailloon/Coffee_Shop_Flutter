@@ -1,8 +1,10 @@
+import 'package:coffee_shop/src/common/network/repositories/coffee_shop_repository.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/category_chip.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/category_header.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/category_grid.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -13,6 +15,7 @@ class MenuScreen extends StatefulWidget {
   @override
   State<MenuScreen> createState() => _MenuScreenState();
 }
+
 
 class _MenuScreenState extends State<MenuScreen> {
   late Map<String, GlobalKey> categoryKeys;
@@ -26,7 +29,6 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
-
     categoryKeys = {
       for (var category in widget.allCategories) category.name: GlobalKey()
     };
@@ -64,7 +66,6 @@ class _MenuScreenState extends State<MenuScreen> {
         index: ind,
         duration: const Duration(milliseconds: 400));
   }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -110,7 +111,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     key: categoryKeys[category.name],
                     category: category,
                   ),
-                  CategoryGridView(category: category)
+                  CategoryGridView(category: category, currency: 'RUB',),
                 ],
               );
             },

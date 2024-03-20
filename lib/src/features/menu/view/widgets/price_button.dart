@@ -23,7 +23,7 @@ class PriceButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "${formatPrice(price)} $currency",
+                  "${formatPrice(price)} ${getCurrencySymbol(currency)}",
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
@@ -41,4 +41,15 @@ String formatPrice(double price) {
   } else {
     return price.toStringAsFixed(2);
   }
+}
+
+String getCurrencySymbol(String currency) {
+  final currencySymbols = {
+    'USD': '\$',
+    'EUR': '€',
+    'GBP': '£',
+    'RUB': '₽',
+  };
+
+  return currencySymbols[currency] ?? currency;
 }

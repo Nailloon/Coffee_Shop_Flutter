@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 
 class CategoryGridView extends StatelessWidget {
   final CategoryData category;
+  final String currency;
 
-  const CategoryGridView({Key? key, required this.category}) : super(key: key);
+  const CategoryGridView({Key? key, required this.category, required this.currency}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +23,7 @@ class CategoryGridView extends StatelessWidget {
       itemBuilder: (context, index) {
         return ProductCard(
           product: category.products[index],
+          currency: currency,
         );
       },
     );

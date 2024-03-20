@@ -6,15 +6,22 @@ import 'package:flutter/material.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductData product;
+  final String currency;
 
   const ProductCard({
-    Key? key,
+    super.key,
     required this.product,
-  }) : super(key: key);
+    required this.currency,
+  });
 
   @override
   Widget build(BuildContext context) {
     String imageUrl = product.imageUrl;
+    double? price = product.prices[currency];
+    if (price == null) {
+    throw Exception('Price is null for the specified currency');
+  }
+
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       color: AppColors.white,
@@ -25,15 +32,19 @@ class ProductCard extends StatelessWidget {
             Image.network(
               imageUrl,
               errorBuilder: (context, error, stackTrace) {
-                return Image.asset(ImageSources.placeholder,
-                    width: double.infinity, fit: BoxFit.contain, height: 100.0);
+                return Image.asset(
+                  ImageSources.placeholder,
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                  height: 100.0,
+                );
               },
               width: double.infinity,
               fit: BoxFit.contain,
               height: 100.0,
             ),
             Text(product.name, style: Theme.of(context).textTheme.titleMedium),
-            PriceCartButton(price: product.price, currency: product.currency),
+            PriceCartButton(price: price, currency: currency),
           ],
         ),
       ),
