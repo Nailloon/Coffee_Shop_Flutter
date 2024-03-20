@@ -8,7 +8,7 @@ class CoffeeShopRepository{
   Future<CategoryData> fetchProductsByCategory(categoryData, int id, int limit) async {
     final response = await http.get(Uri.https('coffeeshop.academy.effective.band','/api/v1/products', {
       'page': '0',
-      'limit': '5',
+      'limit': '$limit',
       'category': '$id',
     }));
     if (response.statusCode == 200) {

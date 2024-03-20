@@ -14,9 +14,8 @@ class MenuScreen extends StatefulWidget {
   State<MenuScreen> createState() => _MenuScreenState();
 }
 
-
 class _MenuScreenState extends State<MenuScreen> {
-  late Map<String, GlobalKey> categoryKeys;
+  late Map<int, GlobalKey> categoryKeys;
   final ItemScrollController _menuController = ItemScrollController();
   final ItemScrollController _appBarController = ItemScrollController();
   final ItemPositionsListener itemListener = ItemPositionsListener.create();
@@ -27,14 +26,15 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
+    
     categoryKeys = {
-      for (var category in widget.allCategories) category.name: GlobalKey()
+      for (var category in widget.allCategories) category.id: GlobalKey()
     };
 
     itemListener.itemPositions.addListener(() {
-      final firstVisibleIndex = itemListener.itemPositions.value
-          .firstWhere((item) => item.itemLeadingEdge >= 0)
-          .index;
+      final firstVisibleIndex = itemListener.itemPositions.value.isNotEmpty
+          ? itemListener.itemPositions.value.first.index
+          : current;
 
       if (firstVisibleIndex != current && !inProgress) {
         setCurrent(firstVisibleIndex);
@@ -44,10 +44,10 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   void setCurrent(int newCurrent) {
-    setState(() {
-      current = newCurrent;
-    });
-  }
+  setState(() {
+    current = newCurrent;
+  });
+}
 
   void menuScrollToCategory(int ind) async {
     inProgress = true;
@@ -64,6 +64,7 @@ class _MenuScreenState extends State<MenuScreen> {
         index: ind,
         duration: const Duration(milliseconds: 400));
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -86,7 +87,9 @@ class _MenuScreenState extends State<MenuScreen> {
                     onSelected: () {
                       setCurrent(index);
                       menuScrollToCategory(index);
-                      appBarScrollToCategory(index);
+                      if (index < widget.allCategories.length - 1) {
+                        appBarScrollToCategory(index);
+                      }
                     },
                   );
                 },
@@ -109,7 +112,10 @@ class _MenuScreenState extends State<MenuScreen> {
                     key: categoryKeys[category.name],
                     category: category,
                   ),
-                  CategoryGridView(category: category, currency: 'RUB',),
+                  CategoryGridView(
+                    category: category,
+                    currency: 'RUB',
+                  ),
                 ],
               );
             },
