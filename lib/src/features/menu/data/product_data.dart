@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class ProductData {
   final int id;
   final String name;
@@ -18,7 +20,6 @@ class ProductData {
     for (var price in json['prices']) {
       pricesMap[price['currency']] = double.parse(price['value']);
     }
-    
     return ProductData(
       id: json['id'],
       name: json['name'],

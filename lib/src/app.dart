@@ -1,13 +1,14 @@
 import 'package:coffee_shop/src/common/network/repositories/coffee_shop_repository.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/menu_screen.dart';
+import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:coffee_shop/src/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 class CoffeeShopApp extends StatefulWidget {
-  const CoffeeShopApp({Key? key}) : super(key: key);
+  const CoffeeShopApp({super.key});
 
   @override
   State<CoffeeShopApp> createState() => _CoffeeShopAppState();
@@ -20,7 +21,8 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
   @override
   void initState() {
     super.initState();
-    futureCategories= coffeeAPI.fetchCategories();
+    futureCategories= coffeeAPI.fetchAnyProducts(12);
+    coffeeAPI.fetchProductByID(789);
   }
 
   @override
@@ -43,7 +45,12 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
-              return const CircularProgressIndicator();
+              return const ColoredBox(
+                color: AppColors.white,
+                child: Center(
+                  child: CircularProgressIndicator(color: AppColors.blue, ),
+                ),
+              );
             },
           ),
           );

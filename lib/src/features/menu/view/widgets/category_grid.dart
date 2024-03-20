@@ -6,7 +6,7 @@ class CategoryGridView extends StatelessWidget {
   final CategoryData category;
   final String currency;
 
-  const CategoryGridView({Key? key, required this.category, required this.currency}) : super(key: key);
+  const CategoryGridView({super.key, required this.category, required this.currency});
 
   @override
   Widget build(BuildContext context) {

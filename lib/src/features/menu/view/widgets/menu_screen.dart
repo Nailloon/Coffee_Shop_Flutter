@@ -1,10 +1,8 @@
-import 'package:coffee_shop/src/common/network/repositories/coffee_shop_repository.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/category_chip.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/category_header.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/category_grid.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MenuScreen extends StatefulWidget {

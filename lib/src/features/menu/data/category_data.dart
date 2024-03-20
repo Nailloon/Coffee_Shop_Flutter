@@ -1,5 +1,4 @@
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
-import 'package:flutter/material.dart';
 
 class CategoryData {
   final int id;
@@ -12,12 +11,19 @@ class CategoryData {
     var productList = productsJson['data'] as List;
     List<ProductData> products =
         productList.map((product) => ProductData.fromJson(product)).toList();
-    debugPrint(products.toString());
-    debugPrint(json.toString());
     return CategoryData(
       name: json['slug'],
       id: json['id'],
       products: products,
+    );
+  }
+
+  factory CategoryData.fromJsonWithProduct(Map<String, dynamic> json, Map<String, dynamic> productsJson) {
+    final product = ProductData.fromJson(productsJson);
+    return CategoryData(
+      name: json['slug'],
+      id: json['id'],
+      products: [product],
     );
   }
 }
