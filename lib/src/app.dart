@@ -21,8 +21,8 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
   @override
   void initState() {
     super.initState();
-    futureCategories= coffeeAPI.fetchAnyProducts(20);
-    coffeeAPI.fetchProductByID(789);
+    futureCategories= coffeeAPI.fetchCategoriesWithProducts();
+    coffeeAPI.fetchProductByID(id: 789);
   }
 
   @override
