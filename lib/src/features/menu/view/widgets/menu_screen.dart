@@ -1,5 +1,6 @@
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
 import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
+import 'package:coffee_shop/src/features/cart/view/widgets/cart_bottom_sheet.dart';
 import 'package:coffee_shop/src/features/cart/view/widgets/cart_button.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/category_appbar/category_chip.dart';
@@ -27,7 +28,7 @@ class _MenuScreenState extends State<MenuScreen> {
   int current = 0;
   bool inProgress = false;
   bool scrolledToBottom = false;
-  String currency = 'RUB';
+  static const String currency = 'RUB';
   ProductCart productsInCart = ProductCart();
 
   @override
@@ -134,14 +135,15 @@ class _MenuScreenState extends State<MenuScreen> {
                           },
                           itemCount: widget.allCategories.length,
                         ),
-                        if (state is ProductCartChanged)
+                        if ((state is ProductCartChanged))
                           Positioned(
                               bottom: 16.0,
                               right: 0.0,
                               child: SizedBox(
                                   width: 100,
                                   child: PriceButtonWithIcon(
-                                      price: state.price, currency: currency)))
+                                      price: state.price, currency: currency))),
+                      if (state is AllProductsInCart) CartBottomSheet(productList: state.cart, currency: currency,),
                       ],
                     );
                   },

@@ -11,3 +11,8 @@ class ProductCartChanged extends ProductCartState {
 }
 
 class EmptyProductCart extends ProductCartState {}
+
+class AllProductsInCart extends ProductCartState{
+  final List<ProductData> cart;
+  AllProductsInCart(this.cart);
+}

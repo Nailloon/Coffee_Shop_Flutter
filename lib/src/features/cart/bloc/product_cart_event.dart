@@ -15,3 +15,5 @@ class RemoveProductFromCart extends ProductCartEvent {
 class ClearProductCart extends ProductCartEvent {}
 
 class ViewAllProductCart extends ProductCartEvent {}
+
+class ReturnToMainScreen extends ProductCartEvent{}

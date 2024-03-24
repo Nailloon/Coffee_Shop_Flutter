@@ -7,7 +7,11 @@ part 'product_cart_event.dart';
 part 'product_cart_state.dart';
 
 class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
-  ProductCartBloc(this.productsInCart, this.price, this.currency, ) : super(ProductCartInitial()) {
+  ProductCartBloc(
+    this.productsInCart,
+    this.price,
+    this.currency,
+  ) : super(ProductCartInitial()) {
     on<AddProductToCart>((event, emit) {
       debugPrint('add');
       productsInCart.addProduct(event.product);
@@ -18,10 +22,9 @@ class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
       debugPrint('remove');
       productsInCart.removeProduct(event.product);
       price = price - event.product.prices[currency]!;
-      if (productsInCart.emptyCart()){
+      if (productsInCart.emptyCart()) {
         emit(EmptyProductCart());
-      }
-      else{
+      } else {
         emit(ProductCartChanged(productsInCart, price));
       }
     });
@@ -31,7 +34,19 @@ class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
       price = 0;
       emit(EmptyProductCart());
     });
-    on<ViewAllProductCart>((event, emit) {});
+    on<ViewAllProductCart>((event, emit) {
+      debugPrint('appearBottomSheet');
+      List<ProductData> result = [];
+      productsInCart.getProducts().forEach((product, count) {
+        for (int i = 0; i < count; i++) {
+          result.add(product);
+        }
+      });
+      emit(AllProductsInCart(result));
+    });
+    on<ReturnToMainScreen>((event, emit){
+      emit(ProductCartChanged(productsInCart, price));
+    });
   }
   final ProductCart productsInCart;
   double price;

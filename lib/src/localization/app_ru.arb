@@ -1,4 +1,6 @@
 {
     "title": "Кофейня",
-    "error_in_Loading_categories": "Что-то пошло не так, повторите попытку позже"
+    "error_in_Loading_categories": "Что-то пошло не так, повторите попытку позже",
+    "your_order": "Ваш заказ",
+    "make_order": "Оформить заказ"
 }

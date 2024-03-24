@@ -28,7 +28,16 @@ class _PriceCartButtonState extends State<PriceCartButton> {
     }
     const double buttonHeight = 24.0;
     const double buttonWidth = double.infinity;
-    return InkWell(
+    return BlocListener<ProductCartBloc, ProductCartState>(
+      listener: (context, state) {
+        if (state is EmptyProductCart) {
+          setState(() {
+            quantity = 0;
+            showQuantityButtons = false;
+          });
+        }
+      },
+      child: InkWell(
         onTap: () {
           setState(() {
             if (!showQuantityButtons) {
@@ -114,6 +123,6 @@ class _PriceCartButtonState extends State<PriceCartButton> {
                   ),
                 ],
               )
-            : PriceButton(price: price, currency: widget.currency));
+            : PriceButton(price: price, currency: widget.currency)));
   }
 }
