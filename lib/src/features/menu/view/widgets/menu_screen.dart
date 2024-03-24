@@ -1,10 +1,7 @@
-import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
-import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
-import 'package:coffee_shop/src/features/menu/data/product_data.dart';
-import 'package:coffee_shop/src/features/menu/view/widgets/category_chip.dart';
-import 'package:coffee_shop/src/features/menu/view/widgets/category_header.dart';
-import 'package:coffee_shop/src/features/menu/view/widgets/category_grid.dart';
+import 'package:coffee_shop/src/features/menu/view/widgets/components/category_appbar/category_chip.dart';
+import 'package:coffee_shop/src/features/menu/view/widgets/components/category_grid/category_grid.dart';
+import 'package:coffee_shop/src/features/menu/view/widgets/components/category_grid/category_header.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 

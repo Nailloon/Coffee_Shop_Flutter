@@ -1,5 +1,5 @@
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
-import 'package:coffee_shop/src/features/menu/view/widgets/product_card.dart';
+import 'package:coffee_shop/src/features/menu/view/widgets/components/product_card/product_card.dart';
 import 'package:flutter/material.dart';
 
 class CategoryGridView extends StatelessWidget {

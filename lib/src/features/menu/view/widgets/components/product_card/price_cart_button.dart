@@ -1,4 +1,5 @@
-import 'package:coffee_shop/src/features/menu/view/widgets/price_button.dart';
+
+import 'package:coffee_shop/src/features/menu/view/widgets/components/product_card/price_button.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
