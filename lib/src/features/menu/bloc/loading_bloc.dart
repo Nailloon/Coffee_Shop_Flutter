@@ -8,7 +8,7 @@ part 'loading_state.dart';
 
 class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
   LoadingBloc(this.coffeeRepository) : super(LoadingInitial()) {
-    on<LoadingEvent>((event, emit) async {
+    on<LoadCategoriesEvent>((event, emit) async {
       try {
         final categoriesForApp =
             await coffeeRepository.fetchCategoriesWithProducts();

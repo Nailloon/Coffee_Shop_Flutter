@@ -1,6 +1,6 @@
 part of 'loading_bloc.dart';
 
-class LoadingState{
+sealed class LoadingState{
 
 }
 

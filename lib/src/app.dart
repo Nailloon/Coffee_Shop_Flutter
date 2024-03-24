@@ -17,48 +17,51 @@ class CoffeeShopApp extends StatefulWidget {
 
 class _CoffeeShopAppState extends State<CoffeeShopApp> {
   static CoffeeShopRepository coffeeAPI = CoffeeShopRepository();
-    final LoadingBloc _loadingBloc = LoadingBloc(coffeeAPI);
+  final LoadingBloc _loadingBloc = LoadingBloc(coffeeAPI);
 
   @override
   void initState() {
     super.initState();
     coffeeAPI.fetchProductByID(id: 789);
-    _loadingBloc.add(LoadingEvent());
+    _loadingBloc.add(LoadCategoriesEvent());
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: AppLocalizations.supportedLocales,
-      onGenerateTitle: (context) => AppLocalizations.of(context)!.title,
-      theme: theme,
-      home: BlocBuilder<LoadingBloc, LoadingState>(
-        bloc: _loadingBloc,
-        builder: (context, state) {
-          if (state is LoadingCompleted){
-            return MenuScreen(allCategories: state.categories);
-          }
-          if (state is LoadingFailure){
-            return ColoredBox(
-              color: AppColors.white,
-              child: Center(child: Text(AppLocalizations.of(context)!.error_in_Loading_categories, style: Theme.of(context).textTheme.titleLarge))
-            );
-          }
-          else{return const ColoredBox(
-                color: AppColors.white,
-                child: Center(
-                  child: 
-                      CircularProgressIndicator(color: AppColors.blue, ),
-                      
-              ));}
-        },
-      )
-          );
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        onGenerateTitle: (context) => AppLocalizations.of(context)!.title,
+        theme: theme,
+        home: BlocBuilder<LoadingBloc, LoadingState>(
+          bloc: _loadingBloc,
+          builder: (context, state) {
+            if (state is LoadingCompleted) {
+              return MenuScreen(allCategories: state.categories);
+            }
+            if (state is LoadingFailure) {
+              return ColoredBox(
+                  color: AppColors.white,
+                  child: Center(
+                      child: Text(
+                          AppLocalizations.of(context)!
+                              .error_in_Loading_categories,
+                          style: Theme.of(context).textTheme.titleLarge)));
+            } else {
+              return const ColoredBox(
+                  color: AppColors.white,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.blue,
+                    ),
+                  ));
+            }
+          },
+        ));
   }
 }

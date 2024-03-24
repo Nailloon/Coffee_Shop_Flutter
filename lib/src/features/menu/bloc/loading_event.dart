@@ -1,6 +1,6 @@
 part of 'loading_bloc.dart';
 
-class LoadingEvent{
+sealed class LoadingEvent{
 
 }
 

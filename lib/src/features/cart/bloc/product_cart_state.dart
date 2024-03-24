@@ -5,5 +5,10 @@ class ProductCartState{
 }
 
 class ProductCartInitial extends ProductCartState{
+  final cart = ProductCart();
+  final double price = 0;
+}
+
+class ProductCartChanged extends ProductCartState{
   
 }
