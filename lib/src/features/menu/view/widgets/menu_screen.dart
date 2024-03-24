@@ -15,7 +15,7 @@ class MenuScreen extends StatefulWidget {
 }
 
 class _MenuScreenState extends State<MenuScreen> {
-  late Map<int, GlobalKey> _categoryKeys;
+  late Map<String, GlobalKey> _categoryKeys;
   final ItemScrollController _menuController = ItemScrollController();
   final ItemScrollController _appBarController = ItemScrollController();
   final ItemPositionsListener _itemListener = ItemPositionsListener.create();
@@ -29,7 +29,7 @@ class _MenuScreenState extends State<MenuScreen> {
     super.initState();
 
     _categoryKeys = {
-      for (var category in widget.allCategories) category.id: GlobalKey()
+      for (var category in widget.allCategories) category.name: GlobalKey()
     };
 
     _itemListener.itemPositions.addListener(() {
@@ -110,7 +110,7 @@ class _MenuScreenState extends State<MenuScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CategoryHeader(
-                    key: _categoryKeys[category.id],
+                    key: _categoryKeys[category.id.toString()],
                     category: category,
                   ),
                   CategoryGridView(
