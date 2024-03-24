@@ -17,10 +17,6 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String imageUrl = product.imageUrl;
-    double? price = product.prices[currency];
-    if (price == null) {
-    throw Exception('Price is null for the specified currency');
-  }
 
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
@@ -44,7 +40,7 @@ class ProductCard extends StatelessWidget {
               height: 100.0,
             ),
             Text(product.name, style: Theme.of(context).textTheme.titleMedium),
-            PriceCartButton(price: price, currency: currency),
+            PriceCartButton(product: product, currency: currency),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:coffee_shop/src/common/functions/price_functions.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -33,23 +34,4 @@ class PriceButton extends StatelessWidget {
       ),
     );
   }
-}
-
-String formatPrice(double price) {
-  if (price % 1 == 0) {
-    return price.toInt().toString();
-  } else {
-    return price.toStringAsFixed(2);
-  }
-}
-
-String getCurrencySymbol(String currency) {
-  final currencySymbols = {
-    'USD': '\$',
-    'EUR': '€',
-    'GBP': '£',
-    'RUB': '₽',
-  };
-
-  return currencySymbols[currency] ?? currency;
 }

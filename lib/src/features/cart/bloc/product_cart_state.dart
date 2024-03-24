@@ -1,14 +1,13 @@
 part of 'product_cart_bloc.dart';
 
-class ProductCartState{
+sealed class ProductCartState {}
 
+class ProductCartInitial extends ProductCartState {}
+
+class ProductCartChanged extends ProductCartState {
+  final ProductCart cart;
+  final double price;
+  ProductCartChanged(this.cart, this.price);
 }
 
-class ProductCartInitial extends ProductCartState{
-  final cart = ProductCart();
-  final double price = 0;
-}
-
-class ProductCartChanged extends ProductCartState{
-  
-}
+class EmptyProductCart extends ProductCartState {}

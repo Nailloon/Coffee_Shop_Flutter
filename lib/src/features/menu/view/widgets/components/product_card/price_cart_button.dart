@@ -1,14 +1,16 @@
-
+import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
+import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/product_card/price_button.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PriceCartButton extends StatefulWidget {
-  final double price;
+  final ProductData product;
   final String currency;
 
   const PriceCartButton(
-      {super.key, required this.price, required this.currency});
+      {super.key, required this.product, required this.currency});
 
   @override
   State<PriceCartButton> createState() => _PriceCartButtonState();
@@ -20,6 +22,10 @@ class _PriceCartButtonState extends State<PriceCartButton> {
 
   @override
   Widget build(BuildContext context) {
+    double? price = widget.product.prices[widget.currency];
+    if (price == null) {
+      throw Exception('Price is null for the specified currency');
+    }
     const double buttonHeight = 24.0;
     const double buttonWidth = double.infinity;
     return InkWell(
@@ -28,6 +34,9 @@ class _PriceCartButtonState extends State<PriceCartButton> {
             if (!showQuantityButtons) {
               showQuantityButtons = true;
               quantity++;
+              context
+                  .read<ProductCartBloc>()
+                  .add(AddProductToCart(product: widget.product));
             }
           });
         },
@@ -45,6 +54,8 @@ class _PriceCartButtonState extends State<PriceCartButton> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
+                            context.read<ProductCartBloc>().add(
+                                RemoveProductFromCart(product: widget.product));
                             if (quantity > 0) {
                               quantity--;
                             }
@@ -88,6 +99,8 @@ class _PriceCartButtonState extends State<PriceCartButton> {
                           setState(() {
                             if (quantity < 10) {
                               quantity++;
+                              context.read<ProductCartBloc>().add(
+                                  AddProductToCart(product: widget.product));
                             }
                           });
                         },
@@ -101,6 +114,6 @@ class _PriceCartButtonState extends State<PriceCartButton> {
                   ),
                 ],
               )
-            : PriceButton(price: widget.price, currency: widget.currency));
+            : PriceButton(price: price, currency: widget.currency));
   }
 }
