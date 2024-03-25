@@ -18,11 +18,6 @@ class AllProductsInCartAsList extends ProductCartState{
   AllProductsInCartAsList(this.cart, this.productCart);
 }
 
-class AllProductsInCart extends ProductCartState{
-  final Map<String, int> cart;
-  AllProductsInCart(this.cart);
-}
-
 class ProductCartPostOrderComplete extends ProductCartState{
   final String complete;
 

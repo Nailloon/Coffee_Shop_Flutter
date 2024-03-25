@@ -27,7 +27,7 @@ class _MenuScreenState extends State<MenuScreen> {
   final ItemScrollController _menuController = ItemScrollController();
   final ItemScrollController _appBarController = ItemScrollController();
   final ItemPositionsListener _itemListener = ItemPositionsListener.create();
-  final List<CategoryData> allCategories= [];
+  final List<CategoryData> allCategories = [];
 
   int current = 0;
   bool inProgress = false;
@@ -138,47 +138,47 @@ class _MenuScreenState extends State<MenuScreen> {
               floatingActionButton:
                   BlocBuilder<ProductCartBloc, ProductCartState>(
                 builder: (context, state) {
-                  return BlocBuilder<ProductCartBloc, ProductCartState>(
-                    builder: (context, state) {
-                      if (state is ProductCartChanged) {
-                        return SizedBox(
-                            width: 120,
-                            height: 45,
-                            child: FloatingActionButton(
-                              onPressed: () {
-                                context
-                                    .read<ProductCartBloc>()
-                                    .add(ViewAllProductCart());
-                                showBottomSheet(
-                                  context: context,
-                                  builder: (context) {
-                                    return const CartBottomSheet(
-                                      currency: currency,
-                                    );
-                                  },
-                                  enableDrag: true,
+                  if (state is ProductCartChanged) {
+                    return SizedBox(
+                        width: 120,
+                        height: 45,
+                        child: FloatingActionButton(
+                          onPressed: () {
+                            context
+                                .read<ProductCartBloc>()
+                                .add(ViewAllProductCart());
+                            showBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return const CartBottomSheet(
+                                  currency: currency,
                                 );
                               },
-                              backgroundColor: AppColors.blue,
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Icons.shopping_bag_outlined, color: AppColors.white,size: 21.0,),
-                                    const SizedBox(width: 4.0),
-                                    Text(
-                                      "${formatPrice(state.price)} ${getCurrencySymbol(currency)}",
-                                      style: Theme.of(context).textTheme.labelSmall,
-                                    ),
-                                  ],
+                              enableDrag: true,
+                            );
+                          },
+                          backgroundColor: AppColors.blue,
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.shopping_bag_outlined,
+                                  color: AppColors.white,
+                                  size: 21.0,
                                 ),
-                              ),
-                            ));
-                      } else {
-                        return Container();
-                      }
-                    },
-                  );
+                                const SizedBox(width: 4.0),
+                                Text(
+                                  "${formatPrice(state.price)} ${getCurrencySymbol(currency)}",
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ));
+                  } else {
+                    return Container();
+                  }
                 },
               ),
             );
@@ -186,9 +186,8 @@ class _MenuScreenState extends State<MenuScreen> {
           if (state is LoadingFailure) {
             final String exceptionText = state.exception.toString();
             return Text(
-              
-              AppLocalizations.of(context)!.error_in_Loading_categories+' $exceptionText',
-              
+              AppLocalizations.of(context)!.error_in_Loading_categories +
+                  ' $exceptionText',
             );
           } else {
             return const ColoredBox(
