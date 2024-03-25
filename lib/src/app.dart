@@ -1,7 +1,9 @@
 import 'package:coffee_shop/src/common/network/repositories/coffee_shop_repository.dart';
+import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
+import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
 import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
+import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/menu_screen.dart';
-import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:coffee_shop/src/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,13 +19,12 @@ class CoffeeShopApp extends StatefulWidget {
 
 class _CoffeeShopAppState extends State<CoffeeShopApp> {
   static CoffeeShopRepository coffeeAPI = CoffeeShopRepository();
-  final LoadingBloc _loadingBloc = LoadingBloc(coffeeAPI);
+  ProductCart productsInCart = ProductCart();
+  
 
   @override
   void initState() {
     super.initState();
-    coffeeAPI.fetchProductByID(id: 789);
-    _loadingBloc.add(LoadCategoriesEvent());
   }
 
   @override
@@ -38,30 +39,16 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
         supportedLocales: AppLocalizations.supportedLocales,
         onGenerateTitle: (context) => AppLocalizations.of(context)!.title,
         theme: theme,
-        home: BlocBuilder<LoadingBloc, LoadingState>(
-          bloc: _loadingBloc,
-          builder: (context, state) {
-            if (state is LoadingCompleted) {
-              return MenuScreen(allCategories: state.categories);
-            }
-            if (state is LoadingFailure) {
-              return ColoredBox(
-                  color: AppColors.white,
-                  child: Center(
-                      child: Text(
-                          AppLocalizations.of(context)!
-                              .error_in_Loading_categories,
-                          style: Theme.of(context).textTheme.titleLarge)));
-            } else {
-              return const ColoredBox(
-                  color: AppColors.white,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.blue,
-                    ),
-                  ));
-            }
-          },
+        home: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => ProductCartBloc(productsInCart, 0, currency),
+            ),
+            BlocProvider(
+              create: (context) => LoadingBloc(coffeeAPI),
+            ),
+          ],
+          child: const MenuScreen(),
         ));
   }
 }

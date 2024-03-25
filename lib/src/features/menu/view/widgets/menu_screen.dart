@@ -1,19 +1,21 @@
+import 'package:coffee_shop/src/common/functions/price_functions.dart';
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
-import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
 import 'package:coffee_shop/src/features/cart/view/widgets/cart_bottom_sheet.dart';
-import 'package:coffee_shop/src/features/cart/view/widgets/cart_button.dart';
-import 'package:coffee_shop/src/features/menu/data/category_data.dart';
+import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
+import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/category_appbar/category_chip.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/category_grid/category_grid.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/category_grid/category_header.dart';
+import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MenuScreen extends StatefulWidget {
-  final List<CategoryData> allCategories;
-
-  const MenuScreen({super.key, required this.allCategories});
+  const MenuScreen({
+    super.key,
+  });
 
   @override
   State<MenuScreen> createState() => _MenuScreenState();
@@ -28,16 +30,11 @@ class _MenuScreenState extends State<MenuScreen> {
   int current = 0;
   bool inProgress = false;
   bool scrolledToBottom = false;
-  static const String currency = 'RUB';
-  ProductCart productsInCart = ProductCart();
 
   @override
   void initState() {
     super.initState();
-
-    _categoryKeys = {
-      for (var category in widget.allCategories) category.name: GlobalKey()
-    };
+    context.read<LoadingBloc>().add(LoadCategoriesEvent());
 
     _itemListener.itemPositions.addListener(() {
       final firstVisibleIndex = _itemListener.itemPositions.value.isNotEmpty
@@ -76,79 +73,119 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(
-            surfaceTintColor: Colors.transparent,
-            title: PreferredSize(
-              preferredSize: const Size.fromHeight((40)),
-              child: SizedBox(
-                height: 40,
-                child: ScrollablePositionedList.builder(
-                  itemScrollController: _appBarController,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget.allCategories.length,
-                  itemBuilder: (context, index) {
-                    final category = widget.allCategories[index];
-                    return CategoryChip(
-                      text: category.name,
-                      isSelected: index == current,
-                      onSelected: () {
-                        setCurrent(index);
-                        menuScrollToCategory(index);
-                        if (index < widget.allCategories.length - 1) {
-                          appBarScrollToCategory(index);
-                        }
+      child: BlocBuilder<LoadingBloc, LoadingState>(
+        builder: (context, state) {
+          if (state is LoadingCompleted) {
+            _categoryKeys = {
+              for (var category in state.categories) category.name: GlobalKey()
+            };
+            return Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                surfaceTintColor: Colors.transparent,
+                title: PreferredSize(
+                  preferredSize: const Size.fromHeight((40)),
+                  child: SizedBox(
+                    height: 40,
+                    child: ScrollablePositionedList.builder(
+                      itemScrollController: _appBarController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state.categories.length,
+                      itemBuilder: (context, index) {
+                        final category = state.categories[index];
+                        return CategoryChip(
+                          text: category.name,
+                          isSelected: index == current,
+                          onSelected: () {
+                            setCurrent(index);
+                            menuScrollToCategory(index);
+                            if (index < state.categories.length - 1) {
+                              appBarScrollToCategory(index);
+                            }
+                          },
+                        );
                       },
-                    );
-                  },
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          body: BlocProvider(
-            create: (context) => ProductCartBloc(productsInCart, 0, currency),
-            child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: BlocBuilder<ProductCartBloc, ProductCartState>(
-                  builder: (context, state) {
-                    return Stack(
-                      children: [
-                        ScrollablePositionedList.builder(
-                          itemScrollController: _menuController,
-                          itemPositionsListener: _itemListener,
-                          itemBuilder: (context, index) {
-                            final category = widget.allCategories[index];
-                            return Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CategoryHeader(
-                                  key: _categoryKeys[category.id.toString()],
-                                  category: category,
-                                ),
-                                CategoryGridView(
-                                  category: category,
-                                  currency: currency,
-                                ),
-                              ],
-                            );
-                          },
-                          itemCount: widget.allCategories.length,
-                        ),
-                        if ((state is ProductCartChanged))
-                          Positioned(
-                              bottom: 16.0,
-                              right: 0.0,
-                              child: SizedBox(
-                                  width: 100,
-                                  child: PriceButtonWithIcon(
-                                      price: state.price, currency: currency))),
-                      if (state is AllProductsInCart) CartBottomSheet(productList: state.cart, currency: currency,),
-                      ],
-                    );
-                  },
-                )),
-          )),
+              body: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: ScrollablePositionedList.builder(
+                    itemScrollController: _menuController,
+                    itemPositionsListener: _itemListener,
+                    itemBuilder: (context, index) {
+                      final category = state.categories[index];
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CategoryHeader(
+                            key: _categoryKeys[category.id.toString()],
+                            category: category,
+                          ),
+                          CategoryGridView(
+                            category: category,
+                            currency: currency,
+                          ),
+                        ],
+                      );
+                    },
+                    itemCount: state.categories.length,
+                  )),
+              floatingActionButton:
+                  BlocBuilder<ProductCartBloc, ProductCartState>(
+                builder: (context, state) {
+                  return BlocBuilder<ProductCartBloc, ProductCartState>(
+                    builder: (context, state) {
+                      if (state is ProductCartChanged) {
+                        return SizedBox(
+                            width: 100,
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                context
+                                    .read<ProductCartBloc>()
+                                    .add(ViewAllProductCart());
+                                showBottomSheet(
+                                  context: context,
+                                  builder: (context) {
+                                    return const CartBottomSheet(
+                                      currency: currency,
+                                    );
+                                  },
+                                  enableDrag: true,
+                                );
+                              },
+                              backgroundColor: AppColors.blue,
+                              child: Text(
+                                "${formatPrice(state.price)} ${getCurrencySymbol(currency)}",
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ));
+                      } else {
+                        return Container();
+                      }
+                    },
+                  );
+                },
+              ),
+            );
+          }
+          if (state is LoadingFailure) {
+            return Text(
+              AppLocalizations.of(context)!.error_in_Loading_categories,
+            );
+          } else {
+            return const ColoredBox(
+                color: AppColors.white,
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.blue,
+                  ),
+                ));
+          }
+        },
+      ),
     );
   }
 }

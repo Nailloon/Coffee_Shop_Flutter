@@ -40,7 +40,7 @@ class ProductCard extends StatelessWidget {
               height: 100.0,
             ),
             Text(product.name, style: Theme.of(context).textTheme.titleMedium),
-            PriceCartButton(product: product, currency: currency),
+            PriceCartButton(product: product),
           ],
         ),
       ),
