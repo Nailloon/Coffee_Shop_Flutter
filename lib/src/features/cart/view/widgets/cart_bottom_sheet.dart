@@ -1,5 +1,6 @@
 import 'package:coffee_shop/src/common/functions/price_functions.dart';
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
+import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:coffee_shop/src/theme/image_sources.dart';
@@ -13,37 +14,45 @@ class CartBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ProductCartBloc, ProductCartState>(
-      listener: (context, state) {
-        if (state is ClearProductCart || state is ReturnToMainScreen) {
-          Navigator.pop(context);
-        }
+    return BottomSheet(
+      animationController: AnimationController(
+        vsync: Scaffold.of(context),
+        duration: const Duration(milliseconds: 300),
+      ),
+      enableDrag: true,
+      showDragHandle: true,
+      backgroundColor: AppColors.white,
+      onClosing: () {
+        context.read<ProductCartBloc>().add(ReturnToMainScreen());
+        Navigator.pop(context);
       },
-      child: BottomSheet(
-        animationController: AnimationController(
-          vsync: Scaffold.of(context),
-          duration: const Duration(milliseconds: 300),
-        ),
-        enableDrag: true,
-        showDragHandle: true,
-        backgroundColor: AppColors.white,
-        onClosing: () {
-          context.read<ProductCartBloc>().add(ReturnToMainScreen());
-          Navigator.pop(context);
-        },
-        builder: (BuildContext context) {
-          return BlocBuilder<ProductCartBloc, ProductCartState>(
-            builder: (context, state) {
-              if (state is AllProductsInCart) {
-                return Column(
+      builder: (BuildContext context) {
+        return BlocBuilder<ProductCartBloc, ProductCartState>(
+          builder: (context, state) {
+            if (state is AllProductsInCartAsList) {
+              return BlocListener<ProductCartBloc, ProductCartState>(
+                listener: (context, state) {
+                  if (state is ProductCartPostOrderComplete) {
+                    var snackBar = SnackBar(
+                      content:
+                          Text(AppLocalizations.of(context)!.order_success),
+                    );
+                    context.read<ProductCartBloc>().add(ClearProductCart());
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                  if (state is ProductCartPostOrderFailure) {
+                    var snackBar = SnackBar(
+                      content:
+                          Text(AppLocalizations.of(context)!.error_in_order),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    context.read<ProductCartBloc>().add(ViewAllProductCart());
+                  }
+                },
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: state.cart.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index == 0) {
-                            return Column(
+                  children: [ Column(
                               children: [
                                 ListTile(
                                     title: Text(
@@ -67,10 +76,13 @@ class CartBottomSheet extends StatelessWidget {
                                           }),
                                     )),
                                 const Divider(endIndent: 8.0, indent: 8.0),
-                              ],
-                            );
-                          }
-                          ProductData product = state.cart[index - 1];
+                              ],),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: state.cart.length,
+                        itemBuilder: (context, index) {
+                          
+                          ProductData product = state.cart[index];
 
                           return ListTile(
                             leading: Image.network(
@@ -110,7 +122,10 @@ class CartBottomSheet extends StatelessWidget {
                           width: double.infinity,
                           height: 56,
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              context.read<ProductCartBloc>().add(
+                                  PostOrderEvent(products: state.productCart));
+                            },
                             child: Center(
                               child: Text(
                                 AppLocalizations.of(context)!.make_order,
@@ -125,14 +140,14 @@ class CartBottomSheet extends StatelessWidget {
                       height: 8.0,
                     )
                   ],
-                );
-              } else {
-                return Container();
-              }
-            },
-          );
-        },
-      ),
+                ),
+              );
+            } else {
+              return Container();
+            }
+          },
+        );
+      },
     );
   }
 }

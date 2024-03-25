@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:coffee_shop/src/common/network/repositories/interface_repository.dart';
 import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
   ProductCartBloc(
     this.productsInCart,
     this.price,
-    this.currency,
+    this.currency, this.coffeeRepository,
   ) : super(ProductCartInitial()) {
     on<AddProductToCart>((event, emit) {
       debugPrint('add');
@@ -42,13 +43,25 @@ class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
           result.add(product);
         }
       });
-      emit(AllProductsInCart(result));
+      emit(AllProductsInCartAsList(result, productsInCart));
     });
     on<ReturnToMainScreen>((event, emit){
       emit(ProductCartChanged(productsInCart, price));
+    });
+        on<PostOrderEvent>((event, emit) async{
+      final Map<String, int> productAndQuantity = event.products.getIdAndCount();
+      try{
+        debugPrint(productAndQuantity.toString());
+        final response = await coffeeRepository.sendOrder(products: productAndQuantity);
+        emit(ProductCartPostOrderComplete(complete: response));
+      }
+      catch(e){
+        emit(ProductCartPostOrderFailure(exception: e));
+      }
     });
   }
   final ProductCart productsInCart;
   double price;
   final String currency;
+  final IRepository coffeeRepository;
 }

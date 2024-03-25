@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'package:coffee_shop/src/common/network/data_providers/interface_data_procider.dart';
+import 'package:coffee_shop/src/common/network/data_providers/interface_data_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 final class CoffeShopApiDataProvider implements IDataProvider {
   final String baseUrl = 'coffeeshop.academy.effective.band';
   final String apiVersion = '/api/v1/products';
+  final String orderVersion = 'api/v1/orders';
   final http.Client client = http.Client();
 
   @override
@@ -69,8 +71,34 @@ final class CoffeShopApiDataProvider implements IDataProvider {
       throw Exception('Failed to load data');
     }
   }
+  
+  
 
   List returnJsonDataAsList(jsonData){
     return jsonData['data'] as List;
   }
+  
+@override
+Future<String> postOrder(Map<String, int> orderData) async {
+  Map<String, dynamic> requestBody = {
+    'positions': orderData,
+    'token': '',
+  };
+
+  var url = Uri.https(
+    baseUrl,
+    orderVersion,
+  );
+  debugPrint(jsonEncode(requestBody));
+  final response = await client.post(url,headers: {'Content-Type': 'application/json'},
+    body: jsonEncode(requestBody),);
+  
+  if (response.statusCode == 201) {
+    return 'complete';
+  } else if (response.statusCode == 422) {
+    throw Exception('Validation Error');
+  } else {
+    throw Exception('Failed to post order. Status code: ${response.statusCode}');
+  }
+}
 }

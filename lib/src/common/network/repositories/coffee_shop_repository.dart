@@ -75,4 +75,8 @@ class CoffeeShopRepository implements IRepository {
 
     return ProductData.fromJson(jsonResponse);
   }
+  @override
+  Future<String> sendOrder({required Map<String, int> products}) async{
+    return await api.postOrder(products);
+  }
 }

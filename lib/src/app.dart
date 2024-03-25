@@ -42,7 +42,7 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
         home: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => ProductCartBloc(productsInCart, 0, currency),
+              create: (context) => ProductCartBloc(productsInCart, 0, currency, coffeeAPI),
             ),
             BlocProvider(
               create: (context) => LoadingBloc(coffeeAPI),

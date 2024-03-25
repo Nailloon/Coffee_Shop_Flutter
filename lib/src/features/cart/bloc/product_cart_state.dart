@@ -12,7 +12,25 @@ class ProductCartChanged extends ProductCartState {
 
 class EmptyProductCart extends ProductCartState {}
 
-class AllProductsInCart extends ProductCartState{
+class AllProductsInCartAsList extends ProductCartState{
   final List<ProductData> cart;
+  final ProductCart productCart;
+  AllProductsInCartAsList(this.cart, this.productCart);
+}
+
+class AllProductsInCart extends ProductCartState{
+  final Map<String, int> cart;
   AllProductsInCart(this.cart);
+}
+
+class ProductCartPostOrderComplete extends ProductCartState{
+  final String complete;
+
+  ProductCartPostOrderComplete({required this.complete});
+}
+
+class ProductCartPostOrderFailure extends ProductCartState{
+  final Object? exception;
+  
+  ProductCartPostOrderFailure({required this.exception});
 }

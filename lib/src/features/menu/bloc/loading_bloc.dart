@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffee_shop/src/common/network/repositories/interface_repository.dart';
+import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
       try {
         final categoriesForApp =
             await coffeeRepository.fetchCategoriesWithProducts();
-        debugPrint('fdffff');
+        debugPrint('Loading Categories');
         emit(LoadingCompleted(categories: categoriesForApp));
       } catch (e) {
        emit(LoadingFailure(exception: e));
