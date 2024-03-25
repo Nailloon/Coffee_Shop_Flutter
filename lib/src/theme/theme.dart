@@ -11,5 +11,6 @@ final theme = ThemeData(
     bodySmall: TextStyle(fontFamily: 'Roboto', fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4, color: AppColors.white),
     titleSmall: TextStyle(fontFamily: 'Roboto', fontSize: 16, fontWeight: FontWeight.w700, letterSpacing: 0.4, color: AppColors.realBlack),
     labelMedium: TextStyle(fontFamily: 'Roboto', fontSize: 20, fontWeight: FontWeight.w400, letterSpacing: 0.4, color: AppColors.white),
+    labelSmall: TextStyle(fontFamily: 'Roboto', fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.4, color: AppColors.white),
   ),
 );

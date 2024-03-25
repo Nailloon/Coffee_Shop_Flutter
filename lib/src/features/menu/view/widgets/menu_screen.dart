@@ -140,7 +140,8 @@ class _MenuScreenState extends State<MenuScreen> {
                     builder: (context, state) {
                       if (state is ProductCartChanged) {
                         return SizedBox(
-                            width: 100,
+                            width: 120,
+                            height: 45,
                             child: FloatingActionButton(
                               onPressed: () {
                                 context
@@ -157,9 +158,18 @@ class _MenuScreenState extends State<MenuScreen> {
                                 );
                               },
                               backgroundColor: AppColors.blue,
-                              child: Text(
-                                "${formatPrice(state.price)} ${getCurrencySymbol(currency)}",
-                                style: Theme.of(context).textTheme.bodySmall,
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(Icons.shopping_bag_outlined, color: AppColors.greyIcon,size: 21.0,),
+                                    const SizedBox(width: 4.0),
+                                    Text(
+                                      "${formatPrice(state.price)} ${getCurrencySymbol(currency)}",
+                                      style: Theme.of(context).textTheme.labelSmall,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ));
                       } else {
