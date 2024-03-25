@@ -1,6 +1,5 @@
 import 'package:coffee_shop/src/common/functions/price_functions.dart';
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
-import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:coffee_shop/src/theme/image_sources.dart';
@@ -36,6 +35,7 @@ class CartBottomSheet extends StatelessWidget {
                     var snackBar = SnackBar(
                       content:
                           Text(AppLocalizations.of(context)!.order_success),
+                      duration: const Duration(seconds: 2),
                     );
                     context.read<ProductCartBloc>().add(ClearProductCart());
                     Navigator.pop(context);
@@ -45,6 +45,7 @@ class CartBottomSheet extends StatelessWidget {
                     var snackBar = SnackBar(
                       content:
                           Text(AppLocalizations.of(context)!.error_in_order),
+                      duration: const Duration(seconds: 2),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     context.read<ProductCartBloc>().add(ViewAllProductCart());
@@ -52,36 +53,36 @@ class CartBottomSheet extends StatelessWidget {
                 },
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [ Column(
-                              children: [
-                                ListTile(
-                                    title: Text(
-                                      AppLocalizations.of(context)!.your_order,
-                                      style:
-                                          Theme.of(context).textTheme.bodyLarge,
-                                    ),
-                                    trailing: SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: InkWell(
-                                          child: const Icon(
-                                            Icons.delete_outline,
-                                            color: AppColors.greyIcon,
-                                          ),
-                                          onTap: () {
-                                            context
-                                                .read<ProductCartBloc>()
-                                                .add(ClearProductCart());
-                                            Navigator.pop(context);
-                                          }),
-                                    )),
-                                const Divider(endIndent: 8.0, indent: 8.0),
-                              ],),
+                  children: [
+                    Column(
+                      children: [
+                        ListTile(
+                            title: Text(
+                              AppLocalizations.of(context)!.your_order,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            trailing: SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: InkWell(
+                                  child: const Icon(
+                                    Icons.delete_outline,
+                                    color: AppColors.greyIcon,
+                                  ),
+                                  onTap: () {
+                                    context
+                                        .read<ProductCartBloc>()
+                                        .add(ClearProductCart());
+                                    Navigator.pop(context);
+                                  }),
+                            )),
+                        const Divider(endIndent: 8.0, indent: 8.0),
+                      ],
+                    ),
                     Expanded(
                       child: ListView.builder(
                         itemCount: state.cart.length,
                         itemBuilder: (context, index) {
-                          
                           ProductData product = state.cart[index];
 
                           return ListTile(

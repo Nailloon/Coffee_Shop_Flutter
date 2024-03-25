@@ -164,7 +164,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Icon(Icons.shopping_bag_outlined, color: AppColors.greyIcon,size: 21.0,),
+                                    const Icon(Icons.shopping_bag_outlined, color: AppColors.white,size: 21.0,),
                                     const SizedBox(width: 4.0),
                                     Text(
                                       "${formatPrice(state.price)} ${getCurrencySymbol(currency)}",
@@ -187,7 +187,7 @@ class _MenuScreenState extends State<MenuScreen> {
             final String exceptionText = state.exception.toString();
             return Text(
               
-              AppLocalizations.of(context)!.error_in_Loading_categories+'$exceptionText',
+              AppLocalizations.of(context)!.error_in_Loading_categories+' $exceptionText',
               
             );
           } else {
