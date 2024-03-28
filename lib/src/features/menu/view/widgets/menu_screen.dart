@@ -75,12 +75,10 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocBuilder<LoadingBloc, LoadingState>(
+      child: BlocConsumer<LoadingBloc, LoadingState>(
+        
         builder: (context, state) {
           if (state is LoadingCompleted) {
-            _categoryKeys = {
-              for (var category in state.categories) category.name: GlobalKey()
-            };
             return Scaffold(
               appBar: AppBar(
                 automaticallyImplyLeading: false,
@@ -198,7 +196,11 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                 ));
           }
-        },
+        }, listener: (BuildContext context, LoadingState state) { 
+              _categoryKeys = {
+              for (var category in state.categories) category.name: GlobalKey()
+            };
+         },
       ),
     );
   }

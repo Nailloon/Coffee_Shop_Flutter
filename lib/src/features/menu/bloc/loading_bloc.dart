@@ -7,19 +7,21 @@ part 'loading_event.dart';
 part 'loading_state.dart';
 
 class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
-  LoadingBloc(this.coffeeRepository) : super(LoadingInitial()) {
+  LoadingBloc(this.coffeeRepository) : super(const LoadingInitial([])) {
     on<LoadCategoriesEvent>(_handleLoadCategoriesEvent);
   }
 
   final IRepository coffeeRepository;
 
-  void _handleLoadCategoriesEvent(LoadCategoriesEvent event, Emitter<LoadingState> emit) async {
+  void _handleLoadCategoriesEvent(
+      LoadCategoriesEvent event, Emitter<LoadingState> emit) async {
     try {
-      final categoriesForApp = await coffeeRepository.loadCategoriesWithProducts();
+      final categoriesForApp =
+          await coffeeRepository.loadCategoriesWithProducts();
       debugPrint('Loading Categories');
-      emit(LoadingCompleted(categories: categoriesForApp));
+      emit(LoadingCompleted(categoriesForApp));
     } catch (e) {
-      emit(LoadingFailure(exception: e));
+      emit(LoadingFailure(state.categories, exception: e));
     }
   }
 }

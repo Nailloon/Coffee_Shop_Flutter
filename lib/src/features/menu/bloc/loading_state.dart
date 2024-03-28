@@ -1,19 +1,21 @@
 part of 'loading_bloc.dart';
 
 sealed class LoadingState {
-  const LoadingState();
+  final List<CategoryData> categories;
+  const LoadingState(this.categories);
 }
 
-class LoadingInitial extends LoadingState {}
+class LoadingInitial extends LoadingState {
+  const LoadingInitial(super.categories);
+}
 
 class LoadingCompleted extends LoadingState {
-  final List<CategoryData> categories;
 
-  const LoadingCompleted({required this.categories});
+  const LoadingCompleted(super.categories);
 }
 
 class LoadingFailure extends LoadingState {
   final Object? exception;
 
-  const LoadingFailure({required this.exception});
+  const LoadingFailure(super.categories, {required this.exception});
 }
