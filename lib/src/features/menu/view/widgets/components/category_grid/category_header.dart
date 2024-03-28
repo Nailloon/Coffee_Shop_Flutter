@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CategoryHeader extends StatelessWidget {
   final CategoryData category;
 
-  const CategoryHeader({Key? key, required this.category}) : super(key: key);
+  const CategoryHeader({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
