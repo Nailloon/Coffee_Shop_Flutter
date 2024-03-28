@@ -11,11 +11,11 @@ class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
     on<LoadCategoriesEvent>((event, emit) async {
       try {
         final categoriesForApp =
-            await coffeeRepository.fetchCategoriesWithProducts();
+            await coffeeRepository.loadCategoriesWithProducts();
         debugPrint('Loading Categories');
         emit(LoadingCompleted(categories: categoriesForApp));
       } catch (e) {
-       emit(LoadingFailure(exception: e));
+        emit(LoadingFailure(exception: e));
       }
     });
   }

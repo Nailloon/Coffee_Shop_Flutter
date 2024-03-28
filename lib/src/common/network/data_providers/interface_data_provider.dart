@@ -1,7 +1,8 @@
 abstract interface class IDataProvider {
-  Future<List<dynamic>> loadOnlyCategories();
-  Future<List<dynamic>> loadAnyProducts(int count);
-  Future<Map<String,dynamic>> loadProductsByCategory(int categoryId,int limit, int page);
-  Future<Map<String,dynamic>> loadProductByID(int id);
-  Future<String> postOrder(Map<String,int> orderData);
+  Future<List<dynamic>> fetchOnlyCategories();
+  Future<List<dynamic>> fetchAnyProducts(int count);
+  Future<Map<String, dynamic>> fetchProductsByCategory(
+      int categoryId, int limit, int page);
+  Future<Map<String, dynamic>> fetchProductByID(int id);
+  Future<String> postOrder(Map<String, int> orderData);
 }

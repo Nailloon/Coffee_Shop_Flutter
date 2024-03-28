@@ -5,7 +5,8 @@ class CategoryData {
   final String name;
   final List<ProductData> products;
 
-  const CategoryData({required this.id, required this.name, required this.products});
+  const CategoryData(
+      {required this.id, required this.name, required this.products});
 
   factory CategoryData.fromJson(Map<String, dynamic> json, productsJson) {
     var productList = productsJson['data'] as List;
@@ -18,7 +19,8 @@ class CategoryData {
     );
   }
 
-  factory CategoryData.fromJsonWithProduct(Map<String, dynamic> json, Map<String, dynamic> productsJson) {
+  factory CategoryData.fromJsonWithProduct(
+      Map<String, dynamic> json, Map<String, dynamic> productsJson) {
     final product = ProductData.fromJson(productsJson);
     return CategoryData(
       name: json['slug'],

@@ -41,11 +41,12 @@ class ProductCart {
   bool emptyCart() {
     return _productsInCart.isEmpty;
   }
-  Map<String, int> getIdAndCount(){
-    Map<String,int> productsAndQuantity = {};
+
+  Map<String, int> getIdAndCount() {
+    Map<String, int> productsAndQuantity = {};
     _productsInCart.forEach((key, value) {
       final int id = key.id;
-      productsAndQuantity['$id']=value;
+      productsAndQuantity['$id'] = value;
     });
     return productsAndQuantity;
   }

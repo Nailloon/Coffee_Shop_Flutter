@@ -1,9 +1,5 @@
 part of 'loading_bloc.dart';
 
-sealed class LoadingEvent{
+sealed class LoadingEvent {}
 
-}
-
-class LoadCategoriesEvent extends LoadingEvent{
-
-}
+class LoadCategoriesEvent extends LoadingEvent {}

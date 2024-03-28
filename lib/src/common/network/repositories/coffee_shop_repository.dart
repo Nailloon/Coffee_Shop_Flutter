@@ -5,25 +5,25 @@ import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 
 class CoffeeShopRepository implements IRepository {
   final api = CoffeShopApiDataProvider();
-  
+
   @override
-  Future<CategoryData> fetchProductsByCategory(categoryData,
+  Future<CategoryData> loadProductsByCategory(categoryData,
       {int id = 1, int limit = 10, int page = 0}) async {
     final Map<String, dynamic> jsonResponse =
-        await api.loadProductsByCategory(id, limit, page);
-    
+        await api.fetchProductsByCategory(id, limit, page);
+
     return CategoryData.fromJson(categoryData, jsonResponse);
   }
 
   @override
-  Future<List<CategoryData>> fetchCategoriesWithProducts(
+  Future<List<CategoryData>> loadCategoriesWithProducts(
       {int limitForCategory = 8, int page = 0}) async {
-    List<dynamic> categoriesData = await api.loadOnlyCategories();
+    List<dynamic> categoriesData = await api.fetchOnlyCategories();
     List<CategoryData> categories = [];
 
     for (var categoryData in categoriesData) {
       var id = categoryData['id'];
-      CategoryData category = await fetchProductsByCategory(categoryData,
+      CategoryData category = await loadProductsByCategory(categoryData,
           id: id, limit: limitForCategory, page: page);
       categories.add(category);
     }
@@ -32,8 +32,8 @@ class CoffeeShopRepository implements IRepository {
   }
 
   @override
-  Future<List<CategoryData>> fetchAnyProducts(int limitForProducts) async {
-    var data = await api.loadAnyProducts(limitForProducts);
+  Future<List<CategoryData>> loadAnyProducts(int limitForProducts) async {
+    var data = await api.fetchAnyProducts(limitForProducts);
     List<CategoryData> categories = [];
 
     for (var productJson in data) {
@@ -56,8 +56,8 @@ class CoffeeShopRepository implements IRepository {
   }
 
   @override
-  Future<List<CategoryData>> fetchOnlyCategories() async {
-    List<dynamic> categoriesData = await api.loadOnlyCategories();
+  Future<List<CategoryData>> loadOnlyCategories() async {
+    List<dynamic> categoriesData = await api.fetchOnlyCategories();
     List<CategoryData> categories = [];
 
     for (var categoryData in categoriesData) {
@@ -70,13 +70,14 @@ class CoffeeShopRepository implements IRepository {
   }
 
   @override
-  Future<ProductData> fetchProductByID({int id = 0}) async {
-    final Map<String, dynamic> jsonResponse = await api.loadProductByID(id);
+  Future<ProductData> loadProductByID({int id = 0}) async {
+    final Map<String, dynamic> jsonResponse = await api.fetchProductByID(id);
 
     return ProductData.fromJson(jsonResponse);
   }
+
   @override
-  Future<String> sendOrder({required Map<String, int> products}) async{
+  Future<String> sendOrder({required Map<String, int> products}) async {
     return await api.postOrder(products);
   }
 }

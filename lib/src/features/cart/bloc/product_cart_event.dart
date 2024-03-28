@@ -16,9 +16,9 @@ class ClearProductCart extends ProductCartEvent {}
 
 class ViewAllProductCart extends ProductCartEvent {}
 
-class ReturnToMainScreen extends ProductCartEvent{}
+class ReturnToMainScreen extends ProductCartEvent {}
 
-class PostOrderEvent extends ProductCartEvent{
+class PostOrderEvent extends ProductCartEvent {
   final ProductCart products;
   PostOrderEvent({required this.products});
 }

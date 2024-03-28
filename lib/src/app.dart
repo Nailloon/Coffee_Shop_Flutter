@@ -18,9 +18,8 @@ class CoffeeShopApp extends StatefulWidget {
 }
 
 class _CoffeeShopAppState extends State<CoffeeShopApp> {
-  static CoffeeShopRepository coffeeAPI = CoffeeShopRepository();
+  final CoffeeShopRepository coffeeAPI = CoffeeShopRepository();
   ProductCart productsInCart = ProductCart();
-  
 
   @override
   void initState() {
@@ -42,7 +41,8 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
         home: MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => ProductCartBloc(productsInCart, 0, currency, coffeeAPI),
+              create: (context) =>
+                  ProductCartBloc(productsInCart, 0, currency, coffeeAPI),
             ),
             BlocProvider(
               create: (context) => LoadingBloc(coffeeAPI),

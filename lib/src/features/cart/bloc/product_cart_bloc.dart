@@ -11,7 +11,8 @@ class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
   ProductCartBloc(
     this.productsInCart,
     this.price,
-    this.currency, this.coffeeRepository,
+    this.currency,
+    this.coffeeRepository,
   ) : super(ProductCartInitial()) {
     on<AddProductToCart>((event, emit) {
       debugPrint('add');
@@ -45,17 +46,18 @@ class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
       });
       emit(AllProductsInCartAsList(result, productsInCart));
     });
-    on<ReturnToMainScreen>((event, emit){
+    on<ReturnToMainScreen>((event, emit) {
       emit(ProductCartChanged(productsInCart, price));
     });
-        on<PostOrderEvent>((event, emit) async{
-      final Map<String, int> productAndQuantity = event.products.getIdAndCount();
-      try{
+    on<PostOrderEvent>((event, emit) async {
+      final Map<String, int> productAndQuantity =
+          event.products.getIdAndCount();
+      try {
         debugPrint(productAndQuantity.toString());
-        final response = await coffeeRepository.sendOrder(products: productAndQuantity);
+        final response =
+            await coffeeRepository.sendOrder(products: productAndQuantity);
         emit(ProductCartPostOrderComplete(complete: response));
-      }
-      catch(e){
+      } catch (e) {
         emit(ProductCartPostOrderFailure(exception: e));
       }
     });
