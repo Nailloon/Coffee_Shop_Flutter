@@ -26,7 +26,7 @@ class ProductCart {
     _productsInCart.clear();
   }
 
-  int getCount(product) {
+  int getCount(ProductData product) {
     if (_productsInCart.containsKey(product)) {
       return _productsInCart[product]!;
     } else {
@@ -35,7 +35,7 @@ class ProductCart {
   }
 
   Map<ProductData, int> getProducts() {
-    return Map.from(_productsInCart);
+    return _productsInCart;
   }
 
   bool emptyCart() {

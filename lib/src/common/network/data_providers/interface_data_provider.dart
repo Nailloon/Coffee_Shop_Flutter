@@ -4,5 +4,5 @@ abstract interface class IDataProvider {
   Future<Map<String, dynamic>> fetchProductsByCategory(
       int categoryId, int limit, int page);
   Future<Map<String, dynamic>> fetchProductByID(int id);
-  Future<String> postOrder(Map<String, int> orderData);
+  Future<bool> postOrder(Map<String, int> orderData);
 }

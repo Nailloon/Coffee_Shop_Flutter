@@ -9,5 +9,5 @@ abstract interface class IRepository {
       {int limitForCategory, int page});
   Future<List<CategoryData>> loadOnlyCategories();
   Future<ProductData> loadProductByID({int id});
-  Future<String> sendOrder({required Map<String, int> products});
+  Future<bool> sendOrder({required Map<String, int> products});
 }

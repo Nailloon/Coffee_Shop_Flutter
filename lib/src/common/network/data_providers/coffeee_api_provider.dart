@@ -27,7 +27,7 @@ final class CoffeShopApiDataProvider implements IDataProvider {
 
   @override
   Future<Map<String, dynamic>> fetchProductsByCategory(
-      categoryId, limit, page) async {
+      int categoryId,int limit,int page) async {
     var url = Uri.https(baseUrl, apiVersion, {
       'page': '$page',
       'limit': '$limit',
@@ -81,7 +81,7 @@ final class CoffeShopApiDataProvider implements IDataProvider {
   }
 
   @override
-  Future<String> postOrder(Map<String, int> orderData) async {
+  Future<bool> postOrder(Map<String, int> orderData) async {
     Map<String, dynamic> requestBody = {
       'positions': orderData,
       'token': '',
@@ -99,12 +99,11 @@ final class CoffeShopApiDataProvider implements IDataProvider {
     );
 
     if (response.statusCode == 201) {
-      return 'complete';
+      return true;
     } else if (response.statusCode == 422) {
       throw Exception('Validation Error');
     } else {
-      throw Exception(
-          'Failed to post order. Status code: ${response.statusCode}');
+      return false;
     }
   }
 }

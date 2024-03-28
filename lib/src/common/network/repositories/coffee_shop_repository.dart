@@ -11,7 +11,6 @@ class CoffeeShopRepository implements IRepository {
       {int id = 1, int limit = 10, int page = 0}) async {
     final Map<String, dynamic> jsonResponse =
         await api.fetchProductsByCategory(id, limit, page);
-
     return CategoryData.fromJson(categoryData, jsonResponse);
   }
 
@@ -20,7 +19,6 @@ class CoffeeShopRepository implements IRepository {
       {int limitForCategory = 8, int page = 0}) async {
     List<dynamic> categoriesData = await api.fetchOnlyCategories();
     List<CategoryData> categories = [];
-
     for (var categoryData in categoriesData) {
       var id = categoryData['id'];
       CategoryData category = await loadProductsByCategory(categoryData,
@@ -77,7 +75,7 @@ class CoffeeShopRepository implements IRepository {
   }
 
   @override
-  Future<String> sendOrder({required Map<String, int> products}) async {
+  Future<bool> sendOrder({required Map<String, int> products}) async {
     return await api.postOrder(products);
   }
 }
