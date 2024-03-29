@@ -6,20 +6,43 @@ import 'package:flutter/material.dart';
 part 'loading_event.dart';
 part 'loading_state.dart';
 
-class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
-  LoadingBloc(this.coffeeRepository) : super(const LoadingInitial([])) {
+final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
+  LoadingBloc(this.coffeeRepository, this.categoriesForApp, this.categoryEnd)
+      : super(const LoadingInitial([])) {
     on<LoadCategoriesEvent>(_handleLoadCategoriesEvent);
+    on<LoadMoreProductsEvent>(_handleLoadMoreProductsEvent);
   }
-
+  List<CategoryData> categoriesForApp;
   final IRepository coffeeRepository;
+  final Map<int, List<dynamic>> categoryEnd;
 
   void _handleLoadCategoriesEvent(
       LoadCategoriesEvent event, Emitter<LoadingState> emit) async {
     try {
-      final categoriesForApp =
-          await coffeeRepository.loadCategoriesWithProducts();
+      categoriesForApp = await coffeeRepository.loadCategoriesWithProducts();
+      for (CategoryData category in categoriesForApp) {
+        categoryEnd.addAll({
+          category.id: [false, 0]
+        });
+      }
       debugPrint('Loading Categories');
-      emit(LoadingCompleted(categoriesForApp));
+      emit(LoadingCompleted(categoriesForApp, categoryEnd));
+    } catch (e) {
+      emit(LoadingFailure(state.categories, exception: e));
+    }
+  }
+
+  void _handleLoadMoreProductsEvent(
+      LoadMoreProductsEvent event, Emitter<LoadingState> emit) async {
+    try {
+      if (categoryEnd[event.category.id]![0] == false) {
+        final bool ended = await coffeeRepository.loadMoreProductsByCategory(
+            event.category, categoryEnd[event.category.id]![1]);
+        categoryEnd[event.category.id]![1] += 1;
+        categoryEnd[event.category.id]![0] = ended;
+        debugPrint('$ended');
+      }
+      emit(LoadingCompleted(categoriesForApp, categoryEnd));
     } catch (e) {
       emit(LoadingFailure(state.categories, exception: e));
     }

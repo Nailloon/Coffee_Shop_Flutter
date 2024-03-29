@@ -2,6 +2,7 @@ import 'package:coffee_shop/src/common/network/repositories/coffee_shop_reposito
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
 import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
 import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
+import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/menu_screen.dart';
 import 'package:coffee_shop/src/theme/theme.dart';
@@ -20,6 +21,8 @@ class CoffeeShopApp extends StatefulWidget {
 class _CoffeeShopAppState extends State<CoffeeShopApp> {
   final CoffeeShopRepository coffeeAPI = CoffeeShopRepository();
   ProductCart productsInCart = ProductCart();
+  List<CategoryData> categoriesForApp = [];
+  Map<int, List<dynamic>> categoryEnd = {};
 
   @override
   void initState() {
@@ -36,7 +39,7 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: AppLocalizations.supportedLocales,
-        onGenerateTitle: (context) => AppLocalizations.of(context)!.title,
+        onGenerateTitle: (context) => AppLocalizations.of(context).title,
         theme: theme,
         home: MultiBlocProvider(
           providers: [
@@ -45,7 +48,7 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
                   ProductCartBloc(productsInCart, 0, currency, coffeeAPI),
             ),
             BlocProvider(
-              create: (context) => LoadingBloc(coffeeAPI),
+              create: (context) => LoadingBloc(coffeeAPI, categoriesForApp, categoryEnd),
             ),
           ],
           child: const MenuScreen(),

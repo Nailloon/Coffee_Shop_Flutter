@@ -30,7 +30,7 @@ class CartBottomSheet extends StatelessWidget {
           listener: (context, state) {
             if (state is ProductCartPostOrderComplete) {
               var snackBar = SnackBar(
-                content: Text(AppLocalizations.of(context)!.order_success),
+                content: Text(AppLocalizations.of(context).order_success),
                 duration: const Duration(seconds: 2),
               );
               context.read<ProductCartBloc>().add(ClearProductCart());
@@ -39,7 +39,7 @@ class CartBottomSheet extends StatelessWidget {
             }
             if (state is ProductCartPostOrderFailure) {
               var snackBar = SnackBar(
-                content: Text(AppLocalizations.of(context)!.error_in_order),
+                content: Text(AppLocalizations.of(context).error_in_order),
                 duration: const Duration(seconds: 2),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -55,7 +55,7 @@ class CartBottomSheet extends StatelessWidget {
                     children: [
                       ListTile(
                           title: Text(
-                            AppLocalizations.of(context)!.your_order,
+                            AppLocalizations.of(context).your_order,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                           trailing: SizedBox(
@@ -126,7 +126,7 @@ class CartBottomSheet extends StatelessWidget {
                           },
                           child: Center(
                             child: Text(
-                              AppLocalizations.of(context)!.make_order,
+                              AppLocalizations.of(context).make_order,
                               style: Theme.of(context).textTheme.labelMedium,
                             ),
                           ),

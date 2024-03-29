@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 part 'product_cart_event.dart';
 part 'product_cart_state.dart';
 
-class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
+final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
   ProductCartBloc(
     this.productsInCart,
     this.price,

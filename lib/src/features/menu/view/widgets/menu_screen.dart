@@ -2,7 +2,6 @@ import 'package:coffee_shop/src/common/functions/price_functions.dart';
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
 import 'package:coffee_shop/src/features/cart/view/widgets/cart_bottom_sheet.dart';
 import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
-import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/category_appbar/category_chip.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/category_grid/category_grid.dart';
@@ -27,11 +26,9 @@ class _MenuScreenState extends State<MenuScreen> {
   final ItemScrollController _menuController = ItemScrollController();
   final ItemScrollController _appBarController = ItemScrollController();
   final ItemPositionsListener _itemListener = ItemPositionsListener.create();
-  final List<CategoryData> allCategories = [];
 
   int current = 0;
   bool inProgress = false;
-  bool scrolledToBottom = false;
 
   @override
   void initState() {
@@ -76,7 +73,6 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: BlocConsumer<LoadingBloc, LoadingState>(
-        
         builder: (context, state) {
           if (state is LoadingCompleted) {
             return Scaffold(
@@ -114,6 +110,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   child: ScrollablePositionedList.builder(
                     itemScrollController: _menuController,
                     itemPositionsListener: _itemListener,
+                    
                     itemBuilder: (context, index) {
                       final category = state.categories[index];
                       return Column(
@@ -184,8 +181,7 @@ class _MenuScreenState extends State<MenuScreen> {
           if (state is LoadingFailure) {
             final String exceptionText = state.exception.toString();
             return Text(
-              AppLocalizations.of(context)!.error_in_Loading_categories +
-                  ' $exceptionText',
+              '${AppLocalizations.of(context).error_in_Loading_categories} $exceptionText',
             );
           } else {
             return const ColoredBox(
@@ -196,11 +192,12 @@ class _MenuScreenState extends State<MenuScreen> {
                   ),
                 ));
           }
-        }, listener: (BuildContext context, LoadingState state) { 
-              _categoryKeys = {
-              for (var category in state.categories) category.name: GlobalKey()
-            };
-         },
+        },
+        listener: (BuildContext context, LoadingState state) {
+          _categoryKeys = {
+            for (var category in state.categories) category.name: GlobalKey()
+          };
+        },
       ),
     );
   }

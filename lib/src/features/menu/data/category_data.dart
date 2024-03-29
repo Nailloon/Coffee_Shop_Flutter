@@ -28,4 +28,8 @@ class CategoryData {
       products: [product],
     );
   }
+
+  void addProductIntoCategory(ProductData product){
+    products.add(product);
+  }
 }

@@ -5,16 +5,16 @@ sealed class LoadingState {
   const LoadingState(this.categories);
 }
 
-class LoadingInitial extends LoadingState {
+final class LoadingInitial extends LoadingState {
   const LoadingInitial(super.categories);
 }
 
-class LoadingCompleted extends LoadingState {
-
-  const LoadingCompleted(super.categories);
+final class LoadingCompleted extends LoadingState {
+  final Map<int, List<dynamic>> loadingCompleteForCategory;
+  const LoadingCompleted(super.categories, this.loadingCompleteForCategory);
 }
 
-class LoadingFailure extends LoadingState {
+final class LoadingFailure extends LoadingState {
   final Object? exception;
 
   const LoadingFailure(super.categories, {required this.exception});

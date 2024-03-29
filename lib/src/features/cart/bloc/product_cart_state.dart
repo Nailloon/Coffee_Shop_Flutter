@@ -4,29 +4,29 @@ sealed class ProductCartState {
   const ProductCartState();
 }
 
-class ProductCartInitial extends ProductCartState {}
+final class ProductCartInitial extends ProductCartState {}
 
-class ProductCartChanged extends ProductCartState {
+final class ProductCartChanged extends ProductCartState {
   final ProductCart cart;
   final double price;
   const ProductCartChanged(this.cart, this.price);
 }
 
-class EmptyProductCart extends ProductCartState {}
+final class EmptyProductCart extends ProductCartState {}
 
-class AllProductsInCartAsList extends ProductCartState {
+final class AllProductsInCartAsList extends ProductCartState {
   final List<ProductData> cart;
   final ProductCart productCart;
   const AllProductsInCartAsList(this.cart, this.productCart);
 }
 
-class ProductCartPostOrderComplete extends ProductCartState {
+final class ProductCartPostOrderComplete extends ProductCartState {
   final bool complete;
 
   const ProductCartPostOrderComplete({required this.complete});
 }
 
-class ProductCartPostOrderFailure extends ProductCartState {
+final class ProductCartPostOrderFailure extends ProductCartState {
   final Object? exception;
 
   const ProductCartPostOrderFailure({required this.exception});
