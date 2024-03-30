@@ -34,33 +34,36 @@ class _MenuScreenState extends State<MenuScreen> {
   void initState() {
     super.initState();
     context.read<LoadingBloc>().add(LoadCategoriesEvent());
-            bool changed = false;
+    bool changed = false;
     _itemListener.itemPositions.addListener(() {
       final firstVisibleIndex = _itemListener.itemPositions.value.isNotEmpty
           ? _itemListener.itemPositions.value.first.index
           : current;
-      final lastVisible = _itemListener.itemPositions.value
-          .where((element) => element.itemLeadingEdge < -3);
-
-      final nextVisible = _itemListener.itemPositions.value.isNotEmpty
-          ? _itemListener.itemPositions.value.first.itemTrailingEdge
-          : 2;
+      final lastVisibleIndex = _itemListener.itemPositions.value.isNotEmpty
+          ? _itemListener.itemPositions.value.last.index
+          : current;
+      final lastVisible = _itemListener.itemPositions.value.where((element) =>
+          element.itemTrailingEdge > 0.8 || element.itemLeadingEdge > 0);
       final currentState = context.read<LoadingBloc>().state;
+
       if (currentState.loadingCompleteForCategory[firstVisibleIndex + 1]![0] ==
-          false && lastVisible.isNotEmpty && changed==false && _itemListener.itemPositions.value.last.index!=firstVisibleIndex) {
+              false &&
+          lastVisible.isNotEmpty &&
+          changed == false &&
+          lastVisibleIndex != firstVisibleIndex) {
         debugPrint('$lastVisible');
         debugPrint('${_itemListener.itemPositions.value.last}');
-        // Проверять на равенство, если _itemListener.itemPositions.value.last!=firs
         changed = true;
         context.read<LoadingBloc>().add(
             LoadMoreProductsEvent(currentState.categories[firstVisibleIndex]));
-                    Future.delayed(Duration(seconds: 1), () {
-            changed = false; // Устанавливаем changed обратно в false);
-        });
+        appBarScrollToCategory(current);
       }
       if (firstVisibleIndex != current && !inProgress) {
         setCurrent(firstVisibleIndex);
         appBarScrollToCategory(firstVisibleIndex);
+      }
+      if (lastVisibleIndex == firstVisibleIndex) {
+        changed = false;
       }
     });
   }
@@ -73,9 +76,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   void menuScrollToCategory(int ind) async {
     inProgress = true;
-    _menuController.scrollTo(
-        index: ind, duration: const Duration(milliseconds: 400));
-    await Future.delayed(const Duration(milliseconds: 400));
+    _menuController.jumpTo(index: ind);
     inProgress = false;
   }
 
@@ -85,6 +86,7 @@ class _MenuScreenState extends State<MenuScreen> {
         opacityAnimationWeights: [20, 20, 60],
         index: ind,
         duration: const Duration(milliseconds: 400));
+    await Future.delayed(const Duration(milliseconds: 400));
   }
 
   @override
