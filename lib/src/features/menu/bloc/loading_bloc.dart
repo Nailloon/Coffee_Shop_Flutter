@@ -8,7 +8,7 @@ part 'loading_state.dart';
 
 final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
   LoadingBloc(this.coffeeRepository, this.categoriesForApp, this.categoryEnd)
-      : super(const LoadingInitial([])) {
+      : super(const LoadingInitial([],{})) {
     on<LoadCategoriesEvent>(_handleLoadCategoriesEvent);
     on<LoadMoreProductsEvent>(_handleLoadMoreProductsEvent);
   }
@@ -22,13 +22,13 @@ final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
       categoriesForApp = await coffeeRepository.loadCategoriesWithProducts();
       for (CategoryData category in categoriesForApp) {
         categoryEnd.addAll({
-          category.id: [false, 0]
+          category.id: [false, 1]
         });
       }
       debugPrint('Loading Categories');
       emit(LoadingCompleted(categoriesForApp, categoryEnd));
     } catch (e) {
-      emit(LoadingFailure(state.categories, exception: e));
+      emit(LoadingFailure(state.categories, state.loadingCompleteForCategory, exception: e));
     }
   }
 
@@ -40,11 +40,12 @@ final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
             event.category, categoryEnd[event.category.id]![1]);
         categoryEnd[event.category.id]![1] += 1;
         categoryEnd[event.category.id]![0] = ended;
-        debugPrint('$ended');
+        debugPrint('Ended: $ended');
+        debugPrint('Len ${event.category.products.length}');
       }
       emit(LoadingCompleted(categoriesForApp, categoryEnd));
     } catch (e) {
-      emit(LoadingFailure(state.categories, exception: e));
+      emit(LoadingFailure(state.categories, categoryEnd, exception: e));
     }
   }
 }

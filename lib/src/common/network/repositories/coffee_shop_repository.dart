@@ -10,7 +10,7 @@ class CoffeeShopRepository implements IRepository {
 
   @override
   Future<CategoryData> loadProductsByCategory(categoryData,
-      {int id = 1, int limit = 10, int page = 0}) async {
+      {int id = 1, int limit = limitForPage, int page = 0}) async {
     final Map<String, dynamic> jsonResponse =
         await api.fetchProductsByCategory(id, limit, page);
     return CategoryData.fromJson(categoryData, jsonResponse);
@@ -18,7 +18,7 @@ class CoffeeShopRepository implements IRepository {
 
   @override
   Future<List<CategoryData>> loadCategoriesWithProducts(
-      {int limitForCategory = 8, int page = 0}) async {
+      {int limitForCategory = limitForPage, int page = 0}) async {
     List<dynamic> categoriesData = await api.fetchOnlyCategories();
     List<CategoryData> categories = [];
     for (var categoryData in categoriesData) {
@@ -89,7 +89,7 @@ class CoffeeShopRepository implements IRepository {
     int count = 0;
     for (var productJson in jsonResponse['data'] as List) {
       category.addProductIntoCategory(ProductData.fromJson(productJson));
-      count+=1;
+      count += 1;
     }
     final length = jsonResponse.length;
     if (count < limitForPage) {

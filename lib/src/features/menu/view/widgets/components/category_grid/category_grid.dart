@@ -13,42 +13,34 @@ class CategoryGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoadingBloc, LoadingState>(
+    return BlocConsumer<LoadingBloc, LoadingState>(
       builder: (context, state) {
         if (state is LoadingCompleted) {
-          return NotificationListener<ScrollEndNotification>(
-            onNotification: (scrollInfo) {
-              scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
-                      !state.loadingCompleteForCategory[category.id]![0]
-                  ? context
-                      .read<LoadingBloc>()
-                      .add(LoadMoreProductsEvent(category))
-                  : null;
-              return false;
-            },
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: PageScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-              controller: ScrollController(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisExtent: 190,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
-              itemCount: category.products.length,
-              itemBuilder: (context, index) {
-                return ProductCard(
-                  product: category.products[index],
-                  currency: currency,
-                );
-              },
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisExtent: 190,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
             ),
+            itemCount: category.products.length,
+            itemBuilder: (context, index) {
+                    //                                                           if (index % 25 == 10) {
+                    //   context.read<LoadingBloc>().add(LoadMoreProductsEvent(category));
+                    // }
+                    //                       debugPrint('Index for ProductCard:$index');
+              return ProductCard(
+                product: category.products[index],
+                currency: currency,
+              );
+            },
           );
         } else {
           return Container();
         }
-      },
+      }, listener: (BuildContext context, LoadingState state) { context.read<LoadingBloc>().onEvent(LoadMoreProductsEvent(category)); },
     );
   }
 }
