@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:coffee_shop/src/common/functions/price_functions.dart';
 import 'package:coffee_shop/src/common/network/repositories/interface_repository.dart';
 import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
-import 'package:flutter/material.dart';
 
 part 'product_cart_event.dart';
 part 'product_cart_state.dart';
@@ -29,17 +29,15 @@ final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
 
   void _handleAddProductToCart(
       AddProductToCart event, Emitter<ProductCartState> emit) {
-    debugPrint('add');
     productsInCart.addProduct(event.product);
-    price = price + event.product.prices[currency]!;
+    price = price + priceExist(event.product);
     emit(ProductCartChanged(productsInCart, price));
   }
 
   void _handleRemoveProductFromCart(
       RemoveProductFromCart event, Emitter<ProductCartState> emit) {
-    debugPrint('remove');
     productsInCart.removeProduct(event.product);
-    price = price - event.product.prices[currency]!;
+    price = price - priceExist(event.product);
     if (productsInCart.emptyCart()) {
       emit(EmptyProductCart());
     } else {
@@ -49,7 +47,6 @@ final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
 
   void _handleClearProductCart(
       ClearProductCart event, Emitter<ProductCartState> emit) {
-    debugPrint('clear');
     productsInCart.clearCart();
     price = 0;
     emit(EmptyProductCart());
@@ -57,7 +54,6 @@ final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
 
   void _handleViewAllProductCart(
       ViewAllProductCart event, Emitter<ProductCartState> emit) {
-    debugPrint('appearBottomSheet');
     List<ProductData> result = [];
     productsInCart.getProducts().forEach((product, count) {
       for (int i = 0; i < count; i++) {
@@ -76,7 +72,6 @@ final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
       PostOrderEvent event, Emitter<ProductCartState> emit) async {
     final Map<String, int> productAndQuantity = event.products.getIdAndCount();
     try {
-      debugPrint(productAndQuantity.toString());
       final response =
           await coffeeRepository.sendOrder(products: productAndQuantity);
       emit(ProductCartPostOrderComplete(complete: response));

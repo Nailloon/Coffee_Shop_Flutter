@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffee_shop/src/common/network/repositories/interface_repository.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
-import 'package:flutter/material.dart';
 
 part 'loading_event.dart';
 part 'loading_state.dart';
@@ -25,7 +24,6 @@ final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
           category.id: [false, 1]
         });
       }
-      debugPrint('Loading Categories');
       emit(LoadingCompleted(categoriesForApp, categoryEnd));
     } catch (e) {
       emit(LoadingFailure(state.categories, state.loadingCompleteForCategory, exception: e));
@@ -40,8 +38,6 @@ final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
             event.category, categoryEnd[event.category.id]![1]);
         categoryEnd[event.category.id]![1] += 1;
         categoryEnd[event.category.id]![0] = ended;
-        debugPrint('Ended: $ended');
-        debugPrint('Len ${event.category.products.length}');
       }
       emit(LoadingCompleted(categoriesForApp, categoryEnd));
     } catch (e) {

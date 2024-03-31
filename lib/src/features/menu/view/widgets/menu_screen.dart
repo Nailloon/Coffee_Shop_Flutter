@@ -51,8 +51,6 @@ class _MenuScreenState extends State<MenuScreen> {
           lastVisible.isNotEmpty &&
           changed == false &&
           lastVisibleIndex != firstVisibleIndex) {
-        debugPrint('$lastVisible');
-        debugPrint('${_itemListener.itemPositions.value.last}');
         changed = true;
         context.read<LoadingBloc>().add(
             LoadMoreProductsEvent(currentState.categories[firstVisibleIndex]));
@@ -76,7 +74,8 @@ class _MenuScreenState extends State<MenuScreen> {
 
   void menuScrollToCategory(int ind) async {
     inProgress = true;
-    _menuController.jumpTo(index: ind);
+    _menuController.scrollTo(index: ind, duration: const Duration(microseconds: 400));
+    await Future.delayed(const Duration(milliseconds: 400));
     inProgress = false;
   }
 

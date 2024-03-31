@@ -2,7 +2,6 @@ import 'package:coffee_shop/src/common/network/data_providers/coffeee_api_provid
 import 'package:coffee_shop/src/common/network/repositories/interface_repository.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
-import 'package:flutter/material.dart';
 
 class CoffeeShopRepository implements IRepository {
   final api = CoffeShopApiDataProvider();
@@ -87,12 +86,12 @@ class CoffeeShopRepository implements IRepository {
     final Map<String, dynamic> jsonResponse =
         await api.fetchProductsByCategory(category.id, limitForPage, page);
     int count = 0;
-    for (var productJson in jsonResponse['data'] as List) {
+    final jsonResponseAsList = returnJsonDataAsList(jsonResponse);
+    for (var productJson in jsonResponseAsList) {
       category.addProductIntoCategory(ProductData.fromJson(productJson));
       count += 1;
     }
     if (count < limitForPage) {
-      debugPrint('$count');
       return true;
     } else {
       return false;

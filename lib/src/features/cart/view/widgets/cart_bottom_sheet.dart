@@ -102,7 +102,7 @@ class CartBottomSheet extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                           trailing: Text(
-                            "${formatPrice(product.prices[currency]!)} ${getCurrencySymbol(currency)}",
+                            "${formatPrice(priceExist(product))} ${getCurrencySymbol(currency)}",
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
                         );

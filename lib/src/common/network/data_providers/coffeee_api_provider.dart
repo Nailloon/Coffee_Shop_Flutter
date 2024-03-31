@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:coffee_shop/src/common/network/data_providers/interface_data_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 final class CoffeShopApiDataProvider implements IDataProvider {
@@ -71,15 +70,6 @@ final class CoffeShopApiDataProvider implements IDataProvider {
     }
   }
 
-  List returnJsonDataAsList(jsonData) {
-    try {
-      return jsonData['data'] as List;
-    } catch (e) {
-      throw Exception(
-          'Exception while converting data in the form of a list: $e');
-    }
-  }
-
   @override
   Future<bool> postOrder(Map<String, int> orderData) async {
     Map<String, dynamic> requestBody = {
@@ -91,7 +81,6 @@ final class CoffeShopApiDataProvider implements IDataProvider {
       baseUrl,
       orderVersion,
     );
-    debugPrint(jsonEncode(requestBody));
     final response = await client.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -107,3 +96,12 @@ final class CoffeShopApiDataProvider implements IDataProvider {
     }
   }
 }
+
+  List returnJsonDataAsList(jsonData) {
+    try {
+      return jsonData['data'] as List;
+    } catch (e) {
+      throw Exception(
+          'Exception while converting data in the form of a list: $e');
+    }
+  }
