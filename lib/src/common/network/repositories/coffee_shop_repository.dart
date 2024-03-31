@@ -91,7 +91,6 @@ class CoffeeShopRepository implements IRepository {
       category.addProductIntoCategory(ProductData.fromJson(productJson));
       count += 1;
     }
-    final length = jsonResponse.length;
     if (count < limitForPage) {
       debugPrint('$count');
       return true;

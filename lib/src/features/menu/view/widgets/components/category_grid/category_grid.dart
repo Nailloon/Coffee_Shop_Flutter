@@ -18,7 +18,7 @@ class CategoryGridView extends StatelessWidget {
         if (state is LoadingCompleted) {
           return GridView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisExtent: 190,
@@ -27,10 +27,6 @@ class CategoryGridView extends StatelessWidget {
             ),
             itemCount: category.products.length,
             itemBuilder: (context, index) {
-                    //                                                           if (index % 25 == 10) {
-                    //   context.read<LoadingBloc>().add(LoadMoreProductsEvent(category));
-                    // }
-                    //                       debugPrint('Index for ProductCard:$index');
               return ProductCard(
                 product: category.products[index],
                 currency: currency,
@@ -40,7 +36,7 @@ class CategoryGridView extends StatelessWidget {
         } else {
           return Container();
         }
-      }, listener: (BuildContext context, LoadingState state) { context.read<LoadingBloc>().onEvent(LoadMoreProductsEvent(category)); },
+      }, listener: (BuildContext context, LoadingState state) {},
     );
   }
 }
