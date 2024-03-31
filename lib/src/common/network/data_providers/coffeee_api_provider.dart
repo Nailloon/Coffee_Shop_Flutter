@@ -26,7 +26,7 @@ final class CoffeShopApiDataProvider implements IDataProvider {
 
   @override
   Future<Map<String, dynamic>> fetchProductsByCategory(
-      int categoryId,int limit,int page) async {
+      int categoryId, int limit, int page) async {
     var url = Uri.https(baseUrl, apiVersion, {
       'page': '$page',
       'limit': '$limit',
@@ -97,11 +97,11 @@ final class CoffeShopApiDataProvider implements IDataProvider {
   }
 }
 
-  List returnJsonDataAsList(jsonData) {
-    try {
-      return jsonData['data'] as List;
-    } catch (e) {
-      throw Exception(
-          'Exception while converting data in the form of a list: $e');
-    }
+List returnJsonDataAsList(jsonData) {
+  try {
+    return jsonData['data'] as List;
+  } catch (e) {
+    throw Exception(
+        'Exception while converting data in the form of a list: $e');
   }
+}

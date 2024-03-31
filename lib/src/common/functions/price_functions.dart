@@ -20,11 +20,10 @@ String getCurrencySymbol(String currency) {
   return currencySymbols[currency] ?? currency;
 }
 
-  double priceExist(ProductData product){
-    if (product.prices[currency]!=null){
-      return product.prices[currency]!;
-    }
-    else{
-      throw Exception('No price for this currency');
-    }
+double priceExist(ProductData product) {
+  if (product.prices[currency] != null) {
+    return product.prices[currency]!;
+  } else {
+    throw Exception('No price for this currency');
   }
+}

@@ -7,7 +7,7 @@ part 'loading_state.dart';
 
 final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
   LoadingBloc(this.coffeeRepository, this.categoriesForApp, this.categoryEnd)
-      : super(const LoadingInitial([],{})) {
+      : super(const LoadingInitial([], {})) {
     on<LoadCategoriesEvent>(_handleLoadCategoriesEvent);
     on<LoadMoreProductsEvent>(_handleLoadMoreProductsEvent);
   }
@@ -26,7 +26,8 @@ final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
       }
       emit(LoadingCompleted(categoriesForApp, categoryEnd));
     } catch (e) {
-      emit(LoadingFailure(state.categories, state.loadingCompleteForCategory, exception: e));
+      emit(LoadingFailure(state.categories, state.loadingCompleteForCategory,
+          exception: e));
     }
   }
 

@@ -29,7 +29,7 @@ class CategoryData {
     );
   }
 
-  void addProductIntoCategory(ProductData product){
+  void addProductIntoCategory(ProductData product) {
     products.add(product);
   }
 }

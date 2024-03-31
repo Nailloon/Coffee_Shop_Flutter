@@ -36,7 +36,8 @@ class CategoryGridView extends StatelessWidget {
         } else {
           return Container();
         }
-      }, listener: (BuildContext context, LoadingState state) {},
+      },
+      listener: (BuildContext context, LoadingState state) {},
     );
   }
 }

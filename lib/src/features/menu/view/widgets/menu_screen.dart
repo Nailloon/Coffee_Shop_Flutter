@@ -74,7 +74,8 @@ class _MenuScreenState extends State<MenuScreen> {
 
   void menuScrollToCategory(int ind) async {
     inProgress = true;
-    _menuController.scrollTo(index: ind, duration: const Duration(microseconds: 400));
+    _menuController.scrollTo(
+        index: ind, duration: const Duration(microseconds: 400));
     await Future.delayed(const Duration(milliseconds: 400));
     inProgress = false;
   }
