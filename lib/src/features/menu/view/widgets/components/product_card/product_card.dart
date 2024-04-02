@@ -3,6 +3,7 @@ import 'package:coffee_shop/src/features/menu/view/widgets/components/product_ca
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:coffee_shop/src/theme/image_sources.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductData product;
@@ -25,19 +26,20 @@ class ProductCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
         child: Column(
           children: [
-            Image.network(
-              imageUrl,
-              errorBuilder: (context, error, stackTrace) {
-                return Image.asset(
-                  ImageSources.placeholder,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                  height: 100.0,
-                );
-              },
+            CachedNetworkImage(
+              imageUrl: imageUrl,
+              errorWidget: (context, url, error) => Image.asset(
+                ImageSources.placeholder,
+                width: double.infinity,
+                fit: BoxFit.contain,
+                height: 100.0,
+              ),
               width: double.infinity,
               fit: BoxFit.contain,
               height: 100.0,
+              placeholder: (context, url) => const CircularProgressIndicator(
+                color: AppColors.blue,
+              ),
             ),
             Text(product.name, style: Theme.of(context).textTheme.titleMedium),
             PriceCartButton(product: product),
