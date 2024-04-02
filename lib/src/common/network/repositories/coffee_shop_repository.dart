@@ -1,10 +1,10 @@
-import 'package:coffee_shop/src/common/network/data_providers/coffeee_api_provider.dart';
+import 'package:coffee_shop/src/common/network/data_providers/coffeee_api_source.dart';
 import 'package:coffee_shop/src/common/network/repositories/interface_repository.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 
 class CoffeeShopRepository implements IRepository {
-  final api = CoffeShopApiDataProvider();
+  final api = CoffeShopApiDataSource();
   static const int limitForPage = 25;
 
   @override

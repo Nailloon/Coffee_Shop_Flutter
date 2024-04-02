@@ -1,4 +1,4 @@
-abstract interface class IDataProvider {
+abstract interface class IDataSource {
   Future<List<dynamic>> fetchOnlyCategories();
   Future<List<dynamic>> fetchAnyProducts(int count);
   Future<Map<String, dynamic>> fetchProductsByCategory(

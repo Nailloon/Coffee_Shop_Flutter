@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:coffee_shop/src/common/network/data_providers/interface_data_provider.dart';
+import 'package:coffee_shop/src/common/network/data_providers/interface_data_source.dart';
 import 'package:http/http.dart' as http;
 
-final class CoffeShopApiDataProvider implements IDataProvider {
+final class CoffeShopApiDataSource implements IDataSource {
   final String baseUrl = 'coffeeshop.academy.effective.band';
   final String apiVersion = '/api/v1/products';
   final String orderVersion = 'api/v1/orders';
