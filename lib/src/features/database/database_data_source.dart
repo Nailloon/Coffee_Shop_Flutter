@@ -1,8 +1,11 @@
+import 'package:coffee_shop/src/features/database/coffee_database.dart';
 import 'package:coffee_shop/src/features/database/interface_savable_data_source.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
+import 'package:flutter/material.dart';
 
 final class DataBaseSource implements ISavableDataSource {
+  final database = AppDatabase();
   @override
   bool changeCategoty(CategoryData category) {
     // TODO: implement changeCategoty
@@ -16,8 +19,13 @@ final class DataBaseSource implements ISavableDataSource {
   }
 
   @override
-  Future<List<CategoryData>> fetchOnlyCategories() {
-    // TODO: implement fetchOnlyCategories
+  Future<List<CategoryData>> fetchOnlyCategories() async {
+    await database.into(database.categories).insert(CategoriesCompanion.insert(
+        name: 'Aboba',
+      ));
+  List<Category> allItems = await database.select(database.categories).get();
+
+  debugPrint('items in database: $allItems');
     throw UnimplementedError();
   }
 
