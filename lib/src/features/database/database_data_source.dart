@@ -2,6 +2,7 @@ import 'package:coffee_shop/src/features/database/coffee_database.dart';
 import 'package:coffee_shop/src/features/database/interface_savable_data_source.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 
 final class DataBaseSource implements ISavableDataSource {
@@ -21,11 +22,12 @@ final class DataBaseSource implements ISavableDataSource {
   @override
   Future<List<CategoryData>> fetchOnlyCategories() async {
     await database.into(database.categories).insert(CategoriesCompanion.insert(
-        name: 'Aboba',
-      ));
-  List<Category> allItems = await database.select(database.categories).get();
+          id: const Value(2),
+          name: 'Abobab',
+        ));
+    List<Category> allItems = await database.select(database.categories).get();
 
-  debugPrint('items in database: $allItems');
+    debugPrint('items in database: $allItems');
     throw UnimplementedError();
   }
 
@@ -36,7 +38,8 @@ final class DataBaseSource implements ISavableDataSource {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchProductsByCategory(int categoryId, int limit, int page) {
+  Future<Map<String, dynamic>> fetchProductsByCategory(
+      int categoryId, int limit, int page) {
     // TODO: implement fetchProductsByCategory
     throw UnimplementedError();
   }
@@ -55,5 +58,4 @@ final class DataBaseSource implements ISavableDataSource {
   void saveProduct(ProductData product) {
     // TODO: implement saveProduct
   }
-  
 }
