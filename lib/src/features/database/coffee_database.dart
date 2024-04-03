@@ -12,7 +12,7 @@ part 'coffee_database.g.dart';
 @DataClassName('Category')
 class Categories extends Table {
   IntColumn get id => integer()();
-  TextColumn get name => text().customConstraint('UNIQUE NOT NULL')();
+  TextColumn get name => text().unique()();
   @override
   Set<Column> get primaryKey => {id};
 }
@@ -20,11 +20,11 @@ class Categories extends Table {
 @DataClassName('Product')
 class Products extends Table {
   IntColumn get id => integer()();
-  TextColumn get name => text().customConstraint('UNIQUE NOT NULL')();
+  TextColumn get name => text().unique()();
   TextColumn get description => text().nullable()();
   TextColumn get imageUrl => text().nullable()();
   IntColumn get categoryId =>
-      integer().customConstraint('NULL REFERENCES categories(id) NOT NULL')();
+      integer().references(Categories, #id)();
   TextColumn get prices => text()();
   @override
   Set<Column> get primaryKey => {id};

@@ -20,7 +20,7 @@ class $CategoriesTable extends Categories
       'name', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE NOT NULL');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
   @override
   List<GeneratedColumn> get $columns => [id, name];
   @override
@@ -187,7 +187,7 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
       'name', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: true,
-      $customConstraints: 'UNIQUE NOT NULL');
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
   static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
@@ -207,7 +207,8 @@ class $ProductsTable extends Products with TableInfo<$ProductsTable, Product> {
       'category_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
-      $customConstraints: 'NULL REFERENCES categories(id) NOT NULL');
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES categories (id)'));
   static const VerificationMeta _pricesMeta = const VerificationMeta('prices');
   @override
   late final GeneratedColumn<String> prices = GeneratedColumn<String>(
