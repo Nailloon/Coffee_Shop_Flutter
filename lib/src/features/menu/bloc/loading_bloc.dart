@@ -6,19 +6,19 @@ part 'loading_event.dart';
 part 'loading_state.dart';
 
 final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
-  LoadingBloc(this.coffeeRepository, this.categoriesForApp, this.categoryEnd)
+  LoadingBloc(this.coffeeShopRepository, this.categoriesForApp, this.categoryEnd)
       : super(const LoadingInitial([], {})) {
     on<LoadCategoriesEvent>(_handleLoadCategoriesEvent);
     on<LoadMoreProductsEvent>(_handleLoadMoreProductsEvent);
   }
   List<CategoryData> categoriesForApp;
-  final IRepository coffeeRepository;
+  final IRepository coffeeShopRepository;
   final Map<int, List<dynamic>> categoryEnd;
 
   void _handleLoadCategoriesEvent(
       LoadCategoriesEvent event, Emitter<LoadingState> emit) async {
     try {
-      categoriesForApp = await coffeeRepository.loadCategoriesWithProducts();
+      categoriesForApp = await coffeeShopRepository.loadCategoriesWithProducts();
       for (CategoryData category in categoriesForApp) {
         categoryEnd.addAll({
           category.id: [false, 1]
@@ -35,7 +35,7 @@ final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
       LoadMoreProductsEvent event, Emitter<LoadingState> emit) async {
     try {
       if (categoryEnd[event.category.id]![0] == false) {
-        final bool ended = await coffeeRepository.loadMoreProductsByCategory(
+        final bool ended = await coffeeShopRepository.loadMoreProductsByCategory(
             event.category, categoryEnd[event.category.id]![1]);
         categoryEnd[event.category.id]![1] += 1;
         categoryEnd[event.category.id]![0] = ended;
