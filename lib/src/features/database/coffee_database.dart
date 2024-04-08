@@ -20,7 +20,7 @@ class Categories extends Table {
 
 @DataClassName('Product')
 class Products extends Table {
-  IntColumn get id => integer().customConstraint('UNIQUE NOT NULL')();
+  IntColumn get id => integer()();
   TextColumn get name => text()();
   TextColumn get description => text().nullable()();
   TextColumn get imageUrl => text().nullable()();
