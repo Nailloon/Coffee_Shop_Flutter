@@ -5,19 +5,17 @@ import 'package:coffee_shop/src/features/database/interface_savable_data_source.
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 import 'package:drift/drift.dart';
-import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 
 final class DataBaseSource implements ISavableDataSource {
   final database = AppDatabase();
   @override
-  bool changeCategory(CategoryData category) {
-    // TODO: implement changeCategoty
-    throw UnimplementedError();
+  void changeCategory(CategoryData category) {
+    database.update(database.categories).replace(CategoriesCompanion(name: Value(category.name)));
   }
 
   @override
-  bool changeProduct(ProductData product) {
+  void changeProduct(ProductData product) {
     // TODO: implement changeProduct
     throw UnimplementedError();
   }
@@ -72,15 +70,9 @@ final class DataBaseSource implements ISavableDataSource {
 
   @override
   Future<void> saveCategory(CategoryData category) async {
-    try {
       await database.into(database.categories).insertOnConflictUpdate(
           CategoriesCompanion(
               id: Value(category.id), name: Value(category.name)));
-    } on Exception catch (e) {
-      if (changeCategory(category) != true) {
-        rethrow;
-      }
-    }
   }
 
   Future<void> saveProducts(List<ProductData> products, int categoryId) async {
@@ -91,7 +83,7 @@ final class DataBaseSource implements ISavableDataSource {
 
   @override
   Future<void> saveProduct(ProductData product, int categoryId) async {
-    await database.into(database.products).insert(
+    await database.into(database.products).insertOnConflictUpdate(
         ProductsCompanion(
           id: Value(product.id),
           name: Value(product.name),
@@ -100,12 +92,12 @@ final class DataBaseSource implements ISavableDataSource {
           categoryId: Value(categoryId),
           prices: Value(json.encode(product.prices)),
         ),
-        mode: InsertMode.insertOrReplace);
+        );
   }
 
   Future<List<ProductData>> fetchAnyProducts() async {
     var productsFromDB =
-        await (database.select(database.products)..limit(300)).get();
+        await (database.select(database.products)).get();
     List<ProductData> products = [];
     for (var product in productsFromDB) {
       var jsonProduct = product.toJson();

@@ -9,6 +9,6 @@ abstract interface class ISavableDataSource {
   void saveCategory(CategoryData category);
   void saveProduct(ProductData product, int categoryId);
   void saveCategoriesWithProducts(List<CategoryData> categories);
-  bool changeProduct(ProductData product);
-  bool changeCategory(CategoryData category);
+  void changeProduct(ProductData product);
+  void changeCategory(CategoryData category);
 }
