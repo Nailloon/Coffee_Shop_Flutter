@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,19 +13,18 @@ part 'coffee_database.g.dart';
 @DataClassName('Category')
 class Categories extends Table {
   IntColumn get id => integer()();
-  TextColumn get name => text().unique()();
+  TextColumn get name => text()();
   @override
   Set<Column> get primaryKey => {id};
 }
 
 @DataClassName('Product')
 class Products extends Table {
-  IntColumn get id => integer()();
-  TextColumn get name => text().unique()();
+  IntColumn get id => integer().customConstraint('UNIQUE NOT NULL')();
+  TextColumn get name => text()();
   TextColumn get description => text().nullable()();
   TextColumn get imageUrl => text().nullable()();
-  IntColumn get categoryId =>
-      integer().references(Categories, #id)();
+  IntColumn get categoryId => integer().references(Categories, #id)();
   TextColumn get prices => text()();
   @override
   Set<Column> get primaryKey => {id};

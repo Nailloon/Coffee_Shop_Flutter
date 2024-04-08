@@ -5,6 +5,7 @@ import 'package:coffee_shop/src/features/database/interface_savable_data_source.
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 
 final class DataBaseSource implements ISavableDataSource {
@@ -62,31 +63,70 @@ final class DataBaseSource implements ISavableDataSource {
   }
 
   @override
-  void saveCategoriesWithProducts(List<CategoryData> categories) {
+  Future<void> saveCategoriesWithProducts(List<CategoryData> categories) async{
     for (var category in categories) {
-      saveCategory(category);
-      saveProducts(category.products, category.id);
+      await saveCategory(category);
+      await saveProducts(category.products, category.id);
     }
   }
 
   @override
-  void saveCategory(CategoryData category) {
-    database.into(database.categories).insert(CategoriesCompanion(
-        id: Value(category.id), name: Value(category.name)));
+  Future<void> saveCategory(CategoryData category) async{
+    try {
+      await database.into(database.categories).insertOnConflictUpdate(
+          CategoriesCompanion(
+              id: Value(category.id), name: Value(category.name)));
+    } on Exception catch (e) {
+      if (changeCategory(category) != true) {
+        rethrow;
+      }
+    }
   }
 
-  void saveProducts(List<ProductData> products, int categoryId) {
+  Future<void> saveProducts(List<ProductData> products, int categoryId) async {
     for (var product in products) {
-      saveProduct(product, categoryId);
+      await saveProduct(product, categoryId);
     }
   }
 
   @override
-  void saveProduct(ProductData product, int categoryId) {
-    database.into(database.products).insert(ProductsCompanion.insert(
+  Future<void> saveProduct(ProductData product, int categoryId) async {
+  var existingProduct = await (database.select(database.products)
+      ..where((tbl) => tbl.id.equals(product.id))).getSingleOrNull();
+
+  if (existingProduct == null) {
+  await database.into(database.products).insertOnConflictUpdate(
+      ProductsCompanion(
         id: Value(product.id),
-        name: product.name,
-        categoryId: categoryId,
-        prices: product.prices.toString()));
+        name: Value(product.name),
+        description: Value(product.description),
+        imageUrl: Value(product.imageUrl),
+        categoryId: Value(categoryId),
+        prices: Value(json.encode(product.prices)),
+      ),
+    );
+  } else {
+    await database.update(database.products).replace(
+      ProductsCompanion(
+        id: Value(product.id),
+        name: Value(product.name),
+        description: Value(product.description),
+        imageUrl: Value(product.imageUrl),
+        categoryId: Value(categoryId),
+        prices: Value(json.encode(product.prices)),
+      ),
+    );
+  }
+}
+
+  Future<List<ProductData>> fetchAnyProducts() async {
+    var productsFromDB = await (database.select(database.products)..limit(300)).get();
+    List<ProductData> products = [];
+    for (var product in productsFromDB) {
+      var jsonProduct = product.toJson();
+      products.add(ProductData.fromJson(jsonProduct));
+    }
+    debugPrint('ProductsLength: ${productsFromDB.length}');
+    return products;
   }
 }
