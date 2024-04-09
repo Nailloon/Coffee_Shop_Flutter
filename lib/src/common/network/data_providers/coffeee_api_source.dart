@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:coffee_shop/src/common/network/data_providers/interface_data_source.dart';
 import 'package:http/http.dart' as http;
 
@@ -44,15 +46,21 @@ final class CoffeShopApiDataSource implements IDataSource {
 
   @override
   Future<List<dynamic>> fetchOnlyCategories() async {
-    var url = Uri.https(baseUrl, '$apiVersion/categories');
-    final response = await client.get(url);
-
-    if (response.statusCode == 200) {
-      var jsonData = json.decode(utf8.decode(response.bodyBytes));
-      return returnJsonDataAsList(jsonData);
-    } else {
-      throw Exception('Failed to fetch data');
-    }
+    try {
+  var url = Uri.https(baseUrl, '$apiVersion/categories');
+  final response = await client.get(url).timeout(const Duration(seconds: 10));
+  
+  if (response.statusCode == 200) {
+    var jsonData = json.decode(utf8.decode(response.bodyBytes));
+    return returnJsonDataAsList(jsonData);
+  } else {
+    throw Exception('Failed to fetch data');
+  }
+} on Exception catch (e) {
+  if (e is TimeoutException) {
+      }
+      throw SocketException('Failed to fetch data'); 
+}
   }
 
   @override

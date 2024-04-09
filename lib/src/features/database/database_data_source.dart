@@ -49,12 +49,8 @@ final class DataBaseSource implements ISavableDataSource {
             .get();
     List<ProductData> products = [];
     for (var product in productsFromDatabase) {
-      products.add(ProductData(
-          id: product.id,
-          name: product.name,
-          description: product.description ?? '',
-          imageUrl: product.imageUrl ?? '',
-          prices: jsonDecode(product.prices)));
+      var jsonProduct = product.toJson();
+      products.add(ProductData.fromJson(jsonProduct));
     }
     debugPrint('Products: $products');
     return products;
@@ -64,7 +60,7 @@ final class DataBaseSource implements ISavableDataSource {
   Future<void> saveCategoriesWithProducts(List<CategoryData> categories) async {
     for (var category in categories) {
       await saveCategory(category);
-      await saveProducts(category.products, category.id);
+      saveProducts(category.products, category.id);
     }
   }
 
@@ -75,7 +71,8 @@ final class DataBaseSource implements ISavableDataSource {
               id: Value(category.id), name: Value(category.name)));
   }
 
-  Future<void> saveProducts(List<ProductData> products, int categoryId) async {
+  @override
+  void saveProducts(List<ProductData> products, int categoryId) async {
     for (var product in products) {
       await saveProduct(product, categoryId);
     }

@@ -11,4 +11,5 @@ abstract interface class ISavableDataSource {
   void saveCategoriesWithProducts(List<CategoryData> categories);
   void changeProduct(ProductData product);
   void changeCategory(CategoryData category);
+  void saveProducts(List<ProductData> products, int categoryId);
 }
