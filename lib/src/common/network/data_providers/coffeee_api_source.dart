@@ -9,6 +9,10 @@ final class CoffeShopApiDataSource implements IDataSource {
   final String apiVersion = '/api/v1/products';
   final String orderVersion = 'api/v1/orders';
   final http.Client client = http.Client();
+  final Duration durationForBigRequest = const Duration(seconds: 3);
+  final Duration durationForSmallRequest = const Duration(seconds: 2);
+  final SocketException socketException =
+      const SocketException('Failed to connect to api');
 
   @override
   Future<List<dynamic>> fetchAnyProducts(int count) async {
@@ -29,38 +33,48 @@ final class CoffeShopApiDataSource implements IDataSource {
   @override
   Future<Map<String, dynamic>> fetchProductsByCategory(
       int categoryId, int limit, int page) async {
-    var url = Uri.https(baseUrl, apiVersion, {
-      'page': '$page',
-      'limit': '$limit',
-      'category': '$categoryId',
-    });
-    final response = await client.get(url);
+    try {
+      var url = Uri.https(baseUrl, apiVersion, {
+        'page': '$page',
+        'limit': '$limit',
+        'category': '$categoryId',
+      });
+      final response = await client.get(url).timeout(durationForSmallRequest);
 
-    if (response.statusCode == 200) {
-      var jsonData = json.decode(utf8.decode(response.bodyBytes));
-      return jsonData;
-    } else {
-      throw Exception('Failed to fetch data');
+      if (response.statusCode == 200) {
+        var jsonData = json.decode(utf8.decode(response.bodyBytes));
+        return jsonData;
+      } else {
+        throw Exception('Failed to fetch data');
+      }
+    } on Exception catch (e) {
+      if (e is TimeoutException) {
+        throw socketException;
+      } else {
+        rethrow;
+      }
     }
   }
 
   @override
   Future<List<dynamic>> fetchOnlyCategories() async {
     try {
-  var url = Uri.https(baseUrl, '$apiVersion/categories');
-  final response = await client.get(url).timeout(const Duration(seconds: 10));
-  
-  if (response.statusCode == 200) {
-    var jsonData = json.decode(utf8.decode(response.bodyBytes));
-    return returnJsonDataAsList(jsonData);
-  } else {
-    throw Exception('Failed to fetch data');
-  }
-} on Exception catch (e) {
-  if (e is TimeoutException) {
+      var url = Uri.https(baseUrl, '$apiVersion/categories');
+      final response = await client.get(url).timeout(durationForBigRequest);
+
+      if (response.statusCode == 200) {
+        var jsonData = json.decode(utf8.decode(response.bodyBytes));
+        return returnJsonDataAsList(jsonData);
+      } else {
+        throw Exception('Failed to fetch data');
       }
-      throw SocketException('Failed to fetch data'); 
-}
+    } on Exception catch (e) {
+      if (e is TimeoutException) {
+        throw socketException;
+      } else {
+        rethrow;
+      }
+    }
   }
 
   @override
@@ -89,11 +103,13 @@ final class CoffeShopApiDataSource implements IDataSource {
       baseUrl,
       orderVersion,
     );
-    final response = await client.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(requestBody),
-    );
+    final response = await client
+        .post(
+          url,
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(requestBody),
+        )
+        .timeout(durationForSmallRequest);
 
     if (response.statusCode == 201) {
       return true;

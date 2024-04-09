@@ -21,19 +21,21 @@ class CoffeeShopRepository implements IRepository {
   Future<List<CategoryData>> loadCategoriesWithProducts(
       {int limitForCategory = limitForPage, int page = 0}) async {
     List<CategoryData> categoriesData = [];
-        try {
-  categoriesData = await categoryRepository.loadOnlyCategories();
+    try {
+      categoriesData = await categoryRepository.loadOnlyCategories();
       for (var categoryData in categoriesData) {
         var id = categoryData.id;
         await productRepository.loadProductsByCategory(categoryData,
-    id: id, limit: limitForCategory, page: page);
+            id: id, limit: limitForCategory, page: page);
       }
       db.saveCategories(categoriesData);
-} on Exception catch (e) {
-  if (e is SocketException){
-    return await db.initialLoadCategoriesWithProducts(limitForCategory, page);
-  }
-}
+    } on Exception catch (e) {
+      if (e is SocketException) {
+        return await db.initialLoadCategoriesWithProducts(limitForPage);
+      } else {
+        rethrow;
+      }
+    }
 
     return categoriesData;
   }
@@ -46,7 +48,17 @@ class CoffeeShopRepository implements IRepository {
   @override
   Future<bool> loadMoreProductsByCategory(
       CategoryData category, int page) async {
-      // TODO paagination
-    return await productRepository.loadMoreProductsByCategory(category, page);
+    try {
+      final bool finished =
+          await productRepository.loadMoreProductsByCategory(category, page);
+      db.saveCategories([category]);
+      return finished;
+    } on Exception catch (e) {
+      if (e is SocketException) {
+        return await db.loadMoreProductsByCategory(category, page);
+      } else {
+        rethrow;
+      }
+    }
   }
 }
