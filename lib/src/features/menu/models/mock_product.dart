@@ -1,7 +1,0 @@
-import 'package:coffee_shop/src/features/menu/data/product_data.dart';
-
-ProductData product = const ProductData(name: 'Раф', price: 225.07, currency: 'руб', imageUrl: 'https://example.com/raph.jpg');
-ProductData product1 = const ProductData(name: 'Эспрессо', price: 50.50, currency: 'руб', imageUrl: 'https://thapl-public.storage.yandexcloud.net/thapl-project322/img/CatalogItem/bd4480b2b210fd973dbb741ece478c0e_thumb_50_1458_1458.png');
-ProductData product2 = const ProductData(name: 'Латте', price: 219.20, currency: 'руб', imageUrl: 'https://www.restorannews.ru/upload/medialibrary/6ff/RestoranNews-coffee-07.png');
-ProductData product3 = const ProductData(name: 'Олеато', price: 139, currency: 'руб', imageUrl: 'https://s3-alpha-sig.figma.com/img/d3ba/f1f8/7b2cbc53c2ee326a531dcbecbe78a27f?Expires=1711324800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=AR3rJdUF6aX6yzuttq3reCgKG6aukFCh~aNI8etlcp1M9mz-QAMiN9FW4zU8QxHsjH1UcwocyVV6dGWclJrm8JQQoBgtC5Qn6R6zKzopvmPzeQS5-Bibv1mrTg2T3B4QtnQPNVLGrBC4ZR1SXPjeVspvKJ~cXAqeNwJ85x8UMeE1dEIBa5c3yXZ7iHykTU50l~-PfzDLQWwHizt9Ff1Ls2KMuMZYrIhI7Cj8JgStDL61C3jUxwaLjdYPwRq~vj8eJtLkG2PHxuWUMhWl2waF-D2lYFMcGCV6KnJX3zaqWikOAwqqNtjd-wrhw1uGicpwdqIw9k3aG4xpKSCAQppYWQ__');
-ProductData product4 = const ProductData(name: 'Американо', price: 72.00, currency: 'руб', imageUrl: 'https://catherineasquithgallery.com/uploads/posts/2021-03/1614563462_83-p-kofe-na-belom-fone-101.png');

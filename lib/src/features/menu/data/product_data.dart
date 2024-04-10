@@ -1,21 +1,29 @@
 class ProductData {
+  final int id;
   final String name;
-  final double price;
+  final String description;
   final String imageUrl;
-  final String currency;
+  final Map<String, double> prices;
 
-  const ProductData(
-      {required this.name,
-      required this.price,
-      required this.imageUrl,
-      required this.currency});
+  ProductData({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.imageUrl,
+    required this.prices,
+  });
 
   factory ProductData.fromJson(Map<String, dynamic> json) {
+    Map<String, double> pricesMap = {};
+    for (var price in json['prices']) {
+      pricesMap[price['currency']] = double.parse(price['value']);
+    }
     return ProductData(
+      id: json['id'],
       name: json['name'],
-      price: json['price'],
-      currency: json['currency'],
+      description: json['description'],
       imageUrl: json['imageUrl'],
+      prices: pricesMap,
     );
   }
 }
