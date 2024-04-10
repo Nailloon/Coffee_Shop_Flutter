@@ -1,3 +1,5 @@
+import 'package:coffee_shop/src/features/database/data_source/database_data_source.dart';
+import 'package:coffee_shop/src/features/database/data_source/interface_savable_data_source.dart';
 import 'package:coffee_shop/src/features/database/interface_savable_repository.dart';
 import 'package:coffee_shop/src/features/database/savable_category_repository/interface_savable_category_repository.dart';
 import 'package:coffee_shop/src/features/database/savable_category_repository/savable_category_repository.dart';
@@ -6,9 +8,10 @@ import 'package:coffee_shop/src/features/database/savable_product_repository/sav
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 
-class DatabaseRepository implements ISavableRepository {
-  ISavableCategoryRepository categoryRepository = SavableCategoryRepository();
-  ISavableProductRepository productRepository = SavableProductRepository();
+class DatabaseRepository implements ISavableRepository{
+  static ISavableDataSource dataSource = DataBaseSource();
+  ISavableCategoryRepository categoryRepository = SavableCategoryRepository(dataSource);
+  ISavableProductRepository productRepository = SavableProductRepository(dataSource);
   static const int limitPerPage = 25;
   static const int initialOffset = 0;
   @override
