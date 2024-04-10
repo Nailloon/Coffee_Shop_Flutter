@@ -11,7 +11,9 @@ final class DataBaseSource implements ISavableDataSource {
   final database = AppDatabase();
   @override
   void changeCategory(CategoryData category) {
-    database.update(database.categories).replace(CategoriesCompanion(name: Value(category.name)));
+    database
+        .update(database.categories)
+        .replace(CategoriesCompanion(name: Value(category.name)));
   }
 
   @override
@@ -57,44 +59,43 @@ final class DataBaseSource implements ISavableDataSource {
   }
 
   @override
-  Future<void> saveCategoriesWithProducts(List<CategoryData> categories) async {
+  void saveCategoriesWithProducts(List<CategoryData> categories) {
     for (var category in categories) {
-      await saveCategory(category);
+      saveCategory(category);
       saveProducts(category.products, category.id);
     }
   }
 
   @override
-  Future<void> saveCategory(CategoryData category) async {
-      await database.into(database.categories).insertOnConflictUpdate(
-          CategoriesCompanion(
-              id: Value(category.id), name: Value(category.name)));
+  void saveCategory(CategoryData category) {
+    database.into(database.categories).insertOnConflictUpdate(
+        CategoriesCompanion(
+            id: Value(category.id), name: Value(category.name)));
   }
 
   @override
-  void saveProducts(List<ProductData> products, int categoryId) async {
+  void saveProducts(List<ProductData> products, int categoryId) {
     for (var product in products) {
-      await saveProduct(product, categoryId);
+      saveProduct(product, categoryId);
     }
   }
 
   @override
-  Future<void> saveProduct(ProductData product, int categoryId) async {
-    await database.into(database.products).insertOnConflictUpdate(
-        ProductsCompanion(
-          id: Value(product.id),
-          name: Value(product.name),
-          description: Value(product.description),
-          imageUrl: Value(product.imageUrl),
-          categoryId: Value(categoryId),
-          prices: Value(json.encode(product.prices)),
-        ),
+  void saveProduct(ProductData product, int categoryId) {
+    database.into(database.products).insertOnConflictUpdate(
+          ProductsCompanion(
+            id: Value(product.id),
+            name: Value(product.name),
+            description: Value(product.description),
+            imageUrl: Value(product.imageUrl),
+            categoryId: Value(categoryId),
+            prices: Value(json.encode(product.prices)),
+          ),
         );
   }
 
   Future<List<ProductData>> fetchAnyProducts() async {
-    var productsFromDB =
-        await (database.select(database.products)).get();
+    var productsFromDB = await (database.select(database.products)).get();
     List<ProductData> products = [];
     for (var product in productsFromDB) {
       var jsonProduct = product.toJson();

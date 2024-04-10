@@ -48,11 +48,8 @@ final class CoffeShopApiDataSource implements IDataSource {
         throw Exception('Failed to fetch data');
       }
     } on Exception catch (e) {
-      if (e is TimeoutException) {
-        throw socketException;
-      } else {
-        rethrow;
-      }
+      noInternet(e);
+      rethrow;
     }
   }
 
@@ -69,11 +66,8 @@ final class CoffeShopApiDataSource implements IDataSource {
         throw Exception('Failed to fetch data');
       }
     } on Exception catch (e) {
-      if (e is TimeoutException) {
-        throw socketException;
-      } else {
-        rethrow;
-      }
+      noInternet(e);
+      rethrow;
     }
   }
 
@@ -94,29 +88,40 @@ final class CoffeShopApiDataSource implements IDataSource {
 
   @override
   Future<bool> postOrder(Map<String, int> orderData) async {
-    Map<String, dynamic> requestBody = {
-      'positions': orderData,
-      'token': '',
-    };
+    try {
+      Map<String, dynamic> requestBody = {
+        'positions': orderData,
+        'token': '',
+      };
 
-    var url = Uri.https(
-      baseUrl,
-      orderVersion,
-    );
-    final response = await client
-        .post(
-          url,
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(requestBody),
-        )
-        .timeout(durationForSmallRequest);
+      var url = Uri.https(
+        baseUrl,
+        orderVersion,
+      );
+      final response = await client
+          .post(
+            url,
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode(requestBody),
+          )
+          .timeout(durationForSmallRequest);
 
-    if (response.statusCode == 201) {
-      return true;
-    } else if (response.statusCode == 422) {
-      throw Exception('Validation Error');
-    } else {
-      return false;
+      if (response.statusCode == 201) {
+        return true;
+      } else if (response.statusCode == 422) {
+        throw Exception('Validation Error');
+      } else {
+        return false;
+      }
+    } on Exception catch (e) {
+      noInternet(e);
+      rethrow;
+    }
+  }
+
+  void noInternet(Exception e) {
+    if (e is TimeoutException || e is SocketException) {
+      throw socketException;
     }
   }
 }
