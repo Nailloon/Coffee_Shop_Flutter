@@ -36,7 +36,7 @@ class ProductRepository implements IProductRepository {
       {int id = 1, int limit = limitForPage, int page = 0}) async {
     final Map<String, dynamic> jsonResponse =
         await api.fetchProductsByCategory(id, limit, page);
-        final jsonResponseAsList = returnJsonDataAsList(jsonResponse);
+    final jsonResponseAsList = returnJsonDataAsList(jsonResponse);
     for (var productJson in jsonResponseAsList) {
       categoryData.addProductIntoCategory(ProductData.fromJson(productJson));
     }

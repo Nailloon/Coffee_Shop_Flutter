@@ -8,10 +8,12 @@ import 'package:coffee_shop/src/features/database/savable_product_repository/sav
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 
-class DatabaseRepository implements ISavableRepository{
+class DatabaseRepository implements ISavableRepository {
   static ISavableDataSource dataSource = DataBaseSource();
-  ISavableCategoryRepository categoryRepository = SavableCategoryRepository(dataSource);
-  ISavableProductRepository productRepository = SavableProductRepository(dataSource);
+  ISavableCategoryRepository categoryRepository =
+      SavableCategoryRepository(dataSource);
+  ISavableProductRepository productRepository =
+      SavableProductRepository(dataSource);
   static const int limitPerPage = 25;
   static const int initialOffset = 0;
   @override

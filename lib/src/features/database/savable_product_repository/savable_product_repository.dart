@@ -3,7 +3,7 @@ import 'package:coffee_shop/src/features/database/savable_product_repository/int
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 
-class SavableProductRepository implements ISavableProductRepository{
+class SavableProductRepository implements ISavableProductRepository {
   final ISavableDataSource dataSource;
   SavableProductRepository(this.dataSource);
 

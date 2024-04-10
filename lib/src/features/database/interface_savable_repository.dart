@@ -6,5 +6,6 @@ abstract interface class ISavableRepository {
       int limitForCategory);
   void saveCategories(List<CategoryData> categories);
   void saveProducts(List<ProductData> products, int categoryId);
-  Future<bool> loadMoreProductsByCategory(CategoryData category, int page, {int limitForCategory});
+  Future<bool> loadMoreProductsByCategory(CategoryData category, int page,
+      {int limitForCategory});
 }
