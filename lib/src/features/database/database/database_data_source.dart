@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:coffee_shop/src/features/database/coffee_database.dart';
-import 'package:coffee_shop/src/features/database/interface_savable_data_source.dart';
+import 'package:coffee_shop/src/features/database/data_source/coffee_database.dart';
+import 'package:coffee_shop/src/features/database/data_source/interface_savable_data_source.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 import 'package:drift/drift.dart';
