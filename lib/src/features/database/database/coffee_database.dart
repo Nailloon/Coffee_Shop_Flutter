@@ -7,7 +7,7 @@ import 'package:path/path.dart' as p;
 import 'package:sqlite3/sqlite3.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
-part '../database/coffee_database.g.dart';
+part 'coffee_database.g.dart';
 
 @DataClassName('Category')
 class Categories extends Table {

@@ -1,20 +1,23 @@
-import 'package:coffee_shop/src/features/database/database/database_data_source.dart';
-import 'package:coffee_shop/src/features/database/data_source/interface_savable_data_source.dart';
 import 'package:coffee_shop/src/features/database/interface_savable_repository.dart';
+import 'package:coffee_shop/src/features/database/savable_category_repository/interface_savable_category_repository.dart';
+import 'package:coffee_shop/src/features/database/savable_category_repository/savable_category_repository.dart';
+import 'package:coffee_shop/src/features/database/savable_product_repository/interface_savable_product_repository.dart';
+import 'package:coffee_shop/src/features/database/savable_product_repository/savable_product_repository.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 
 class DatabaseRepository implements ISavableRepository {
-  ISavableDataSource database = DataBaseSource();
-  final int limitPerPage = 25;
-  final int initialOffset = 0;
+  ISavableCategoryRepository categoryRepository = SavableCategoryRepository();
+  ISavableProductRepository productRepository = SavableProductRepository();
+  static const int limitPerPage = 25;
+  static const int initialOffset = 0;
   @override
   Future<List<CategoryData>> initialLoadCategoriesWithProducts(
       int limitForCategory) async {
-    List<CategoryData> categories = await database.fetchOnlyCategories();
+    List<CategoryData> categories = await categoryRepository.loadCategories();
     for (var category in categories) {
-      List<ProductData> products = await database.fetchProductsByCategory(
-          category.id, limitForCategory, initialOffset);
+      List<ProductData> products = await productRepository
+          .loadMoreProductsByCategory(category, limitPerPage, initialOffset);
       for (var product in products) {
         category.addProductIntoCategory(product);
       }
@@ -24,21 +27,21 @@ class DatabaseRepository implements ISavableRepository {
 
   @override
   void saveCategories(List<CategoryData> categories) {
-    database.saveCategoriesWithProducts(categories);
+    categoryRepository.saveCategories(categories);
   }
 
   @override
   void saveProducts(List<ProductData> products, int categoryId) {
-    database.saveProducts(products, categoryId);
+    productRepository.saveProducts(products, categoryId);
   }
 
   @override
-  Future<bool> loadMoreProductsByCategory(
-      CategoryData category, int page) async {
+  Future<bool> loadMoreProductsByCategory(CategoryData category, int page,
+      {int limitForCategory = limitPerPage}) async {
     int count = 0;
     final int offset = page * limitPerPage;
-    List<ProductData> products = await database.fetchProductsByCategory(
-        category.id, limitPerPage, offset);
+    List<ProductData> products = await productRepository
+        .loadMoreProductsByCategory(category, limitPerPage, offset);
     for (var product in products) {
       category.addProductIntoCategory(product);
       count += 1;

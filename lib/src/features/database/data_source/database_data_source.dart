@@ -1,16 +1,18 @@
 import 'dart:convert';
 
-import 'package:coffee_shop/src/features/database/data_source/coffee_database.dart';
+import 'package:coffee_shop/src/features/database/database/coffee_database.dart';
 import 'package:coffee_shop/src/features/database/data_source/interface_savable_data_source.dart';
+import 'package:coffee_shop/src/features/database/database/database_manager.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 
 final class DataBaseSource implements ISavableDataSource {
-  final database = AppDatabase();
+  final DatabaseManager _databaseManager = DatabaseManager();
   @override
   void changeCategory(CategoryData category) {
+    final database = _databaseManager.database;
     database
         .update(database.categories)
         .replace(CategoriesCompanion(name: Value(category.name)));
@@ -24,6 +26,7 @@ final class DataBaseSource implements ISavableDataSource {
 
   @override
   Future<List<CategoryData>> fetchOnlyCategories() async {
+    final database = _databaseManager.database;
     List<Category> allItems = await database.select(database.categories).get();
     List<CategoryData> categories = [];
     debugPrint('items in database: $allItems');
@@ -44,6 +47,7 @@ final class DataBaseSource implements ISavableDataSource {
   @override
   Future<List<ProductData>> fetchProductsByCategory(
       int categoryId, int limit, int offset) async {
+        final database = _databaseManager.database;
     List<Product> productsFromDatabase =
         await (database.select(database.products)
               ..where((product) => product.categoryId.equals(categoryId))
@@ -68,6 +72,7 @@ final class DataBaseSource implements ISavableDataSource {
 
   @override
   void saveCategory(CategoryData category) {
+    final database = _databaseManager.database;
     database.into(database.categories).insertOnConflictUpdate(
         CategoriesCompanion(
             id: Value(category.id), name: Value(category.name)));
@@ -82,6 +87,7 @@ final class DataBaseSource implements ISavableDataSource {
 
   @override
   void saveProduct(ProductData product, int categoryId) {
+    final database = _databaseManager.database;
     database.into(database.products).insertOnConflictUpdate(
           ProductsCompanion(
             id: Value(product.id),
@@ -95,6 +101,7 @@ final class DataBaseSource implements ISavableDataSource {
   }
 
   Future<List<ProductData>> fetchAnyProducts() async {
+    final database = _databaseManager.database;
     var productsFromDB = await (database.select(database.products)).get();
     List<ProductData> products = [];
     for (var product in productsFromDB) {
