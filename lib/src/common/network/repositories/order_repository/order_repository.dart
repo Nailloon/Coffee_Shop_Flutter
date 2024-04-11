@@ -1,4 +1,4 @@
-import 'package:coffee_shop/src/common/network/data_providers/coffeee_api_source.dart';
+import 'package:coffee_shop/src/common/network/data_sources/coffeee_api_source.dart';
 import 'package:coffee_shop/src/common/network/repositories/order_repository/interface_order_repository.dart';
 
 class OrderRepository implements IOrderRepository {

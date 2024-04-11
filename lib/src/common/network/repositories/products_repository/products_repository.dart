@@ -1,4 +1,4 @@
-import 'package:coffee_shop/src/common/network/data_providers/coffeee_api_source.dart';
+import 'package:coffee_shop/src/common/network/data_sources/coffeee_api_source.dart';
 import 'package:coffee_shop/src/common/network/repositories/products_repository/interface_products_repository.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
