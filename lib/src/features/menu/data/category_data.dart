@@ -32,4 +32,7 @@ class CategoryData {
   void addProductIntoCategory(ProductData product) {
     products.add(product);
   }
+  void addListOfProductsIntoCategory(List<ProductData> products){
+    this.products.addAll(products);
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffee_shop/src/common/functions/price_functions.dart';
-import 'package:coffee_shop/src/common/network/repositories/interface_repository.dart';
+import 'package:coffee_shop/src/common/network/repositories/order_repository/interface_order_repository.dart';
 import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 
@@ -12,7 +12,7 @@ final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
     this.productsInCart,
     this.price,
     this.currency,
-    this.coffeeRepository,
+    this.orderRepository,
   ) : super(ProductCartInitial()) {
     on<AddProductToCart>(_handleAddProductToCart);
     on<RemoveProductFromCart>(_handleRemoveProductFromCart);
@@ -25,7 +25,7 @@ final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
   final ProductCart productsInCart;
   double price;
   final String currency;
-  final IRepository coffeeRepository;
+  final IOrderRepository orderRepository;
 
   void _handleAddProductToCart(
       AddProductToCart event, Emitter<ProductCartState> emit) {
@@ -73,7 +73,7 @@ final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
     final Map<String, int> productAndQuantity = event.products.getIdAndCount();
     try {
       final response =
-          await coffeeRepository.sendOrder(products: productAndQuantity);
+          await orderRepository.sendOrder(products: productAndQuantity);
       emit(ProductCartPostOrderComplete(complete: response));
     } catch (e) {
       emit(ProductCartPostOrderFailure(exception: e));

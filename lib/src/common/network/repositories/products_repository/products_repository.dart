@@ -1,23 +1,25 @@
-import 'package:coffee_shop/src/common/network/data_sources/coffeee_api_source.dart';
+import 'dart:io';
+
+import 'package:coffee_shop/src/common/network/data_sources/products_data_source/interface_products_data_source.dart';
 import 'package:coffee_shop/src/common/network/repositories/products_repository/interface_products_repository.dart';
+import 'package:coffee_shop/src/features/database/data_source/savable_products_data_source.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
 import 'package:coffee_shop/src/features/menu/data/product_data.dart';
 
 class ProductRepository implements IProductRepository {
-  final api = CoffeShopApiDataSource();
-  static const int limitForPage = 25;
+  final IProductsDataSource networkProductsDataSource;
+  final ISavableProductsDataSource savableProductsDataSource;
+  const ProductRepository(
+      this.networkProductsDataSource, this.savableProductsDataSource,
+      {this.limitForPage = 25});
+  final int limitForPage;
+
   @override
   Future<bool> loadMoreProductsByCategory(
       CategoryData category, int page) async {
-    final Map<String, dynamic> jsonResponse =
-        await api.fetchProductsByCategory(category.id, limitForPage, page);
-    int count = 0;
-    final jsonResponseAsList = returnJsonDataAsList(jsonResponse);
-    for (var productJson in jsonResponseAsList) {
-      category.addProductIntoCategory(ProductData.fromJson(productJson));
-      count += 1;
-    }
-    if (count < limitForPage) {
+    List<ProductData> products = await _loadProductsByCategoryFromAnyRepository(
+        category, limitForPage, page);
+    if (products.length < limitForPage) {
       return true;
     } else {
       return false;
@@ -26,43 +28,51 @@ class ProductRepository implements IProductRepository {
 
   @override
   Future<ProductData> loadProductByID({required int id}) async {
-    final Map<String, dynamic> jsonResponse = await api.fetchProductByID(id);
-
-    return ProductData.fromJson(jsonResponse);
-  }
-
-  @override
-  Future<void> loadProductsByCategory(CategoryData categoryData,
-      {int id = 1, int limit = limitForPage, int page = 0}) async {
-    final Map<String, dynamic> jsonResponse =
-        await api.fetchProductsByCategory(id, limit, page);
-    final jsonResponseAsList = returnJsonDataAsList(jsonResponse);
-    for (var productJson in jsonResponseAsList) {
-      categoryData.addProductIntoCategory(ProductData.fromJson(productJson));
+    try {
+      return networkProductsDataSource.fetchProductByID(id);
+    } on Exception catch (e) {
+      if (e is SocketException) {
+        return savableProductsDataSource.fetchProductByID(id);
+      }
+      rethrow;
     }
   }
 
   @override
-  Future<List<CategoryData>> loadAnyProducts(int limitForProducts) async {
-    var data = await api.fetchAnyProducts(limitForProducts);
-    List<CategoryData> categories = [];
+  Future<void> initialLoadProductsByCategory(CategoryData categoryData,
+      {int page = 0}) async {
+    await _loadProductsByCategoryFromAnyRepository(
+        categoryData, limitForPage, page);
+  }
 
-    for (var productJson in data) {
-      var category = CategoryData.fromJsonWithProduct(
-          productJson['category'], productJson);
-      bool existing = false;
-      for (var existingCategory in categories) {
-        if (existingCategory.id == category.id) {
-          existingCategory.products.addAll(category.products);
-          existing = true;
-          break;
-        }
+  @override
+  Future<List<ProductData>> loadAnyProducts(int limitForProducts) async {
+    try {
+      return await networkProductsDataSource.fetchAnyProducts(limitForProducts);
+    } on Exception catch (e) {
+      if (e is SocketException) {
+        return await savableProductsDataSource
+            .fetchAnyProducts(limitForProducts);
       }
-      if (!existing) {
-        categories.add(category);
+      rethrow;
+    }
+  }
+
+  Future<List<ProductData>> _loadProductsByCategoryFromAnyRepository(
+      CategoryData category, int limit, int page) async {
+    List<ProductData> products = [];
+    try {
+      products = await networkProductsDataSource.fetchProductsByCategory(
+          category.id, limitForPage, page);
+      savableProductsDataSource.saveProducts(products, category.id);
+    } on Exception catch (e) {
+      if (e is SocketException) {
+        final int offset = limitForPage * page;
+        products = await savableProductsDataSource.fetchProductsByCategory(
+            category.id, limitForPage, offset);
       }
     }
-
-    return categories;
+    category.addListOfProductsIntoCategory(products);
+    return products;
   }
 }
