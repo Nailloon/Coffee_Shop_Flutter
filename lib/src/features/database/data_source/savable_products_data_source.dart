@@ -12,13 +12,14 @@ abstract interface class ISavableProductsDataSource
   void saveProduct(ProductData product, int categoryId);
 }
 
-class SavableProductsDataSource implements ISavableProductsDataSource{
+class SavableProductsDataSource implements ISavableProductsDataSource {
   final AppDatabase database;
   const SavableProductsDataSource(this.database);
-  
+
   @override
-  Future<List<ProductData>> fetchAnyProducts(int count) async{
-    var productsFromDB = await (database.select(database.products)..limit(count)).get();
+  Future<List<ProductData>> fetchAnyProducts(int count) async {
+    var productsFromDB =
+        await (database.select(database.products)..limit(count)).get();
     List<ProductData> products = [];
     for (var product in productsFromDB) {
       var jsonProduct = product.toJson();
@@ -29,13 +30,16 @@ class SavableProductsDataSource implements ISavableProductsDataSource{
   }
 
   @override
-  Future<ProductData> fetchProductByID(int id) async{
-    List<Product> product = await (database.select(database.products)..where((product) => product.id.equals(id))).get();
+  Future<ProductData> fetchProductByID(int id) async {
+    List<Product> product = await (database.select(database.products)
+          ..where((product) => product.id.equals(id)))
+        .get();
     return ProductData.fromJson(product[0].toJson());
   }
 
   @override
-  Future<List<ProductData>> fetchProductsByCategory(int categoryId, int limit, int offset) async{
+  Future<List<ProductData>> fetchProductsByCategory(
+      int categoryId, int limit, int offset) async {
     List<Product> productsFromDatabase =
         await (database.select(database.products)
               ..where((product) => product.categoryId.equals(categoryId))
@@ -70,5 +74,4 @@ class SavableProductsDataSource implements ISavableProductsDataSource{
       saveProduct(product, categoryId);
     }
   }
-  
 }

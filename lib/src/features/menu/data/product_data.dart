@@ -17,13 +17,14 @@ class ProductData {
 
   factory ProductData.fromJson(Map<String, dynamic> json) {
     Map<String, double> pricesMap = {};
-    if (json['prices'] is String){
-          List<Map<String, dynamic>> formattedPrices = [];
-    var prices = jsonDecode(json['prices']);
-    prices.forEach((key, value) {
-      formattedPrices.add({"currency": key.toString(), "value": value.toString()});
-    });
-    json['prices'] = formattedPrices;
+    if (json['prices'] is String) {
+      List<Map<String, dynamic>> formattedPrices = [];
+      var prices = jsonDecode(json['prices']);
+      prices.forEach((key, value) {
+        formattedPrices
+            .add({"currency": key.toString(), "value": value.toString()});
+      });
+      json['prices'] = formattedPrices;
     }
     for (var price in json['prices']) {
       pricesMap[price['currency']] = double.parse(price['value']);

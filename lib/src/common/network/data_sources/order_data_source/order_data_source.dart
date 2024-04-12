@@ -5,7 +5,7 @@ import 'package:coffee_shop/src/common/network/data_sources/order_data_source/in
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class OrderDataSource implements IOrderDataSource{
+class OrderDataSource implements IOrderDataSource {
   final String baseUrl = 'coffeeshop.academy.effective.band';
   final String apiVersion = '/api/v1/products';
   final String orderVersion = 'api/v1/orders';
@@ -13,7 +13,7 @@ class OrderDataSource implements IOrderDataSource{
   final http.Client client;
   OrderDataSource(this.client);
   @override
-  Future<bool> postOrder(Map<String, int> orderData) async{
+  Future<bool> postOrder(Map<String, int> orderData) async {
     debugPrint(orderData.toString());
     try {
       Map<String, dynamic> requestBody = {
@@ -45,5 +45,4 @@ class OrderDataSource implements IOrderDataSource{
       rethrow;
     }
   }
-  
 }
