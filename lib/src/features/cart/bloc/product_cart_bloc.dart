@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:coffee_shop/src/common/functions/price_functions.dart';
 import 'package:coffee_shop/src/common/network/repositories/order_repository/interface_order_repository.dart';
 import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
-import 'package:coffee_shop/src/features/menu/data/product_data.dart';
+import 'package:coffee_shop/src/features/menu/models/product_model.dart';
 
 part 'product_cart_event.dart';
 part 'product_cart_state.dart';
@@ -54,7 +54,7 @@ final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
 
   void _handleViewAllProductCart(
       ViewAllProductCart event, Emitter<ProductCartState> emit) {
-    List<ProductData> result = [];
+    List<ProductModel> result = [];
     productsInCart.getProducts().forEach((product, count) {
       for (int i = 0; i < count; i++) {
         result.add(product);

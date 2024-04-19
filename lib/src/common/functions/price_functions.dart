@@ -1,4 +1,4 @@
-import 'package:coffee_shop/src/features/menu/data/product_data.dart';
+import 'package:coffee_shop/src/features/menu/models/product_model.dart';
 import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
 
 String formatPrice(double price) {
@@ -20,7 +20,7 @@ String getCurrencySymbol(String currency) {
   return currencySymbols[currency] ?? currency;
 }
 
-double priceExist(ProductData product) {
+double priceExist(ProductModel product) {
   if (product.prices[currency] != null) {
     return product.prices[currency]!;
   } else {

@@ -1,8 +1,8 @@
-import 'package:coffee_shop/src/features/menu/data/product_data.dart';
+import 'package:coffee_shop/src/features/menu/data/product_dto.dart';
 
 abstract interface class IProductsDataSource {
-  Future<List<ProductData>> fetchAnyProducts(int count);
-  Future<List<ProductData>> fetchProductsByCategory(
+  Future<List<ProductDTO>> fetchAnyProducts(int count);
+  Future<List<ProductDTO>> fetchProductsByCategory(
       int categoryId, int limit, int page);
-  Future<ProductData> fetchProductByID(int id);
+  Future<ProductDTO> fetchProductByID(int id);
 }

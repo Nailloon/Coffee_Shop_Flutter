@@ -15,7 +15,7 @@ final class ProductCartChanged extends ProductCartState {
 final class EmptyProductCart extends ProductCartState {}
 
 final class AllProductsInCartAsList extends ProductCartState {
-  final List<ProductData> cart;
+  final List<ProductModel> cart;
   final ProductCart productCart;
   const AllProductsInCartAsList(this.cart, this.productCart);
 }

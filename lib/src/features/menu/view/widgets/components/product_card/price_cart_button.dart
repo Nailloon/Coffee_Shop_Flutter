@@ -1,5 +1,5 @@
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
-import 'package:coffee_shop/src/features/menu/data/product_data.dart';
+import 'package:coffee_shop/src/features/menu/models/product_model.dart';
 import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/product_card/price_button.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PriceCartButton extends StatefulWidget {
-  final ProductData product;
+  final ProductModel product;
 
   const PriceCartButton({super.key, required this.product});
 

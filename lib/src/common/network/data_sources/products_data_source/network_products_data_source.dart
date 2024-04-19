@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:coffee_shop/src/common/functions/convert_functions.dart';
 import 'package:coffee_shop/src/common/functions/exception_functions.dart';
 import 'package:coffee_shop/src/common/network/data_sources/products_data_source/interface_products_data_source.dart';
-import 'package:coffee_shop/src/features/menu/data/product_data.dart';
+import 'package:coffee_shop/src/features/menu/data/product_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,7 +15,7 @@ class NetworkProductsDataSource implements IProductsDataSource {
   final http.Client client;
   NetworkProductsDataSource(this.client);
   @override
-  Future<List<ProductData>> fetchAnyProducts(int count) async {
+  Future<List<ProductDTO>> fetchAnyProducts(int count) async {
     try {
       var url = Uri.https(baseUrl, '$apiVersion/', {
         'page': '0',
@@ -25,10 +25,10 @@ class NetworkProductsDataSource implements IProductsDataSource {
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(utf8.decode(response.bodyBytes));
-        final List<ProductData> products = [];
+        final List<ProductDTO> products = [];
         List<dynamic> jsonList = returnJsonDataAsList(jsonData);
         for (var json in jsonList) {
-          products.add(ProductData.fromJson(json));
+          products.add(ProductDTO.fromJson(json));
         }
         return products;
       } else {
@@ -41,7 +41,7 @@ class NetworkProductsDataSource implements IProductsDataSource {
   }
 
   @override
-  Future<ProductData> fetchProductByID(int id) async {
+  Future<ProductDTO> fetchProductByID(int id) async {
     try {
       var url = Uri.https(
         baseUrl,
@@ -50,7 +50,7 @@ class NetworkProductsDataSource implements IProductsDataSource {
       final response = await client.get(url).timeout(durationForSmallRequest);
       if (response.statusCode == 200) {
         var jsonData = json.decode(utf8.decode(response.bodyBytes));
-        return ProductData.fromJson(jsonData);
+        return ProductDTO.fromJson(jsonData);
       } else {
         throw Exception('Failed to fetch data');
       }
@@ -61,7 +61,7 @@ class NetworkProductsDataSource implements IProductsDataSource {
   }
 
   @override
-  Future<List<ProductData>> fetchProductsByCategory(
+  Future<List<ProductDTO>> fetchProductsByCategory(
       int categoryId, int limit, int page) async {
     try {
       var url = Uri.https(baseUrl, apiVersion, {
@@ -73,11 +73,11 @@ class NetworkProductsDataSource implements IProductsDataSource {
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(utf8.decode(response.bodyBytes));
-        final List<ProductData> products = [];
+        final List<ProductDTO> products = [];
         List<dynamic> jsonList = returnJsonDataAsList(jsonData);
         debugPrint(products.toString());
         for (var json in jsonList) {
-          products.add(ProductData.fromJson(json));
+          products.add(ProductDTO.fromJson(json));
         }
         return products;
       } else {

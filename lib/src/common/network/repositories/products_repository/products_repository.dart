@@ -4,7 +4,9 @@ import 'package:coffee_shop/src/common/network/data_sources/products_data_source
 import 'package:coffee_shop/src/common/network/repositories/products_repository/interface_products_repository.dart';
 import 'package:coffee_shop/src/features/database/data_source/savable_products_data_source.dart';
 import 'package:coffee_shop/src/features/menu/data/category_data.dart';
-import 'package:coffee_shop/src/features/menu/data/product_data.dart';
+import 'package:coffee_shop/src/features/menu/data/product_dto.dart';
+import 'package:coffee_shop/src/features/menu/models/product_model.dart';
+import 'package:coffee_shop/src/features/menu/utils/product_mapper.dart';
 
 class ProductRepository implements IProductRepository {
   final IProductsDataSource networkProductsDataSource;
@@ -17,8 +19,9 @@ class ProductRepository implements IProductRepository {
   @override
   Future<bool> loadMoreProductsByCategory(
       CategoryData category, int page) async {
-    List<ProductData> products = await _loadProductsByCategoryFromAnyRepository(
-        category, limitForPage, page);
+    List<ProductModel> products =
+        await _loadProductsByCategoryFromAnyRepository(
+            category, limitForPage, page);
     if (products.length < limitForPage) {
       return true;
     } else {
@@ -27,12 +30,14 @@ class ProductRepository implements IProductRepository {
   }
 
   @override
-  Future<ProductData> loadProductByID({required int id}) async {
+  Future<ProductModel> loadProductByID({required int id}) async {
     try {
-      return networkProductsDataSource.fetchProductByID(id);
+      ProductDTO dto = await networkProductsDataSource.fetchProductByID(id);
+      return dto.toModel();
     } on Exception catch (e) {
       if (e is SocketException) {
-        return savableProductsDataSource.fetchProductByID(id);
+        ProductDTO dto = await savableProductsDataSource.fetchProductByID(id);
+        return dto.toModel();
       }
       rethrow;
     }
@@ -46,30 +51,47 @@ class ProductRepository implements IProductRepository {
   }
 
   @override
-  Future<List<ProductData>> loadAnyProducts(int limitForProducts) async {
+  Future<List<ProductModel>> loadAnyProducts(int limitForProducts) async {
+    List<ProductModel> products = [];
     try {
-      return await networkProductsDataSource.fetchAnyProducts(limitForProducts);
+      List<ProductDTO> dtoProducts =
+          await networkProductsDataSource.fetchAnyProducts(limitForProducts);
+
+      for (var element in dtoProducts) {
+        products.add(element.toModel());
+      }
+      return products;
     } on Exception catch (e) {
       if (e is SocketException) {
-        return await savableProductsDataSource
-            .fetchAnyProducts(limitForProducts);
+        List<ProductDTO> dtoProducts =
+            await savableProductsDataSource.fetchAnyProducts(limitForProducts);
+        for (var element in dtoProducts) {
+          products.add(element.toModel());
+        }
+        return products;
       }
       rethrow;
     }
   }
 
-  Future<List<ProductData>> _loadProductsByCategoryFromAnyRepository(
+  Future<List<ProductModel>> _loadProductsByCategoryFromAnyRepository(
       CategoryData category, int limit, int page) async {
-    List<ProductData> products = [];
+    List<ProductModel> products = [];
     try {
-      products = await networkProductsDataSource.fetchProductsByCategory(
-          category.id, limitForPage, page);
-      savableProductsDataSource.saveProducts(products, category.id);
+      List<ProductDTO> dtoProducts = await networkProductsDataSource
+          .fetchProductsByCategory(category.id, limitForPage, page);
+      for (var element in dtoProducts) {
+        products.add(element.toModel());
+      }
+      savableProductsDataSource.saveProducts(dtoProducts, category.id);
     } on Exception catch (e) {
       if (e is SocketException) {
         final int offset = limitForPage * page;
-        products = await savableProductsDataSource.fetchProductsByCategory(
-            category.id, limitForPage, offset);
+        List<ProductDTO> dtoProducts = await savableProductsDataSource
+            .fetchProductsByCategory(category.id, limitForPage, offset);
+        for (var element in dtoProducts) {
+          products.add(element.toModel());
+        }
       }
     }
     category.addListOfProductsIntoCategory(products);

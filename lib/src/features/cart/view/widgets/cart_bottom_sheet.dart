@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:coffee_shop/src/common/functions/price_functions.dart';
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
-import 'package:coffee_shop/src/features/menu/data/product_data.dart';
+import 'package:coffee_shop/src/features/menu/models/product_model.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:coffee_shop/src/theme/image_sources.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +81,7 @@ class CartBottomSheet extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: state.cart.length,
                       itemBuilder: (context, index) {
-                        ProductData product = state.cart[index];
+                        ProductModel product = state.cart[index];
 
                         return ListTile(
                           leading: CachedNetworkImage(
