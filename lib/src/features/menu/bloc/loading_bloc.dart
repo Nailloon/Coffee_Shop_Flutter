@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffee_shop/src/common/network/repositories/category_repository/interface_category_repository.dart';
 import 'package:coffee_shop/src/common/network/repositories/products_repository/interface_products_repository.dart';
-import 'package:coffee_shop/src/features/menu/data/category_data.dart';
+import 'package:coffee_shop/src/features/menu/models/category_model.dart';
 
 part 'loading_event.dart';
 part 'loading_state.dart';
@@ -13,7 +13,7 @@ final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
     on<LoadCategoriesEvent>(_handleLoadCategoriesEvent);
     on<LoadMoreProductsEvent>(_handleLoadMoreProductsEvent);
   }
-  List<CategoryData> categoriesForApp;
+  List<CategoryModel> categoriesForApp;
   final ICategoryRepository categoryRepository;
   final IProductRepository productRepository;
   final Map<int, List<dynamic>> categoryEnd;
@@ -22,7 +22,7 @@ final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
       LoadCategoriesEvent event, Emitter<LoadingState> emit) async {
     try {
       categoriesForApp = await categoryRepository.loadOnlyCategories();
-      for (CategoryData category in categoriesForApp) {
+      for (CategoryModel category in categoriesForApp) {
         await productRepository.initialLoadProductsByCategory(category);
         categoryEnd.addAll({
           category.id: [false, 1]

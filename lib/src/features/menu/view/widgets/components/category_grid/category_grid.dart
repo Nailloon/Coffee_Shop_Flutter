@@ -1,11 +1,11 @@
 import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
-import 'package:coffee_shop/src/features/menu/data/category_data.dart';
+import 'package:coffee_shop/src/features/menu/models/category_model.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/product_card/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoryGridView extends StatelessWidget {
-  final CategoryData category;
+  final CategoryModel category;
   final String currency;
 
   const CategoryGridView(

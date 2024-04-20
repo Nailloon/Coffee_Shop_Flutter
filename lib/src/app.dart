@@ -13,7 +13,7 @@ import 'package:coffee_shop/src/features/database/data_source/savable_category_d
 import 'package:coffee_shop/src/features/database/data_source/savable_products_data_source.dart';
 import 'package:coffee_shop/src/features/database/database/coffee_database.dart';
 import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
-import 'package:coffee_shop/src/features/menu/data/category_data.dart';
+import 'package:coffee_shop/src/features/menu/models/category_model.dart';
 import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/menu_screen.dart';
 import 'package:coffee_shop/src/theme/theme.dart';
@@ -34,7 +34,7 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
   final AppDatabase database = AppDatabase();
   final http.Client client = http.Client();
   ProductCart productsInCart = ProductCart();
-  List<CategoryData> categoriesForApp = [];
+  List<CategoryModel> categoriesForApp = [];
   Map<int, List<dynamic>> categoryEnd = {};
 
   @override

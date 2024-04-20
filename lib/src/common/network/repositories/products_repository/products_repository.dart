@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:coffee_shop/src/common/network/data_sources/products_data_source/interface_products_data_source.dart';
 import 'package:coffee_shop/src/common/network/repositories/products_repository/interface_products_repository.dart';
 import 'package:coffee_shop/src/features/database/data_source/savable_products_data_source.dart';
-import 'package:coffee_shop/src/features/menu/data/category_data.dart';
+import 'package:coffee_shop/src/features/menu/models/category_model.dart';
 import 'package:coffee_shop/src/features/menu/data/product_dto.dart';
 import 'package:coffee_shop/src/features/menu/models/product_model.dart';
 import 'package:coffee_shop/src/features/menu/utils/product_mapper.dart';
@@ -18,7 +18,7 @@ class ProductRepository implements IProductRepository {
 
   @override
   Future<bool> loadMoreProductsByCategory(
-      CategoryData category, int page) async {
+      CategoryModel category, int page) async {
     List<ProductModel> products =
         await _loadProductsByCategoryFromAnyRepository(
             category, limitForPage, page);
@@ -44,7 +44,7 @@ class ProductRepository implements IProductRepository {
   }
 
   @override
-  Future<void> initialLoadProductsByCategory(CategoryData categoryData,
+  Future<void> initialLoadProductsByCategory(CategoryModel categoryData,
       {int page = 0}) async {
     await _loadProductsByCategoryFromAnyRepository(
         categoryData, limitForPage, page);
@@ -75,7 +75,7 @@ class ProductRepository implements IProductRepository {
   }
 
   Future<List<ProductModel>> _loadProductsByCategoryFromAnyRepository(
-      CategoryData category, int limit, int page) async {
+      CategoryModel category, int limit, int page) async {
     List<ProductModel> products = [];
     try {
       List<ProductDTO> dtoProducts = await networkProductsDataSource

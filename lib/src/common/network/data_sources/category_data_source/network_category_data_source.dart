@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:coffee_shop/src/common/functions/convert_functions.dart';
 import 'package:coffee_shop/src/common/functions/exception_functions.dart';
 import 'package:coffee_shop/src/common/network/data_sources/category_data_source/interface_category_data_source.dart';
-import 'package:coffee_shop/src/features/menu/data/category_data.dart';
+import 'package:coffee_shop/src/features/menu/data/category_dto.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkCategoryDataSource implements ICategoryDataSource {
@@ -14,7 +14,7 @@ class NetworkCategoryDataSource implements ICategoryDataSource {
   NetworkCategoryDataSource(this.client);
 
   @override
-  Future<List<CategoryData>> fetchOnlyCategories() async {
+  Future<List<CategoryDTO>> fetchOnlyCategories() async {
     try {
       var url = Uri.https(baseUrl, '$apiVersion/categories');
       final response = await client.get(url).timeout(durationForBigRequest);
@@ -22,11 +22,11 @@ class NetworkCategoryDataSource implements ICategoryDataSource {
       if (response.statusCode == 200) {
         var jsonData = json.decode(utf8.decode(response.bodyBytes));
         List<dynamic> categoriesData = returnJsonDataAsList(jsonData);
-        List<CategoryData> categories = [];
+        List<CategoryDTO> categories = [];
 
-        for (var categoryData in categoriesData) {
-          CategoryData category = CategoryData(
-              id: categoryData['id'], name: categoryData['slug'], products: []);
+        for (var jsonCategory in categoriesData) {
+          CategoryDTO category =
+              CategoryDTO.fromJsonWithoutProducts(jsonCategory);
           categories.add(category);
         }
 

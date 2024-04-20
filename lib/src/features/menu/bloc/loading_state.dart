@@ -1,7 +1,7 @@
 part of 'loading_bloc.dart';
 
 sealed class LoadingState {
-  final List<CategoryData> categories;
+  final List<CategoryModel> categories;
   final Map<int, List<dynamic>> loadingCompleteForCategory;
   const LoadingState(this.categories, this.loadingCompleteForCategory);
 }

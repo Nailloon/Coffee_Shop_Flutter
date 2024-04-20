@@ -1,5 +1,5 @@
-import 'package:coffee_shop/src/features/menu/data/category_data.dart';
+import 'package:coffee_shop/src/features/menu/models/category_model.dart';
 
 abstract interface class ICategoryRepository {
-  Future<List<CategoryData>> loadOnlyCategories();
+  Future<List<CategoryModel>> loadOnlyCategories();
 }

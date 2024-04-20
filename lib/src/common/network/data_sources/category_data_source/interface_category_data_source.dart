@@ -1,5 +1,5 @@
-import 'package:coffee_shop/src/features/menu/data/category_data.dart';
+import 'package:coffee_shop/src/features/menu/data/category_dto.dart';
 
 abstract interface class ICategoryDataSource {
-  Future<List<CategoryData>> fetchOnlyCategories();
+  Future<List<CategoryDTO>> fetchOnlyCategories();
 }

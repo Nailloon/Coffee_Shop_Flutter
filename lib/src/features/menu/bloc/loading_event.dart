@@ -7,6 +7,6 @@ sealed class LoadingEvent {
 final class LoadCategoriesEvent extends LoadingEvent {}
 
 final class LoadMoreProductsEvent extends LoadingEvent {
-  final CategoryData category;
+  final CategoryModel category;
   const LoadMoreProductsEvent(this.category);
 }
