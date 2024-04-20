@@ -10,8 +10,6 @@ import 'package:http/http.dart' as http;
 class NetworkProductsDataSource implements IProductsDataSource {
   final String baseUrl = 'coffeeshop.academy.effective.band';
   final String apiVersion = '/api/v1/products';
-  final Duration durationForBigRequest = const Duration(milliseconds: 800);
-  final Duration durationForSmallRequest = const Duration(milliseconds: 500);
   final http.Client client;
   NetworkProductsDataSource(this.client);
   @override
@@ -21,7 +19,7 @@ class NetworkProductsDataSource implements IProductsDataSource {
         'page': '0',
         'limit': '$count',
       });
-      final response = await client.get(url).timeout(durationForBigRequest);
+      final response = await client.get(url);
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(utf8.decode(response.bodyBytes));
@@ -47,7 +45,7 @@ class NetworkProductsDataSource implements IProductsDataSource {
         baseUrl,
         '$apiVersion/$id',
       );
-      final response = await client.get(url).timeout(durationForSmallRequest);
+      final response = await client.get(url);
       if (response.statusCode == 200) {
         var jsonData = json.decode(utf8.decode(response.bodyBytes));
         return ProductDTO.fromJson(jsonData);
@@ -69,7 +67,7 @@ class NetworkProductsDataSource implements IProductsDataSource {
         'limit': '$limit',
         'category': '$categoryId',
       });
-      final response = await client.get(url).timeout(durationForBigRequest);
+      final response = await client.get(url);
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(utf8.decode(response.bodyBytes));

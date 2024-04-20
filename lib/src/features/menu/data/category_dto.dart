@@ -31,7 +31,7 @@ class CategoryDTO {
 
   factory CategoryDTO.fromJsonWithoutProducts(Map<String, dynamic> json) {
     final List<ProductDTO> products = [];
-    return CategoryDTO(id: json['slug'], name: json['id'], products: products);
+    return CategoryDTO(id: json['id'], name: json['slug'], products: products);
   }
 
   factory CategoryDTO.fromDB(Category category) {

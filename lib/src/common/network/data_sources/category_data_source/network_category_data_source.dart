@@ -8,8 +8,6 @@ import 'package:http/http.dart' as http;
 class NetworkCategoryDataSource implements ICategoryDataSource {
   final String baseUrl = 'coffeeshop.academy.effective.band';
   final String apiVersion = '/api/v1/products';
-  final Duration durationForBigRequest = const Duration(milliseconds: 800);
-  final Duration durationForSmallRequest = const Duration(milliseconds: 500);
   final http.Client client;
   NetworkCategoryDataSource(this.client);
 
@@ -17,8 +15,7 @@ class NetworkCategoryDataSource implements ICategoryDataSource {
   Future<List<CategoryDTO>> fetchOnlyCategories() async {
     try {
       var url = Uri.https(baseUrl, '$apiVersion/categories');
-      final response = await client.get(url).timeout(durationForBigRequest);
-
+      final response = await client.get(url);
       if (response.statusCode == 200) {
         var jsonData = json.decode(utf8.decode(response.bodyBytes));
         List<dynamic> categoriesData = returnJsonDataAsList(jsonData);
