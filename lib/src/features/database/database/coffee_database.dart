@@ -29,7 +29,15 @@ class Products extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [Products, Categories])
+@DataClassName('Location')
+class Locations extends Table{
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get address => text().unique()();
+  RealColumn get latitude => real()();
+  RealColumn get longitude => real()();
+}
+
+@DriftDatabase(tables: [Products, Categories, Locations])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

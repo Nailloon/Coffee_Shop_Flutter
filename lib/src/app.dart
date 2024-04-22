@@ -1,8 +1,11 @@
 import 'package:coffee_shop/src/common/network/data_sources/category_data_source/network_category_data_source.dart';
+import 'package:coffee_shop/src/common/network/data_sources/locations_data_source/locations_data_source.dart';
 import 'package:coffee_shop/src/common/network/data_sources/order_data_source/order_data_source.dart';
 import 'package:coffee_shop/src/common/network/data_sources/products_data_source/network_products_data_source.dart';
 import 'package:coffee_shop/src/common/network/repositories/category_repository/category_repository.dart';
 import 'package:coffee_shop/src/common/network/repositories/category_repository/interface_category_repository.dart';
+import 'package:coffee_shop/src/common/network/repositories/locations_repository/interface_location_repository.dart';
+import 'package:coffee_shop/src/common/network/repositories/locations_repository/location_repository.dart';
 import 'package:coffee_shop/src/common/network/repositories/order_repository/interface_order_repository.dart';
 import 'package:coffee_shop/src/common/network/repositories/order_repository/order_repository.dart';
 import 'package:coffee_shop/src/common/network/repositories/products_repository/interface_products_repository.dart';
@@ -10,8 +13,11 @@ import 'package:coffee_shop/src/common/network/repositories/products_repository/
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
 import 'package:coffee_shop/src/features/cart/data/product_cart.dart';
 import 'package:coffee_shop/src/features/database/data_source/savable_category_data_source.dart';
+import 'package:coffee_shop/src/features/database/data_source/savable_locations_data_source.dart';
 import 'package:coffee_shop/src/features/database/data_source/savable_products_data_source.dart';
 import 'package:coffee_shop/src/features/database/database/coffee_database.dart';
+import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
+import 'package:coffee_shop/src/features/map/model/location_model.dart';
 import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
 import 'package:coffee_shop/src/features/menu/models/category_model.dart';
 import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
@@ -65,7 +71,11 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
                     NetworkCategoryDataSource(client),
                     SavableCategoryDataSource(database))),
             RepositoryProvider<IOrderRepository>(
-                create: (context) => OrderRepository(OrderDataSource(client)))
+                create: (context) => OrderRepository(OrderDataSource(client))),
+            RepositoryProvider<ILocationRepository>(
+                create: (context) => LocationRepository(
+                    LocationsDataSource(client: client),
+                    SavableLocationsDataSource(database)))
           ],
           child: MultiBlocProvider(
             providers: [
@@ -80,6 +90,10 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
                     categoriesForApp,
                     categoryEnd),
               ),
+              BlocProvider(
+                  create: (context) => MapBloc(
+                      context.read<ILocationRepository>(),
+                      [], null))
             ],
             child: const MenuScreen(),
           ),

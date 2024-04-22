@@ -497,13 +497,266 @@ class ProductsCompanion extends UpdateCompanion<Product> {
   }
 }
 
+class $LocationsTable extends Locations
+    with TableInfo<$LocationsTable, Location> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $LocationsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _addressMeta =
+      const VerificationMeta('address');
+  @override
+  late final GeneratedColumn<String> address = GeneratedColumn<String>(
+      'address', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _latitudeMeta =
+      const VerificationMeta('latitude');
+  @override
+  late final GeneratedColumn<double> latitude = GeneratedColumn<double>(
+      'latitude', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _longitudeMeta =
+      const VerificationMeta('longitude');
+  @override
+  late final GeneratedColumn<double> longitude = GeneratedColumn<double>(
+      'longitude', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, address, latitude, longitude];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'locations';
+  @override
+  VerificationContext validateIntegrity(Insertable<Location> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('address')) {
+      context.handle(_addressMeta,
+          address.isAcceptableOrUnknown(data['address']!, _addressMeta));
+    } else if (isInserting) {
+      context.missing(_addressMeta);
+    }
+    if (data.containsKey('latitude')) {
+      context.handle(_latitudeMeta,
+          latitude.isAcceptableOrUnknown(data['latitude']!, _latitudeMeta));
+    } else if (isInserting) {
+      context.missing(_latitudeMeta);
+    }
+    if (data.containsKey('longitude')) {
+      context.handle(_longitudeMeta,
+          longitude.isAcceptableOrUnknown(data['longitude']!, _longitudeMeta));
+    } else if (isInserting) {
+      context.missing(_longitudeMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Location map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Location(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      address: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}address'])!,
+      latitude: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}latitude'])!,
+      longitude: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}longitude'])!,
+    );
+  }
+
+  @override
+  $LocationsTable createAlias(String alias) {
+    return $LocationsTable(attachedDatabase, alias);
+  }
+}
+
+class Location extends DataClass implements Insertable<Location> {
+  final int id;
+  final String address;
+  final double latitude;
+  final double longitude;
+  const Location(
+      {required this.id,
+      required this.address,
+      required this.latitude,
+      required this.longitude});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['address'] = Variable<String>(address);
+    map['latitude'] = Variable<double>(latitude);
+    map['longitude'] = Variable<double>(longitude);
+    return map;
+  }
+
+  LocationsCompanion toCompanion(bool nullToAbsent) {
+    return LocationsCompanion(
+      id: Value(id),
+      address: Value(address),
+      latitude: Value(latitude),
+      longitude: Value(longitude),
+    );
+  }
+
+  factory Location.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Location(
+      id: serializer.fromJson<int>(json['id']),
+      address: serializer.fromJson<String>(json['address']),
+      latitude: serializer.fromJson<double>(json['latitude']),
+      longitude: serializer.fromJson<double>(json['longitude']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'address': serializer.toJson<String>(address),
+      'latitude': serializer.toJson<double>(latitude),
+      'longitude': serializer.toJson<double>(longitude),
+    };
+  }
+
+  Location copyWith(
+          {int? id, String? address, double? latitude, double? longitude}) =>
+      Location(
+        id: id ?? this.id,
+        address: address ?? this.address,
+        latitude: latitude ?? this.latitude,
+        longitude: longitude ?? this.longitude,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Location(')
+          ..write('id: $id, ')
+          ..write('address: $address, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, address, latitude, longitude);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Location &&
+          other.id == this.id &&
+          other.address == this.address &&
+          other.latitude == this.latitude &&
+          other.longitude == this.longitude);
+}
+
+class LocationsCompanion extends UpdateCompanion<Location> {
+  final Value<int> id;
+  final Value<String> address;
+  final Value<double> latitude;
+  final Value<double> longitude;
+  const LocationsCompanion({
+    this.id = const Value.absent(),
+    this.address = const Value.absent(),
+    this.latitude = const Value.absent(),
+    this.longitude = const Value.absent(),
+  });
+  LocationsCompanion.insert({
+    this.id = const Value.absent(),
+    required String address,
+    required double latitude,
+    required double longitude,
+  })  : address = Value(address),
+        latitude = Value(latitude),
+        longitude = Value(longitude);
+  static Insertable<Location> custom({
+    Expression<int>? id,
+    Expression<String>? address,
+    Expression<double>? latitude,
+    Expression<double>? longitude,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (address != null) 'address': address,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+    });
+  }
+
+  LocationsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? address,
+      Value<double>? latitude,
+      Value<double>? longitude}) {
+    return LocationsCompanion(
+      id: id ?? this.id,
+      address: address ?? this.address,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (address.present) {
+      map['address'] = Variable<String>(address.value);
+    }
+    if (latitude.present) {
+      map['latitude'] = Variable<double>(latitude.value);
+    }
+    if (longitude.present) {
+      map['longitude'] = Variable<double>(longitude.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('LocationsCompanion(')
+          ..write('id: $id, ')
+          ..write('address: $address, ')
+          ..write('latitude: $latitude, ')
+          ..write('longitude: $longitude')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $CategoriesTable categories = $CategoriesTable(this);
   late final $ProductsTable products = $ProductsTable(this);
+  late final $LocationsTable locations = $LocationsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [categories, products];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [categories, products, locations];
 }

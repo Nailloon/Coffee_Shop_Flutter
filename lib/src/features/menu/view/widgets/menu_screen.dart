@@ -1,6 +1,8 @@
 import 'package:coffee_shop/src/common/functions/price_functions.dart';
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
 import 'package:coffee_shop/src/features/cart/view/widgets/cart_bottom_sheet.dart';
+import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
+import 'package:coffee_shop/src/features/map/view/widgets/current_location_button.dart';
 import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
 import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/category_appbar/category_chip.dart';
@@ -33,6 +35,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<MapBloc>().add(LoadLocationsEvent());
     context.read<LoadingBloc>().add(LoadCategoriesEvent());
     bool changed = false;
     _itemListener.itemPositions.addListener(() {
@@ -101,30 +104,35 @@ class _MenuScreenState extends State<MenuScreen> {
                 automaticallyImplyLeading: false,
                 surfaceTintColor: Colors.transparent,
                 title: PreferredSize(
-                  preferredSize: const Size.fromHeight((40)),
-                  child: SizedBox(
-                    height: 40,
-                    child: ScrollablePositionedList.builder(
-                      itemScrollController: _appBarController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: state.categories.length,
-                      itemBuilder: (context, index) {
-                        final category = state.categories[index];
-                        return CategoryChip(
-                          text: category.name,
-                          isSelected: index == current,
-                          onSelected: () {
-                            setCurrent(index);
-                            menuScrollToCategory(index);
-                            if (index < state.categories.length - 1) {
-                              appBarScrollToCategory(index);
-                            }
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                    preferredSize: const Size.fromHeight((40)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                              height: 40, child: CurrentLocationButton()),
+                          ScrollablePositionedList.builder(
+                            itemScrollController: _appBarController,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: state.categories.length,
+                            itemBuilder: (context, index) {
+                              final category = state.categories[index];
+                              return CategoryChip(
+                                text: category.name,
+                                isSelected: index == current,
+                                onSelected: () {
+                                  setCurrent(index);
+                                  menuScrollToCategory(index);
+                                  if (index < state.categories.length - 1) {
+                                    appBarScrollToCategory(index);
+                                  }
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    )),
               ),
               body: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
