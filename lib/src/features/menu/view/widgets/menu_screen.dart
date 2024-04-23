@@ -101,14 +101,15 @@ class _MenuScreenState extends State<MenuScreen> {
           if (state is LoadingCompleted) {
             return Scaffold(
               appBar: PreferredSize(
-                preferredSize: const Size.fromHeight((80)),
+                preferredSize: const Size.fromHeight((90)),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      SizedBox(height: 30, child: CurrentLocationButton()),
-                      Spacer(),
+                      const SizedBox(
+                          height: 40, child: CurrentLocationButton()),
+                      const Spacer(),
                       SizedBox(
                         height: 50,
                         child: ScrollablePositionedList.builder(
