@@ -12,11 +12,8 @@ class MapsLocationsButton extends StatelessWidget {
     return FloatingActionButton.small(
         heroTag: 'locations',
         backgroundColor: AppColors.white,
-        child: const Icon(
-          Icons.map_outlined,
-          size: 20.0,
-          color: AppColors.realBlack
-        ),
+        child: const Icon(Icons.map_outlined,
+            size: 20.0, color: AppColors.realBlack),
         onPressed: () {
           Navigator.push(
               context,

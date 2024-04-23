@@ -1,3 +1,4 @@
+import 'package:coffee_shop/src/common/functions/navigation_functions.dart';
 import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
 import 'package:coffee_shop/src/features/map/model/location_model.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
@@ -11,7 +12,8 @@ class MapBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0, top: 10.0),
+      padding: const EdgeInsets.only(
+          left: 16.0, right: 16.0, bottom: 20.0, top: 10.0),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         SizedBox(
             height: 4,
@@ -26,15 +28,15 @@ class MapBottomSheet extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(location.address, style: Theme.of(context).textTheme.bodyLarge),
+            Text(location.address,
+                style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
         const SizedBox(height: 20),
         InkWell(
           onTap: () {
             context.read<MapBloc>().add(ChooseCurrentLocationEvent(location));
-            int count = 0;
-            Navigator.of(context).popUntil((_) => count++ >= 2);
+            returnThroughNScreens(context, 2);
           },
           child: SizedBox(
             width: double.infinity,
@@ -47,7 +49,12 @@ class MapBottomSheet extends StatelessWidget {
               child: Center(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: [Text('Выбрать', style: Theme.of(context).textTheme.labelMedium,)],
+                  children: [
+                    Text(
+                      'Выбрать',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    )
+                  ],
                 ),
               ),
             ),

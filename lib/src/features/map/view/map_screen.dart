@@ -20,21 +20,25 @@ class _MapScreenState extends State<MapScreen> {
   final mapControllerCompleter = Completer<YandexMapController>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<MapBloc, MapState>(
-        builder: (context, state) {
-          return YandexMap(
-            onMapCreated: (controller) {
-              mapControllerCompleter.complete(controller);
-            },
-            mapObjects: _getPlacemarkObjects(state.locations),
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Row(children: [ReturnButton(),Spacer(), MapsLocationsButton()],),
+    return SafeArea(
+      child: Scaffold(
+        body: BlocBuilder<MapBloc, MapState>(
+          builder: (context, state) {
+            return YandexMap(
+              onMapCreated: (controller) {
+                mapControllerCompleter.complete(controller);
+              },
+              mapObjects: _getPlacemarkObjects(state.locations),
+            );
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+        floatingActionButton: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: [ReturnButton(), Spacer(), MapsLocationsButton()],
+          ),
+        ),
       ),
     );
   }
