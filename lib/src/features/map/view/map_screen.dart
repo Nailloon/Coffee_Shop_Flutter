@@ -36,13 +36,16 @@ class _MapScreenState extends State<MapScreen> {
     return locations
         .map(
           (point) => PlacemarkMapObject(
-            onTap: (_, __) => showModalBottomSheet(
-              context: context,
-              builder: (_) => BlocProvider.value(
-                value: context.read<MapBloc>(),
-                child: MapBottomSheet(location: point),
-              ),
-            ),
+            onTap: (_, __) {
+              _moveToCurrentLocation(point);
+              showModalBottomSheet(
+                context: context,
+                builder: (_) => BlocProvider.value(
+                  value: context.read<MapBloc>(),
+                  child: MapBottomSheet(location: point),
+                ),
+              );
+            },
             mapId: MapObjectId('MapObject ${point.address}'),
             point: Point(latitude: point.latitude, longitude: point.longitude),
             opacity: 1,
@@ -57,5 +60,23 @@ class _MapScreenState extends State<MapScreen> {
           ),
         )
         .toList();
+  }
+
+  Future<void> _moveToCurrentLocation(
+    LocationModel location,
+  ) async {
+    (await mapControllerCompleter.future).moveCamera(
+      animation:
+          const MapAnimation(type: MapAnimationType.linear, duration: 0.6),
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: Point(
+            latitude: location.latitude,
+            longitude: location.longitude,
+          ),
+          zoom: 14,
+        ),
+      ),
+    );
   }
 }

@@ -16,11 +16,12 @@ final class MapBloc extends Bloc<MapEvent, MapState> {
   List<LocationModel> locationsForApp;
   LocationModel? currentLocation;
   final ILocationRepository locationRepository;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   void _hanleLoadLocationsEvent(
       LoadLocationsEvent event, Emitter<MapState> emit) async {
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final SharedPreferences prefs = await _prefs;
       final locationsForApp = await locationRepository.loadLocations();
       final currentLocation = prefs.getString('currentLocation') == null
           ? locationsForApp[0]
@@ -37,9 +38,9 @@ final class MapBloc extends Bloc<MapEvent, MapState> {
 
   Future<void> _handleChooseCurrentEvent(
       ChooseCurrentLocationEvent event, Emitter<MapState> emit) async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
     currentLocation = event.current;
-    _prefs.setString('currentLocation', event.current.address);
+    prefs.setString('currentLocation', event.current.address);
     emit(MapChanged(state.locations, currentLocation));
   }
 }
