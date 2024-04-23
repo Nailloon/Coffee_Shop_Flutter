@@ -12,17 +12,25 @@ class CurrentLocationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MapBloc, MapState>(builder: (context, state) {
-      if (state is MapInitial && state.current != null) {
+      if (state.current != null) {
         return InkWell(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(
-      builder: (context) => const MapScreen(),
-    ),);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => BlocProvider.value(
+                  value: context.read<MapBloc>(),
+                  child: const MapScreen(),
+                ),
+              ),
+            );
           },
           child: Row(children: [
             const Icon(Icons.location_on_outlined,
                 color: AppColors.blue, size: 24),
-                const SizedBox(width: 10,),
+            const SizedBox(
+              width: 10,
+            ),
             Text(
               state.current!.address,
               style: Theme.of(context).textTheme.bodyMedium,

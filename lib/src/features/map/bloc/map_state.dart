@@ -9,3 +9,10 @@ sealed class MapState{
 final class MapInitial extends MapState{
   const MapInitial(super.locations, super.current);
 }
+final class MapChanged extends MapState{
+  const MapChanged(super.locations, super.current);
+}
+
+final class MapError extends MapState{
+  const MapError(super.locations, super.current);
+}

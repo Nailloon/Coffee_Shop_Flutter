@@ -2,6 +2,7 @@ import 'package:coffee_shop/src/common/network/repositories/locations_repository
 import 'package:coffee_shop/src/features/map/model/location_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'map_event.dart';
 part 'map_state.dart';
@@ -19,18 +20,26 @@ final class MapBloc extends Bloc<MapEvent, MapState> {
   void _hanleLoadLocationsEvent(
       LoadLocationsEvent event, Emitter<MapState> emit) async {
     try {
-      locationsForApp = await locationRepository.loadLocations();
-      currentLocation = locationsForApp[0];
-      debugPrint(currentLocation.toString());
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final locationsForApp = await locationRepository.loadLocations();
+      final currentLocation = prefs.getString('currentLocation') == null
+          ? locationsForApp[0]
+          : locationsForApp.firstWhere(
+              (element) =>
+                  element.address == prefs.getString('currentLocation'),
+            );
+      debugPrint(prefs.getString('currentLocation'));
       emit(MapInitial(locationsForApp, currentLocation));
     } catch (e) {
       rethrow;
     }
   }
 
-  void _handleChooseCurrentEvent(
-      ChooseCurrentLocationEvent event, Emitter<MapState> emit) {
+  Future<void> _handleChooseCurrentEvent(
+      ChooseCurrentLocationEvent event, Emitter<MapState> emit) async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
     currentLocation = event.current;
-    emit(MapInitial(state.locations, currentLocation));
+    _prefs.setString('currentLocation', event.current.address);
+    emit(MapChanged(state.locations, currentLocation));
   }
 }
