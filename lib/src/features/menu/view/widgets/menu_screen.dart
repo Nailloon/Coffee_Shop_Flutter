@@ -100,39 +100,40 @@ class _MenuScreenState extends State<MenuScreen> {
         builder: (context, state) {
           if (state is LoadingCompleted) {
             return Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                surfaceTintColor: Colors.transparent,
-                title: PreferredSize(
-                    preferredSize: const Size.fromHeight((40)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                              height: 40, child: CurrentLocationButton()),
-                          ScrollablePositionedList.builder(
-                            itemScrollController: _appBarController,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: state.categories.length,
-                            itemBuilder: (context, index) {
-                              final category = state.categories[index];
-                              return CategoryChip(
-                                text: category.name,
-                                isSelected: index == current,
-                                onSelected: () {
-                                  setCurrent(index);
-                                  menuScrollToCategory(index);
-                                  if (index < state.categories.length - 1) {
-                                    appBarScrollToCategory(index);
-                                  }
-                                },
-                              );
-                            },
-                          ),
-                        ],
+              appBar: PreferredSize(
+                preferredSize: const Size.fromHeight((80)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(height: 30, child: CurrentLocationButton()),
+                      Spacer(),
+                      SizedBox(
+                        height: 50,
+                        child: ScrollablePositionedList.builder(
+                          itemScrollController: _appBarController,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.categories.length,
+                          itemBuilder: (context, index) {
+                            final category = state.categories[index];
+                            return CategoryChip(
+                              text: category.name,
+                              isSelected: index == current,
+                              onSelected: () {
+                                setCurrent(index);
+                                menuScrollToCategory(index);
+                                if (index < state.categories.length - 1) {
+                                  appBarScrollToCategory(index);
+                                }
+                              },
+                            );
+                          },
+                        ),
                       ),
-                    )),
+                    ],
+                  ),
+                ),
               ),
               body: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),

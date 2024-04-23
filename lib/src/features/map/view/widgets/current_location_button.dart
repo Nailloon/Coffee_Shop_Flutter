@@ -11,14 +11,8 @@ class CurrentLocationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MapBloc, MapState>(builder: (context, state) {
       if (state is MapInitial && state.current != null) {
-        return SizedBox(
-            height: 20,
-            child: Row(
-              children: [
-                Icon(Icons.location_pin),
-                Text(state.current!.address)
-              ],
-            ));
+        return Row(
+            children: [const Icon(Icons.location_pin), Text(state.current!.address)]);
       } else {
         throw Exception('MapBloc Issue');
       }

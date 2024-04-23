@@ -12,7 +12,10 @@ class LocationDTO {
         latitude: json['lat'],
         longitude: json['lng']);
   }
-  factory LocationDTO.fromDB(Location location){
-    return LocationDTO(address: location.address, latitude: location.latitude, longitude: location.longitude);
+  factory LocationDTO.fromDB(Location location) {
+    return LocationDTO(
+        address: location.address,
+        latitude: location.latitude,
+        longitude: location.longitude);
   }
 }

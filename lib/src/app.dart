@@ -91,9 +91,8 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
                     categoryEnd),
               ),
               BlocProvider(
-                  create: (context) => MapBloc(
-                      context.read<ILocationRepository>(),
-                      [], null))
+                  create: (context) =>
+                      MapBloc(context.read<ILocationRepository>(), [], null))
             ],
             child: const MenuScreen(),
           ),

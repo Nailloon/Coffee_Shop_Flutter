@@ -6,7 +6,7 @@ sealed class MapEvent {
 
 final class LoadLocationsEvent extends MapEvent {}
 
-final class ChooseCurrentLocationEvent extends MapEvent{
+final class ChooseCurrentLocationEvent extends MapEvent {
   final LocationModel current;
   const ChooseCurrentLocationEvent(this.current);
 }
