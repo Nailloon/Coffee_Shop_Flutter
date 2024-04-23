@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
 import 'package:coffee_shop/src/features/map/model/location_model.dart';
 import 'package:coffee_shop/src/features/map/view/widgets/map_bottomsheet.dart';
+import 'package:coffee_shop/src/features/map/view/widgets/maps_locations_button.dart';
+import 'package:coffee_shop/src/features/map/view/widgets/return_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -28,6 +30,11 @@ class _MapScreenState extends State<MapScreen> {
             mapObjects: _getPlacemarkObjects(state.locations),
           );
         },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Row(children: [ReturnButton(),Spacer(), MapsLocationsButton()],),
       ),
     );
   }

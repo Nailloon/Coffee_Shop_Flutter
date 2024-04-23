@@ -26,7 +26,7 @@ class MapBottomSheet extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(location.address, style: const TextStyle(fontSize: 20)),
+            Text(location.address, style: Theme.of(context).textTheme.bodyLarge),
           ],
         ),
         const SizedBox(height: 20),
@@ -47,7 +47,7 @@ class MapBottomSheet extends StatelessWidget {
               child: Center(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: [Text('Выбрать')],
+                  children: [Text('Выбрать', style: Theme.of(context).textTheme.labelMedium,)],
                 ),
               ),
             ),
