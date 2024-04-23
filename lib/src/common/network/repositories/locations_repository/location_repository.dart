@@ -23,8 +23,8 @@ class LocationRepository implements ILocationRepository {
       for (var location in locationsDTO) {
         locations.add(location.toModel());
         debugPrint(location.address);
+        savableLocationsDataSource.saveLocation(location);
       }
-      savableLocationsDataSource.saveLocations(locationsDTO);
       return locations;
     } on Exception catch (e) {
       if (e is SocketException) {
@@ -35,6 +35,7 @@ class LocationRepository implements ILocationRepository {
         }
         return locations;
       }
+      debugPrint(e.toString());
       rethrow;
     }
   }

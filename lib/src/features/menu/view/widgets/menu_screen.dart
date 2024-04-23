@@ -109,7 +109,6 @@ class _MenuScreenState extends State<MenuScreen> {
                     children: [
                       const SizedBox(
                           height: 40, child: CurrentLocationButton()),
-                      const Spacer(),
                       SizedBox(
                         height: 50,
                         child: ScrollablePositionedList.builder(

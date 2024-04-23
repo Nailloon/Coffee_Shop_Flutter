@@ -1,6 +1,7 @@
 import 'package:coffee_shop/src/common/network/repositories/locations_repository/interface_location_repository.dart';
 import 'package:coffee_shop/src/features/map/model/location_model.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 
 part 'map_event.dart';
 part 'map_state.dart';
@@ -20,6 +21,7 @@ final class MapBloc extends Bloc<MapEvent, MapState> {
     try {
       locationsForApp = await locationRepository.loadLocations();
       currentLocation = locationsForApp[0];
+      debugPrint(currentLocation.toString());
       emit(MapInitial(locationsForApp, currentLocation));
     } catch (e) {
       rethrow;
