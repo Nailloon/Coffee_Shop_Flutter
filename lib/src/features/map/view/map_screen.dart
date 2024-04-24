@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
 import 'package:coffee_shop/src/features/map/model/location_model.dart';
+import 'package:coffee_shop/src/features/map/permission_bloc.dart/permission_bloc.dart';
 import 'package:coffee_shop/src/features/map/view/widgets/map_bottomsheet.dart';
 import 'package:coffee_shop/src/features/map/view/widgets/maps_locations_button.dart';
 import 'package:coffee_shop/src/features/map/view/widgets/return_button.dart';
+import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -19,11 +21,13 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   @override
-void initState() {
- super.initState();
- LocationModel currentLocation = context.read<MapBloc>().state.current!;
- _initPermission(currentLocation).ignore();
-}
+  void initState() {
+    super.initState();
+    LocationModel currentLocation = context.read<MapBloc>().state.current!;
+    context.read<PermissionBloc>().add(IsLocationPermissionGrantedEvent());
+    _fetchCurrentLocation(currentLocation);
+  }
+
   final mapControllerCompleter = Completer<YandexMapController>();
   @override
   Widget build(BuildContext context) {
@@ -31,12 +35,57 @@ void initState() {
       child: Scaffold(
         body: BlocBuilder<MapBloc, MapState>(
           builder: (context, state) {
-            return YandexMap(
-              onMapCreated: (controller) {
-                mapControllerCompleter.complete(controller);
-              },
-              mapObjects: _getPlacemarkObjects(state.locations),
-            );
+            return BlocListener<PermissionBloc, PermissionState>(
+                listener: (context, state) async {
+                  if (state is PermissionDenied) {
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                          return AlertDialog(
+                            backgroundColor: AppColors.white,
+                            icon: const Icon(
+                              Icons.map_outlined,
+                              color: AppColors.realBlack,
+                            ),
+                            surfaceTintColor: AppColors.realBlack,
+                            title: Text('Разрешите доступ к геолокации'),
+                            actionsAlignment: MainAxisAlignment.spaceBetween,
+                            actions: [
+                              TextButton(
+                                  style: ButtonStyle(
+                                      foregroundColor:
+                                          MaterialStateProperty.all(
+                                              AppColors.blue)),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Отменить')),
+                              TextButton(
+                                  style: ButtonStyle(
+                                      foregroundColor:
+                                          MaterialStateProperty.all(
+                                              AppColors.blue)),
+                                  onPressed: () {
+                                    context
+                                        .read<PermissionBloc>()
+                                        .add(RequestLocationPermissionEvent());
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Разрешить'))
+                            ],
+                          );
+                        });
+                  }
+                  if (state is PermissionChanged) {
+                    _moveToCurrentLocation(await _getGeoPosition());
+                  }
+                },
+                child: YandexMap(
+                  onMapCreated: (controller) {
+                    mapControllerCompleter.complete(controller);
+                  },
+                  mapObjects: _getPlacemarkObjects(state.locations),
+                ));
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
@@ -79,24 +128,22 @@ void initState() {
         )
         .toList();
   }
-  Future<void> _initPermission(LocationModel location) async {
- await _fetchCurrentLocation(location);
-}
 
-Future<void> _fetchCurrentLocation(LocationModel current) async {
-  LocationModel location;
- const defLocation = LocationModel(address: 'Omsk', latitude: 54.99244, longitude: 73.36859);
- try {
-   location = await _getCurrentPosition();
- } catch (_) {
-  debugPrint('Uzuzuzuuz');
-   location = current;
- }
- _moveToCurrentLocation(location);
-}
+  Future<void> _fetchCurrentLocation(LocationModel current) async {
+    LocationModel location;
+    try {
+      location = await _getGeoPosition();
+    } catch (_) {
+      debugPrint('Uzuzuzuuz');
+      location = current;
+    }
+    _moveToCurrentLocation(location);
+  }
+
   Future<void> _moveToCurrentLocation(
     LocationModel location,
   ) async {
+    debugPrint('gogogogogo');
     (await mapControllerCompleter.future).moveCamera(
       animation:
           const MapAnimation(type: MapAnimationType.linear, duration: 0.6),
@@ -112,15 +159,13 @@ Future<void> _fetchCurrentLocation(LocationModel current) async {
     );
   }
 
-  Future<LocationModel> _getCurrentPosition() async {
-    Geolocator.getCurrentPosition().then((value) {
-      return LocationModel(
-          address: 'currentPosition',
-          latitude: value.latitude,
-          longitude: value.longitude);
-    }).catchError((_) {
-      debugPrint('YAYAYAYAYYA');
-    });
-    throw Exception('dfnuedfviner');
+  Future<LocationModel> _getGeoPosition() async {
+    var geoposition = await Geolocator.getCurrentPosition().then((value) =>
+        LocationModel(
+            address: 'geoposition',
+            latitude: value.latitude,
+            longitude: value.longitude));
+    debugPrint('Geoposition:$geoposition');
+    return geoposition;
   }
 }

@@ -26,7 +26,7 @@ class LocationsListScreen extends StatelessWidget {
                           Icons.arrow_back,
                           color: AppColors.realBlack,
                         ),
-                        onTap: () => returnToPreviousScreen(context),
+                        onTap: () => Navigator.pop(context),
                       ),
                       const SizedBox(
                         width: 10.0,

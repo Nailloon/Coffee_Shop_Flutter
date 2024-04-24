@@ -1,4 +1,5 @@
 import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
+import 'package:coffee_shop/src/features/map/permission_bloc.dart/permission_bloc.dart';
 import 'package:coffee_shop/src/features/map/view/map_screen.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,10 @@ class CurrentLocationButton extends StatelessWidget {
               MaterialPageRoute(
                 builder: (_) => BlocProvider.value(
                   value: context.read<MapBloc>(),
-                  child: const MapScreen(),
+                  child: BlocProvider.value(
+                    value: context.read<PermissionBloc>(),
+                    child: const MapScreen(),
+                  ),
                 ),
               ),
             );
