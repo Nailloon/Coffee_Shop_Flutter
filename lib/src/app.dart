@@ -17,6 +17,7 @@ import 'package:coffee_shop/src/features/database/data_source/savable_locations_
 import 'package:coffee_shop/src/features/database/data_source/savable_products_data_source.dart';
 import 'package:coffee_shop/src/features/database/database/coffee_database.dart';
 import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
+import 'package:coffee_shop/src/features/map/permission_bloc.dart/permission_bloc.dart';
 import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
 import 'package:coffee_shop/src/features/menu/models/category_model.dart';
 import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
@@ -91,7 +92,8 @@ class _CoffeeShopAppState extends State<CoffeeShopApp> {
               ),
               BlocProvider(
                   create: (context) =>
-                      MapBloc(context.read<ILocationRepository>(), [], null))
+                      MapBloc(context.read<ILocationRepository>(), [], null)),
+              BlocProvider(create: (context)=>PermissionBloc())
             ],
             child: const MenuScreen(),
           ),
