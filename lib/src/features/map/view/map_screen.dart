@@ -7,6 +7,7 @@ import 'package:coffee_shop/src/features/map/view/widgets/maps_locations_button.
 import 'package:coffee_shop/src/features/map/view/widgets/return_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 class MapScreen extends StatefulWidget {
@@ -17,6 +18,12 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  @override
+void initState() {
+ super.initState();
+ LocationModel currentLocation = context.read<MapBloc>().state.current!;
+ _initPermission(currentLocation).ignore();
+}
   final mapControllerCompleter = Completer<YandexMapController>();
   @override
   Widget build(BuildContext context) {
@@ -72,7 +79,21 @@ class _MapScreenState extends State<MapScreen> {
         )
         .toList();
   }
+  Future<void> _initPermission(LocationModel location) async {
+ await _fetchCurrentLocation(location);
+}
 
+Future<void> _fetchCurrentLocation(LocationModel current) async {
+  LocationModel location;
+ const defLocation = LocationModel(address: 'Omsk', latitude: 54.99244, longitude: 73.36859);
+ try {
+   location = await _getCurrentPosition();
+ } catch (_) {
+  debugPrint('Uzuzuzuuz');
+   location = current;
+ }
+ _moveToCurrentLocation(location);
+}
   Future<void> _moveToCurrentLocation(
     LocationModel location,
   ) async {
@@ -89,5 +110,17 @@ class _MapScreenState extends State<MapScreen> {
         ),
       ),
     );
+  }
+
+  Future<LocationModel> _getCurrentPosition() async {
+    Geolocator.getCurrentPosition().then((value) {
+      return LocationModel(
+          address: 'currentPosition',
+          latitude: value.latitude,
+          longitude: value.longitude);
+    }).catchError((_) {
+      debugPrint('YAYAYAYAYYA');
+    });
+    throw Exception('dfnuedfviner');
   }
 }
