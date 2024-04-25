@@ -1,8 +1,9 @@
 import 'package:coffee_shop/src/common/functions/navigation_functions.dart';
-import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
+import 'package:coffee_shop/src/features/map/bloc/map_bloc/map_bloc.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LocationsListScreen extends StatelessWidget {
   const LocationsListScreen({super.key});
@@ -31,7 +32,7 @@ class LocationsListScreen extends StatelessWidget {
                       const SizedBox(
                         width: 10.0,
                       ),
-                      Text('Наши кофейни',
+                      Text(AppLocalizations.of(context).our_locations,
                           style: Theme.of(context).textTheme.bodyLarge),
                     ],
                   ),

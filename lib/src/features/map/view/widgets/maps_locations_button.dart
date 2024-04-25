@@ -1,4 +1,4 @@
-import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
+import 'package:coffee_shop/src/features/map/bloc/map_bloc/map_bloc.dart';
 import 'package:coffee_shop/src/features/map/view/locations_list_screen.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';

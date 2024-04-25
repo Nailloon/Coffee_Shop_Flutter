@@ -10,6 +10,4 @@ class PermissionGranted implements PermissionState {}
 
 class PermissionDenied implements PermissionState {}
 
-class PermissionChanged implements PermissionState {}
-
 class PermissionNoChanges implements PermissionState {}

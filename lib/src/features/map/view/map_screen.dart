@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
+import 'package:coffee_shop/src/features/map/bloc/map_bloc/map_bloc.dart';
 import 'package:coffee_shop/src/features/map/model/location_model.dart';
-import 'package:coffee_shop/src/features/map/permission_bloc.dart/permission_bloc.dart';
+import 'package:coffee_shop/src/features/map/bloc/permission_bloc/permission_bloc.dart';
 import 'package:coffee_shop/src/features/map/view/widgets/map_bottomsheet.dart';
 import 'package:coffee_shop/src/features/map/view/widgets/maps_locations_button.dart';
 import 'package:coffee_shop/src/features/map/view/widgets/return_button.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -24,14 +24,25 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    LocationModel currentLocation = context.read<MapBloc>().state.current!;
+    currentLocation = context.read<MapBloc>().state.current ??
+        const LocationModel(
+            address: 'Omsk', latitude: 54.9924, longitude: 73.3686);
     context
         .read<PermissionBloc>()
         .add(const IsPermissionGrantedEvent(Permission.locationWhenInUse));
-    _fetchCurrentLocation(currentLocation);
   }
 
+  @override
+  void dispose() {
+    _mapController.dispose();
+    super.dispose();
+  }
+
+  late LocationModel currentLocation;
   final mapControllerCompleter = Completer<YandexMapController>();
+  late final YandexMapController _mapController;
+  bool locationGranted = false;
+  CameraPosition? _userLocation;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,7 +62,8 @@ class _MapScreenState extends State<MapScreen> {
                               color: AppColors.realBlack,
                             ),
                             surfaceTintColor: AppColors.realBlack,
-                            title: Text('Разрешите доступ к геолокации'),
+                            title: Text(AppLocalizations.of(context)
+                                .location_permission_text),
                             actionsAlignment: MainAxisAlignment.spaceBetween,
                             actions: [
                               TextButton(
@@ -62,7 +74,8 @@ class _MapScreenState extends State<MapScreen> {
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Text('Отменить')),
+                                  child: Text(AppLocalizations.of(context)
+                                      .cancel_button)),
                               TextButton(
                                   style: ButtonStyle(
                                       foregroundColor:
@@ -74,21 +87,36 @@ class _MapScreenState extends State<MapScreen> {
                                             Permission.locationWhenInUse));
                                     Navigator.pop(context);
                                   },
-                                  child: Text('Разрешить'))
+                                  child: Text(AppLocalizations.of(context)
+                                      .apply_button))
                             ],
                           );
                         });
                   }
-                  if (state is PermissionChanged) {
-                    _moveToCurrentLocation(await _getGeoPosition());
+                  if (state is PermissionGranted) {
+                    locationGranted = true;
+                    await _initLocationLayer();
                   }
                 },
                 child: YandexMap(
-                  onMapCreated: (controller) {
-                    mapControllerCompleter.complete(controller);
-                  },
-                  mapObjects: _getPlacemarkObjects(state.locations),
-                ));
+                    onMapCreated: (controller) async {
+                      _mapController = controller;
+                      _initLocationLayer();
+                      mapControllerCompleter.complete(controller);
+                    },
+                    mapObjects: _getPlacemarkObjects(state.locations),
+                    onUserLocationAdded: (view) async {
+                      _userLocation =
+                          await _mapController.getUserCameraPosition();
+                      if (_userLocation != null) {
+                        await _moveCameraToUser(_userLocation!);
+                      }
+                      return view.copyWith(
+                        pin: view.pin.copyWith(
+                          opacity: 1,
+                        ),
+                      );
+                    }));
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
@@ -132,17 +160,6 @@ class _MapScreenState extends State<MapScreen> {
         .toList();
   }
 
-  Future<void> _fetchCurrentLocation(LocationModel current) async {
-    LocationModel location;
-    try {
-      location = await _getGeoPosition();
-    } catch (_) {
-      debugPrint('Uzuzuzuuz');
-      location = current;
-    }
-    _moveToCurrentLocation(location);
-  }
-
   Future<void> _moveToCurrentLocation(
     LocationModel location,
   ) async {
@@ -162,13 +179,19 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  Future<LocationModel> _getGeoPosition() async {
-    var geoposition = await Geolocator.getCurrentPosition().then((value) =>
-        LocationModel(
-            address: 'geoposition',
-            latitude: value.latitude,
-            longitude: value.longitude));
-    debugPrint('Geoposition:$geoposition');
-    return geoposition;
+  Future<void> _moveCameraToUser(CameraPosition camera) async {
+    (await mapControllerCompleter.future).moveCamera(
+      animation:
+          const MapAnimation(type: MapAnimationType.linear, duration: 0.6),
+      CameraUpdate.newCameraPosition(camera.copyWith(zoom: 14)),
+    );
+  }
+
+  Future<void> _initLocationLayer() async {
+    if (locationGranted) {
+      await _mapController.toggleUserLayer(visible: true);
+    } else {
+      _moveToCurrentLocation(currentLocation);
+    }
   }
 }

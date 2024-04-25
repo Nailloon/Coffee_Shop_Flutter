@@ -1,7 +1,7 @@
 import 'package:coffee_shop/src/common/functions/price_functions.dart';
 import 'package:coffee_shop/src/features/cart/bloc/product_cart_bloc.dart';
 import 'package:coffee_shop/src/features/cart/view/widgets/cart_bottom_sheet.dart';
-import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
+import 'package:coffee_shop/src/features/map/bloc/map_bloc/map_bloc.dart';
 import 'package:coffee_shop/src/features/map/view/widgets/current_location_button.dart';
 import 'package:coffee_shop/src/features/menu/bloc/loading_bloc.dart';
 import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';

@@ -1,9 +1,10 @@
 import 'package:coffee_shop/src/common/functions/navigation_functions.dart';
-import 'package:coffee_shop/src/features/map/bloc/map_bloc.dart';
+import 'package:coffee_shop/src/features/map/bloc/map_bloc/map_bloc.dart';
 import 'package:coffee_shop/src/features/map/model/location_model.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapBottomSheet extends StatelessWidget {
   final LocationModel location;
@@ -51,7 +52,7 @@ class MapBottomSheet extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Выбрать',
+                      AppLocalizations.of(context).choose,
                       style: Theme.of(context).textTheme.labelMedium,
                     )
                   ],
