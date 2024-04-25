@@ -7,13 +7,12 @@ part 'permission_state.dart';
 
 class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
   PermissionBloc() : super(PermissionInitial()) {
-    on<IsLocationPermissionGrantedEvent>(_handleLocationPermissionGrantedEvent);
-    on<RequestLocationPermissionEvent>(_handleRequestLocationPermissionEvent);
+    on<IsPermissionGrantedEvent>(_handleLocationPermissionGrantedEvent);
+    on<RequestPermissionEvent>(_handleRequestLocationPermissionEvent);
   }
   Future<void> _handleLocationPermissionGrantedEvent(
-      IsLocationPermissionGrantedEvent event,
-      Emitter<PermissionState> emit) async {
-    bool isGranted = await Permission.locationWhenInUse.isGranted;
+      IsPermissionGrantedEvent event, Emitter<PermissionState> emit) async {
+    bool isGranted = await event.permission.isGranted;
     if (isGranted) {
       emit(PermissionGranted());
     } else {
@@ -22,9 +21,8 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
   }
 
   Future<void> _handleRequestLocationPermissionEvent(
-      RequestLocationPermissionEvent event,
-      Emitter<PermissionState> emit) async {
-    var permission = await Permission.locationWhenInUse.request();
+      RequestPermissionEvent event, Emitter<PermissionState> emit) async {
+    var permission = await event.permission.request();
     bool isGranted = permission.isGranted;
     debugPrint(isGranted.toString());
     if (isGranted) {

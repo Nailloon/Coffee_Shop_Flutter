@@ -1,9 +1,13 @@
 part of 'permission_bloc.dart';
 
-sealed class PermissionEvent {
-  const PermissionEvent();
+sealed class PermissionEvent {}
+
+class IsPermissionGrantedEvent implements PermissionEvent {
+  final PermissionWithService permission;
+  const IsPermissionGrantedEvent(this.permission);
 }
 
-class IsLocationPermissionGrantedEvent implements PermissionEvent {}
-
-class RequestLocationPermissionEvent implements PermissionEvent {}
+class RequestPermissionEvent implements PermissionEvent {
+  final PermissionWithService permission;
+  const RequestPermissionEvent(this.permission);
+}

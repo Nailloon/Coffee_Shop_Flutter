@@ -10,6 +10,7 @@ import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 class MapScreen extends StatefulWidget {
@@ -24,7 +25,9 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
     LocationModel currentLocation = context.read<MapBloc>().state.current!;
-    context.read<PermissionBloc>().add(IsLocationPermissionGrantedEvent());
+    context
+        .read<PermissionBloc>()
+        .add(const IsPermissionGrantedEvent(Permission.locationWhenInUse));
     _fetchCurrentLocation(currentLocation);
   }
 
@@ -66,9 +69,9 @@ class _MapScreenState extends State<MapScreen> {
                                           MaterialStateProperty.all(
                                               AppColors.blue)),
                                   onPressed: () {
-                                    context
-                                        .read<PermissionBloc>()
-                                        .add(RequestLocationPermissionEvent());
+                                    context.read<PermissionBloc>().add(
+                                        const RequestPermissionEvent(
+                                            Permission.locationWhenInUse));
                                     Navigator.pop(context);
                                   },
                                   child: Text('Разрешить'))

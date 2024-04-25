@@ -23,12 +23,10 @@ final class MapBloc extends Bloc<MapEvent, MapState> {
     try {
       final SharedPreferences prefs = await _prefs;
       final locationsForApp = await locationRepository.loadLocations();
-      final currentLocation = prefs.getString('currentLocation') == null
-          ? locationsForApp[0]
-          : locationsForApp.firstWhere(
-              (element) =>
-                  element.address == prefs.getString('currentLocation'),
-            );
+      final currentLocation = locationsForApp.firstWhere(
+          (element) => element.address == prefs.getString('currentLocation'),
+          orElse: () => locationsForApp[0]);
+
       debugPrint(prefs.getString('currentLocation'));
       emit(MapInitial(locationsForApp, currentLocation));
     } catch (e) {
