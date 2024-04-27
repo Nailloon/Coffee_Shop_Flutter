@@ -24,12 +24,12 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    currentLocation = context.read<MapBloc>().state.current ??
-        const LocationModel(
-            address: 'Omsk', latitude: 54.9924, longitude: 73.3686);
+    currentLocation = context.read<MapBloc>().state.current;
     context
         .read<PermissionBloc>()
         .add(const IsPermissionGrantedEvent(Permission.locationWhenInUse));
+    points
+        .addAll(_getPlacemarkObjects(context.read<MapBloc>().state.locations));
   }
 
   @override
@@ -38,10 +38,10 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
-  late LocationModel currentLocation;
+  late final LocationModel? currentLocation;
+  final List<PlacemarkMapObject> points = [];
   final mapControllerCompleter = Completer<YandexMapController>();
   late final YandexMapController _mapController;
-  bool locationGranted = false;
   CameraPosition? _userLocation;
   @override
   Widget build(BuildContext context) {
@@ -52,6 +52,9 @@ class _MapScreenState extends State<MapScreen> {
             return BlocListener<PermissionBloc, PermissionState>(
                 listener: (context, state) async {
                   if (state is PermissionDenied) {
+                    if (currentLocation != null) {
+                      _moveToCurrentLocation(currentLocation!);
+                    }
                     showDialog(
                         context: context,
                         builder: (_) {
@@ -93,18 +96,17 @@ class _MapScreenState extends State<MapScreen> {
                           );
                         });
                   }
-                  if (state is PermissionGranted) {
-                    locationGranted = true;
-                    await _initLocationLayer();
+                  if (state is PermissionChanged) {
+                    _mapController.toggleUserLayer(visible: true);
                   }
                 },
                 child: YandexMap(
                     onMapCreated: (controller) async {
                       _mapController = controller;
-                      _initLocationLayer();
+                      _mapController.toggleUserLayer(visible: true);
                       mapControllerCompleter.complete(controller);
                     },
-                    mapObjects: _getPlacemarkObjects(state.locations),
+                    mapObjects: points,
                     onUserLocationAdded: (view) async {
                       _userLocation =
                           await _mapController.getUserCameraPosition();
@@ -183,15 +185,8 @@ class _MapScreenState extends State<MapScreen> {
     (await mapControllerCompleter.future).moveCamera(
       animation:
           const MapAnimation(type: MapAnimationType.linear, duration: 0.6),
+        
       CameraUpdate.newCameraPosition(camera.copyWith(zoom: 14)),
     );
-  }
-
-  Future<void> _initLocationLayer() async {
-    if (locationGranted) {
-      await _mapController.toggleUserLayer(visible: true);
-    } else {
-      _moveToCurrentLocation(currentLocation);
-    }
   }
 }

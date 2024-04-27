@@ -11,3 +11,5 @@ class PermissionGranted implements PermissionState {}
 class PermissionDenied implements PermissionState {}
 
 class PermissionNoChanges implements PermissionState {}
+
+class PermissionChanged implements PermissionState {}

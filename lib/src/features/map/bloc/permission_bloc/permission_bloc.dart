@@ -26,7 +26,7 @@ class PermissionBloc extends Bloc<PermissionEvent, PermissionState> {
     bool isGranted = permission.isGranted;
     debugPrint(isGranted.toString());
     if (isGranted) {
-      emit(PermissionGranted());
+      emit(PermissionChanged());
     } else {
       emit(PermissionNoChanges());
     }
