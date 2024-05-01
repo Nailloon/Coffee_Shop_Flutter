@@ -6,12 +6,12 @@ sealed class ProductCartEvent {
 
 final class AddProductToCart extends ProductCartEvent {
   const AddProductToCart({required this.product});
-  final ProductData product;
+  final ProductModel product;
 }
 
 final class RemoveProductFromCart extends ProductCartEvent {
   const RemoveProductFromCart({required this.product});
-  final ProductData product;
+  final ProductModel product;
 }
 
 final class ClearProductCart extends ProductCartEvent {}

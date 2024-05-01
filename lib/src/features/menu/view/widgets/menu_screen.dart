@@ -91,6 +91,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized();
     return SafeArea(
       child: BlocConsumer<LoadingBloc, LoadingState>(
         builder: (context, state) {

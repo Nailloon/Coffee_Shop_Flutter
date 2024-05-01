@@ -1,11 +1,11 @@
-import 'package:coffee_shop/src/features/menu/data/product_data.dart';
+import 'package:coffee_shop/src/features/menu/models/product_model.dart';
 
 class ProductCart {
-  final Map<ProductData, int> _productsInCart = {};
+  final Map<ProductModel, int> _productsInCart = {};
 
-  Map<ProductData, int> get products => Map.from(_productsInCart);
+  Map<ProductModel, int> get products => Map.from(_productsInCart);
 
-  void addProduct(ProductData product) {
+  void addProduct(ProductModel product) {
     if (_productsInCart.containsKey(product)) {
       _productsInCart[product] = (_productsInCart[product] ?? 0) + 1;
     } else {
@@ -13,7 +13,7 @@ class ProductCart {
     }
   }
 
-  void removeProduct(ProductData product) {
+  void removeProduct(ProductModel product) {
     if (_productsInCart.containsKey(product)) {
       _productsInCart[product] = (_productsInCart[product] ?? 1) - 1;
       if (_productsInCart[product]! <= 0) {
@@ -26,7 +26,7 @@ class ProductCart {
     _productsInCart.clear();
   }
 
-  int getCount(ProductData product) {
+  int getCount(ProductModel product) {
     if (_productsInCart.containsKey(product)) {
       return _productsInCart[product]!;
     } else {
@@ -34,7 +34,7 @@ class ProductCart {
     }
   }
 
-  Map<ProductData, int> getProducts() {
+  Map<ProductModel, int> getProducts() {
     return _productsInCart;
   }
 

@@ -1,8 +1,8 @@
-import 'package:coffee_shop/src/features/menu/data/category_data.dart';
+import 'package:coffee_shop/src/features/menu/models/category_model.dart';
 import 'package:flutter/material.dart';
 
 class CategoryHeader extends StatelessWidget {
-  final CategoryData category;
+  final CategoryModel category;
 
   const CategoryHeader({super.key, required this.category});
 
