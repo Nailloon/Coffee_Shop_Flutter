@@ -35,7 +35,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<MapBloc>().add(LoadLocationsEvent());
+    context.read<MapBloc>().add(LoadCurrentLocationEvent());
     context.read<LoadingBloc>().add(LoadCategoriesEvent());
     bool changed = false;
     _itemListener.itemPositions.addListener(() {

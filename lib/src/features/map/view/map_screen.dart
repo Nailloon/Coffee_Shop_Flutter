@@ -21,6 +21,12 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  late final LocationModel? currentLocation;
+  final List<PlacemarkMapObject> points = [];
+  final mapControllerCompleter = Completer<YandexMapController>();
+  late final YandexMapController _mapController;
+  CameraPosition? _userLocation;
+
   @override
   void initState() {
     super.initState();
@@ -28,8 +34,7 @@ class _MapScreenState extends State<MapScreen> {
     context
         .read<PermissionBloc>()
         .add(const IsPermissionGrantedEvent(Permission.locationWhenInUse));
-    points
-        .addAll(_getPlacemarkObjects(context.read<MapBloc>().state.locations));
+    context.read<MapBloc>().add(LoadLocationsEvent());
   }
 
   @override
@@ -38,16 +43,17 @@ class _MapScreenState extends State<MapScreen> {
     super.dispose();
   }
 
-  late final LocationModel? currentLocation;
-  final List<PlacemarkMapObject> points = [];
-  final mapControllerCompleter = Completer<YandexMapController>();
-  late final YandexMapController _mapController;
-  CameraPosition? _userLocation;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: BlocBuilder<MapBloc, MapState>(
+        body: BlocConsumer<MapBloc, MapState>(
+          listener: (context, state) {
+            if (state is MapSuccessLoad) {
+              points.addAll(_getPlacemarkObjects(
+                  context.read<MapBloc>().state.locations));
+            }
+          },
           builder: (context, state) {
             return BlocListener<PermissionBloc, PermissionState>(
                 listener: (context, state) async {
@@ -185,7 +191,6 @@ class _MapScreenState extends State<MapScreen> {
     (await mapControllerCompleter.future).moveCamera(
       animation:
           const MapAnimation(type: MapAnimationType.linear, duration: 0.6),
-        
       CameraUpdate.newCameraPosition(camera.copyWith(zoom: 14)),
     );
   }

@@ -14,7 +14,7 @@ class CurrentLocationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MapBloc, MapState>(builder: (context, state) {
-      if (state.current != null) {
+      if (state is! MapError) {
         return InkWell(
           onTap: () {
             Navigator.push(

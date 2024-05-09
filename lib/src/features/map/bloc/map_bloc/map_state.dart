@@ -6,11 +6,16 @@ sealed class MapState{
   const MapState(this.locations, this.current);
 }
 
-final class MapInitial extends MapState{
-  const MapInitial(super.locations, super.current);
+final class MapIdle extends MapState{
+  const MapIdle(super.locations, super.current);
 }
-final class MapChanged extends MapState{
-  const MapChanged(super.locations, super.current);
+
+final class MapSuccessLoad extends MapState{
+  const MapSuccessLoad(super.locations, super.current);
+}
+
+final class MapChangedCurrentLocation extends MapState{
+  const MapChangedCurrentLocation(super.locations, super.current);
 }
 
 final class MapError extends MapState{

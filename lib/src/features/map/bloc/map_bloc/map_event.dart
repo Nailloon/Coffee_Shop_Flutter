@@ -4,6 +4,8 @@ sealed class MapEvent {
   const MapEvent();
 }
 
+final class LoadCurrentLocationEvent extends MapEvent {}
+
 final class LoadLocationsEvent extends MapEvent {}
 
 final class ChooseCurrentLocationEvent extends MapEvent {
