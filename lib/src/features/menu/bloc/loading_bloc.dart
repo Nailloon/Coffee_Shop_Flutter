@@ -7,16 +7,17 @@ part 'loading_event.dart';
 part 'loading_state.dart';
 
 final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
+  List<CategoryModel> categoriesForApp;
+  final ICategoryRepository categoryRepository;
+  final IProductRepository productRepository;
+  final Map<int, List<dynamic>> categoryEnd;
+
   LoadingBloc(this.categoryRepository, this.productRepository,
       this.categoriesForApp, this.categoryEnd)
       : super(const LoadingInitial([], {})) {
     on<LoadCategoriesEvent>(_handleLoadCategoriesEvent);
     on<LoadMoreProductsEvent>(_handleLoadMoreProductsEvent);
   }
-  List<CategoryModel> categoriesForApp;
-  final ICategoryRepository categoryRepository;
-  final IProductRepository productRepository;
-  final Map<int, List<dynamic>> categoryEnd;
 
   void _handleLoadCategoriesEvent(
       LoadCategoriesEvent event, Emitter<LoadingState> emit) async {

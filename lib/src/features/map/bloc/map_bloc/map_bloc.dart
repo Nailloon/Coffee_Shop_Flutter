@@ -8,15 +8,16 @@ part 'map_event.dart';
 part 'map_state.dart';
 
 final class MapBloc extends Bloc<MapEvent, MapState> {
+  List<LocationModel> locationsForApp;
+  LocationModel? currentLocation;
+  final ILocationRepository locationRepository;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   MapBloc(this.locationRepository, this.locationsForApp, this.currentLocation)
       : super(MapInitial(locationsForApp, currentLocation)) {
     on<LoadLocationsEvent>(_hanleLoadLocationsEvent);
     on<ChooseCurrentLocationEvent>(_handleChooseCurrentEvent);
   }
-  List<LocationModel> locationsForApp;
-  LocationModel? currentLocation;
-  final ILocationRepository locationRepository;
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   void _hanleLoadLocationsEvent(
       LoadLocationsEvent event, Emitter<MapState> emit) async {

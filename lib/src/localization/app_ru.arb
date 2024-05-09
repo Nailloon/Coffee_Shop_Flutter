@@ -10,5 +10,6 @@
     "location_permission_text": "Разрешите доступ к геолокации",
     "our_locations": "Наши кофейни",
     "choose": "Выбрать",
-    "no_access_location": "Нет доступа к местоположению пользователя"
+    "no_access_location": "Нет доступа к местоположению пользователя",
+    "error_in_loading_locations": "Не удалось загрузить локации кофейнь"
 }
