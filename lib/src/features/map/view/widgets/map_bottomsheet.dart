@@ -1,4 +1,3 @@
-import 'package:coffee_shop/src/common/functions/navigation_functions.dart';
 import 'package:coffee_shop/src/features/map/bloc/map_bloc/map_bloc.dart';
 import 'package:coffee_shop/src/features/map/model/location_model.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
@@ -37,7 +36,7 @@ class MapBottomSheet extends StatelessWidget {
         InkWell(
           onTap: () {
             context.read<MapBloc>().add(ChooseCurrentLocationEvent(location));
-            returnThroughNScreens(context, 2);
+            Navigator.pop(context, true);
           },
           child: SizedBox(
             width: double.infinity,

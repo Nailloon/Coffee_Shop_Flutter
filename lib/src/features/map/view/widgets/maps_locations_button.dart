@@ -15,14 +15,22 @@ class MapsLocationsButton extends StatelessWidget {
         child: const Icon(Icons.map_outlined,
             size: 20.0, color: AppColors.realBlack),
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => BlocProvider.value(
-                  value: context.read<MapBloc>(),
-                  child: const LocationsListScreen(),
-                ),
-              ));
+          _navigateToMapListScreen(context);
         });
+  }
+}
+
+Future<void> _navigateToMapListScreen(BuildContext context) async {
+  final bool needReturnToPreviousScreen = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider.value(
+          value: context.read<MapBloc>(),
+          child: const LocationsListScreen(),
+        ),
+      ));
+  if (!context.mounted) return;
+  if (needReturnToPreviousScreen == true) {
+    Navigator.pop(context);
   }
 }

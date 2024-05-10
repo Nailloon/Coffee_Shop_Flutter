@@ -1,4 +1,3 @@
-import 'package:coffee_shop/src/common/functions/navigation_functions.dart';
 import 'package:coffee_shop/src/features/map/bloc/map_bloc/map_bloc.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +49,7 @@ class LocationsListScreen extends StatelessWidget {
                             context.read<MapBloc>().add(
                                 ChooseCurrentLocationEvent(
                                     state.locations[index]));
-                            returnThroughNScreens(context, 2);
+                            Navigator.pop(context, true);
                           },
                         );
                       },

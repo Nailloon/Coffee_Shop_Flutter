@@ -142,15 +142,19 @@ class _MapScreenState extends State<MapScreen> {
     return locations
         .map(
           (point) => PlacemarkMapObject(
-            onTap: (_, __) {
+            onTap: (_, __) async {
               _moveToCurrentLocation(point);
-              showModalBottomSheet(
+              bool? needReturn = await showModalBottomSheet<bool?>(
                 context: context,
                 builder: (_) => BlocProvider.value(
                   value: context.read<MapBloc>(),
                   child: MapBottomSheet(location: point),
                 ),
               );
+              if (!mounted) return;
+              if (needReturn == true) {
+                Navigator.pop(context);
+              }
             },
             mapId: MapObjectId('MapObject ${point.address}'),
             point: Point(latitude: point.latitude, longitude: point.longitude),
