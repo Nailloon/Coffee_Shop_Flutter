@@ -11,7 +11,7 @@ class FirebaseApi {
 
   final _localNotification = FlutterLocalNotificationsPlugin();
 
-  Future<void> initLocalNotifications() async {
+  Future initLocalNotifications() async {
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
       if (notification == null) return;
