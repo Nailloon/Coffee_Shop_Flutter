@@ -29,7 +29,16 @@ class Products extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-@DriftDatabase(tables: [Products, Categories])
+@DataClassName('Location')
+class Locations extends Table {
+  TextColumn get address => text()();
+  RealColumn get latitude => real()();
+  RealColumn get longitude => real()();
+  @override
+  Set<Column> get primaryKey => {address};
+}
+
+@DriftDatabase(tables: [Products, Categories, Locations])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

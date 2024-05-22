@@ -8,6 +8,11 @@ part 'product_cart_event.dart';
 part 'product_cart_state.dart';
 
 final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
+  final ProductCart productsInCart;
+  double price;
+  final String currency;
+  final IOrderRepository orderRepository;
+
   ProductCartBloc(
     this.productsInCart,
     this.price,
@@ -21,11 +26,6 @@ final class ProductCartBloc extends Bloc<ProductCartEvent, ProductCartState> {
     on<ReturnToMainScreen>(_handleReturnToMainScreen);
     on<PostOrderEvent>(_handlePostOrderEvent);
   }
-
-  final ProductCart productsInCart;
-  double price;
-  final String currency;
-  final IOrderRepository orderRepository;
 
   void _handleAddProductToCart(
       AddProductToCart event, Emitter<ProductCartState> emit) {
