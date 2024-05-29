@@ -16,8 +16,8 @@ class OrderDataSource implements IOrderDataSource {
   @override
   Future<bool> postOrder(Map<String, int> orderData) async {
     debugPrint(orderData.toString());
-    final fCMToken = await FirebaseMessaging.instance.getToken();
     try {
+      final fCMToken = await FirebaseMessaging.instance.getToken();
       Map<String, dynamic> requestBody = {
         'positions': orderData,
         'token': fCMToken,
