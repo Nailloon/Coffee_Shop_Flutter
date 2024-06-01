@@ -30,31 +30,26 @@
 4. Также для запуска необходимо использовать **API_KEY**, используемый для яндекс карт и добавить файл **google-services.json** по следующему пути: /adroid/app. Все данные для запуска готов предоставить по необходимости
 5. flutter run --dart-define API_KEY="API_KEY", API_KEY в кавычках заменить на API_KEY, предоставляемый яндексом для использования карт
 
-## Что сделано на каждом из этапов
-
-### Этап 1
-
-- Была сделана верстка главного экрана, содержащая сетку карточек, строку категорий.
-- Была сделана кнопка, по нажатию на которую появляется возможность выбора количества товара
-- Был сделан скролл до нужной категории по нажатию на CategoryChips
-- Если картинка не найдена на устройстве в ассетах, то вставляется заглушка
-- Идет округление до двух чисел после запятой, а если их нет, то оно красиво преображается в int
-- Одновременный скролл катгорий при скролле вниз
-
-<u>Я открыт к любым советам и критике и постараюсь подправить недочеты. Также хотелось бы услышать советы по структуре проекта и по DTO, поскольку не сильно разбираюсь в этой теме.</u>
-
-Ниже будут перечислены пункты, которые были еще **не сделаны в работе**. По ним я хотел бы по возможности услышать советы по реализации.
-- [ ] Вынести красиво все паддинги, цвета и картинки в отдельные классы 
-- [ ] Вытягивать цвета из темы и также стили текстов
-- [ ] Убрать все моковые данные в отдельные папки
-
-Далее представлены скриншоты верстки под разные экраны:
-![Pixel 6 Pro1](./README_images/Pixel%206%20Pro%201.png)
-![Pixel 6 Pro2](./README_images/Pixel%206%20Pro%202.png)
-![Pixel 5 1](./README_images/Pixel%205%201.png)
-![Pixel 5 2](./README_images/Pixel%205%202.png)
+## Скриншоты работы
 
 Ниже представлены скриншоты с моего устройства Honor 20 Pro:
-![Honor_20_Pro1](./README_images/Honor%2020%20Pro%201.jpg)
-![Honor_20_Pro2](./README_images/Honor%2020%20Pro%202.jpg)
-![Honor_20_Pro3](./README_images/Honor%2020%20Pro%203.jpg)
+![Honor_20_Pro1](./README_images/Honor%main.jpg)
+![Honor_20_Pro2](./README_images/Honor%main%2.jpg)
+![Honor_20_Pro3](./README_images/Honor%main%h.jpg)
+![Honor_20_Pro4](./README_images/Honor%coffee%shops%list.jpg)
+![Honor_20_Pro5](./README_images/Order.jpg)
+![Honor_20_Pro6](./README_images/Map.jpg)
+![Honor_20_Pro7](./README_images/Notification.jpg)
+
+Далее представлены скриншоты верстки c планшета Lenovo TB-X704L:
+![Lenovo 1](./README_images/Lenovo%main.jpg)
+![Lenovo 2](./README_images/Lenovo%order.jpg)
+![Lenovo 3](./README_images/Lenovo%order%h.jpg)
+![Lenovo 4](./README_images/Lenovo%map.jpg)
+![Lenovo 5](./README_images/Lenovo%coffee%shops%list.jpg)
+
+В конце показана локализация на английский язык:
+![English 1](./README_images/English&version%1.jpg)
+![English 2](./README_images/English&version%2.jpg)
+![English 3](./README_images/English&version%3.jpg)
+![English 4](./README_images/English&version%4.jpg)
