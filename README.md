@@ -38,8 +38,10 @@
 ![Honor_20_Pro3](./README_images/Honor%main%h.jpg)
 ![Honor_20_Pro4](./README_images/Honor%coffee%shops%list.jpg)
 ![Honor_20_Pro5](./README_images/Order.jpg)
-![Honor_20_Pro6](./README_images/Map.jpg)
-![Honor_20_Pro7](./README_images/Notification.jpg)
+![Honor_20_Pro6](./README_images/Choose%location.jpg)
+![Honor_20_Pro7](./README_images/Map.jpg)
+![Honor_20_Pro8](./README_images/Permission.jpg)
+![Honor_20_Pro9](./README_images/Notification.jpg)
 
 Далее представлены скриншоты верстки c планшета Lenovo TB-X704L:
 ![Lenovo 1](./README_images/Lenovo%main.jpg)
