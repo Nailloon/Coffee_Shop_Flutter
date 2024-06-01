@@ -33,25 +33,25 @@
 ## Скриншоты работы
 
 Ниже представлены скриншоты с моего устройства Honor 20 Pro:
-![Honor_20_Pro1](./README_images/Honor%main.jpg)
-![Honor_20_Pro2](./README_images/Honor%main%2.jpg)
-![Honor_20_Pro3](./README_images/Honor%main%h.jpg)
-![Honor_20_Pro4](./README_images/Honor%coffee%shops%list.jpg)
+![Honor_20_Pro1](./README_images/Honor%20main.jpg)
+![Honor_20_Pro2](./README_images/Honor%20main%202.jpg)
+![Honor_20_Pro3](./README_images/Honor%20main%20h.jpg)
+![Honor_20_Pro4](./README_images/Honor%20coffee%20shops%20list.jpg)
 ![Honor_20_Pro5](./README_images/Order.jpg)
-![Honor_20_Pro6](./README_images/Choose%location.jpg)
+![Honor_20_Pro6](./README_images/Choose%20location.jpg)
 ![Honor_20_Pro7](./README_images/Map.jpg)
 ![Honor_20_Pro8](./README_images/Permission.jpg)
 ![Honor_20_Pro9](./README_images/Notification.jpg)
 
 Далее представлены скриншоты верстки c планшета Lenovo TB-X704L:
-![Lenovo 1](./README_images/Lenovo%main.jpg)
-![Lenovo 2](./README_images/Lenovo%order.jpg)
-![Lenovo 3](./README_images/Lenovo%order%h.jpg)
-![Lenovo 4](./README_images/Lenovo%map.jpg)
-![Lenovo 5](./README_images/Lenovo%coffee%shops%list.jpg)
+![Lenovo 1](./README_images/Lenovo%20main.jpg)
+![Lenovo 2](./README_images/Lenovo%20order.jpg)
+![Lenovo 3](./README_images/Lenovo%20order%20h.jpg)
+![Lenovo 4](./README_images/Lenovo%20map.jpg)
+![Lenovo 5](./README_images/Lenovo%20coffee%20shops%20list.jpg)
 
 В конце показана локализация на английский язык:
-![English 1](./README_images/English&version%1.jpg)
-![English 2](./README_images/English&version%2.jpg)
-![English 3](./README_images/English&version%3.jpg)
-![English 4](./README_images/English&version%4.jpg)
+![English 1](./README_images/English%20version%201.jpg)
+![English 2](./README_images/English%20version%202.jpg)
+![English 3](./README_images/English%20version%203.jpg)
+![English 4](./README_images/English%20version%204.jpg)
