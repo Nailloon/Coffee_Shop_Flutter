@@ -35,6 +35,12 @@ if (project.hasProperty('dart-defines')) {
         }
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace "com.example.coffee_shop"
     compileSdkVersion flutter.compileSdkVersion
@@ -65,13 +71,23 @@ android {
         resValue "string", "api_key", dartEnvironmentVariables.API_KEY
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
         }
     }
+   buildTypes {
+      release {
+         // TODO: Add your own signing config for the release build.
+         // Signing with the debug keys for now,
+         // so `flutter run --release` works.
+            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
+      }
+   }
 }
 
 flutter {
