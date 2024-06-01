@@ -15,8 +15,6 @@ final class LoadingCompleted extends LoadingState {
 }
 
 final class LoadingFailure extends LoadingState {
-  final Object? exception;
 
-  const LoadingFailure(super.categories, super.loadingCompleteForCategory,
-      {required this.exception});
+  const LoadingFailure(super.categories, super.loadingCompleteForCategory);
 }

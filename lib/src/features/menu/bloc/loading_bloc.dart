@@ -29,10 +29,13 @@ final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
           category.id: [false, 1]
         });
       }
-      emit(LoadingCompleted(categoriesForApp, categoryEnd));
+      if (categoriesForApp.isEmpty) {
+        emit(LoadingFailure(categoriesForApp, categoryEnd));
+      } else {
+        emit(LoadingCompleted(categoriesForApp, categoryEnd));
+      }
     } catch (e) {
-      emit(LoadingFailure(state.categories, state.loadingCompleteForCategory,
-          exception: e));
+      emit(LoadingFailure(state.categories, state.loadingCompleteForCategory));
     }
   }
 
@@ -47,7 +50,7 @@ final class LoadingBloc extends Bloc<LoadingEvent, LoadingState> {
       }
       emit(LoadingCompleted(categoriesForApp, categoryEnd));
     } catch (e) {
-      emit(LoadingFailure(state.categories, categoryEnd, exception: e));
+      emit(LoadingFailure(state.categories, categoryEnd));
     }
   }
 }

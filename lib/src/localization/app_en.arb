@@ -1,6 +1,6 @@
 {
     "title": "Coffee house",
-    "error_in_Loading_categories": "Something went wrong, please try again later",
+    "error_in_Loading_categories": "Something went wrong, please check internet connection and try again",
     "your_order": "Your order",
     "make_order": "Place an order",
     "order_success": "The order has been created",
