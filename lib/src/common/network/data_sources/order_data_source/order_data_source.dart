@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:coffee_shop/src/common/functions/exception_functions.dart';
 import 'package:coffee_shop/src/common/network/data_sources/order_data_source/interface_order_data_source.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,9 +17,10 @@ class OrderDataSource implements IOrderDataSource {
   Future<bool> postOrder(Map<String, int> orderData) async {
     debugPrint(orderData.toString());
     try {
+      final fCMToken = await FirebaseMessaging.instance.getToken();
       Map<String, dynamic> requestBody = {
         'positions': orderData,
-        'token': '',
+        'token': fCMToken,
       };
 
       var url = Uri.https(
