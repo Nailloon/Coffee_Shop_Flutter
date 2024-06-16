@@ -8,10 +8,10 @@ import 'package:coffee_shop/src/features/menu/models/mock_currency.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/category_appbar/category_chip.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/category_grid/category_grid.dart';
 import 'package:coffee_shop/src/features/menu/view/widgets/components/category_grid/category_header.dart';
+import 'package:coffee_shop/src/features/menu/view/widgets/components/error_text_widget.dart';
 import 'package:coffee_shop/src/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -207,9 +207,10 @@ class _MenuScreenState extends State<MenuScreen> {
             );
           }
           if (state is LoadingFailure) {
-            final String exceptionText = state.exception.toString();
-            return Text(
-              '${AppLocalizations.of(context).error_in_Loading_categories} $exceptionText',
+            return const SafeArea(
+              child: Scaffold(
+                body: ErrorText(),
+              ),
             );
           } else {
             return const ColoredBox(

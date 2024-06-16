@@ -1,0 +1,15 @@
+{
+    "title": "Coffee house",
+    "error_in_Loading_categories": "Something went wrong, please check internet connection and try again",
+    "your_order": "Your order",
+    "make_order": "Place an order",
+    "order_success": "The order has been created",
+    "error_in_order": "An error occurred when ordering",
+    "cancel_button": "Cancel",
+    "apply_button": "Allow",
+    "location_permission_text": "Allow access to geolocation",
+    "our_locations": "Our coffee houses",
+    "choose": "Choose",
+    "no_access_location": "There is no access to the user's location",
+    "error_in_loading_locations": "Failed to load coffee houses locations"
+}

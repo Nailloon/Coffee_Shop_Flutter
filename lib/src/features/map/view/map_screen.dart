@@ -26,6 +26,7 @@ class _MapScreenState extends State<MapScreen> {
   final mapControllerCompleter = Completer<YandexMapController>();
   late final YandexMapController _mapController;
   CameraPosition? _userLocation;
+  final LocationModel _initialLocation = const LocationModel(address: 'Omsk', latitude: 54.99244, longitude: 73.36859);
 
   @override
   void initState() {
@@ -57,6 +58,7 @@ class _MapScreenState extends State<MapScreen> {
           builder: (context, state) {
             return BlocListener<PermissionBloc, PermissionState>(
                 listener: (context, state) async {
+                  _moveToInitialLocation();
                   if (state is PermissionDenied) {
                     if (currentLocation != null) {
                       _moveToCurrentLocation(currentLocation!);
@@ -186,6 +188,22 @@ class _MapScreenState extends State<MapScreen> {
             longitude: location.longitude,
           ),
           zoom: 14,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _moveToInitialLocation() async{
+    (await mapControllerCompleter.future).moveCamera(
+      animation:
+          const MapAnimation(type: MapAnimationType.linear, duration: 0.6),
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: Point(
+            latitude: _initialLocation.latitude,
+            longitude: _initialLocation.longitude,
+          ),
+          zoom: 11,
         ),
       ),
     );
