@@ -1,0 +1,15 @@
+{
+    "title": "Кофейня",
+    "error_in_Loading_categories": "Что-то пошло не так, проверьте подключение к интернету и попробуйте снова",
+    "your_order": "Ваш заказ",
+    "make_order": "Оформить заказ",
+    "order_success": "Заказ создан",
+    "error_in_order": "Возникла ошибка при заказе",
+    "cancel_button": "Отменить",
+    "apply_button": "Разрешить",
+    "location_permission_text": "Разрешите доступ к геолокации",
+    "our_locations": "Наши кофейни",
+    "choose": "Выбрать",
+    "no_access_location": "Нет доступа к местоположению пользователя",
+    "error_in_loading_locations": "Не удалось загрузить локации кофейнь"
+}

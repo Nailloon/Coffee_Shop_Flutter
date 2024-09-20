@@ -1,0 +1,4 @@
+arb-dir: lib/src/localization # Директория, где хранятся файлы переводов
+template-arb-file: app_ru.arb # Файл-шаблон, где описываются параметры строк
+output-localization-file: app_localizations.dart # Сгенерированный файл локализации
+nullable-getter: false
